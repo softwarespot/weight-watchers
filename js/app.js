@@ -1,3 +1,5 @@
+/* global NProgress */
+
 // Create an 'App' namespace
 var App = {};
 
@@ -68,6 +70,12 @@ App.core = (function (window, document, $, undefined) {
         $.extend(defaultConfig, config);
 
         // _cacheDom();
+
+        // Disable showing the spinner in the top right hand corner
+        NProgress.configure({
+            minimum: 0.1,
+            showSpinner: false
+        });
 
         _isInitialised = true;
     }

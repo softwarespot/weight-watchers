@@ -1,4 +1,4 @@
-/* global App, moment */
+/* global App, moment, NProgress */
 
 /**
  * Weight module
@@ -45,6 +45,8 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // When the reset event is invoked, call the following function
         destroy: function ( /*event*/ ) {
+            NProgress.done();
+
             // Hide the error message
             $_weightFormError.hide();
 
@@ -112,6 +114,12 @@ App.weight = (function (window, document, $, core, undefined) {
                 $_weightFormError.show();
                 return;
             }
+
+            // Simulate an ajax request with a 2 second progress bar
+            NProgress.start();
+            setTimeout(function () {
+                NProgress.done();
+            }, 2000);
 
             $_weightFormInput.val('');
 
