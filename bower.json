@@ -1,0 +1,27 @@
+{
+  "name": "weight-watchers",
+  "homepage": "https://github.com/InkaH/weight-watchers.git",
+  "description": "Watch your weight",
+  "moduleType": [
+    "es6"
+  ],
+  "keywords": [
+    "watch",
+    "weight"
+  ],
+  "license": "MIT",
+  "ignore": [],
+  "dependencies": {
+    "font-awesome": "fontawesome#~4.4.0",
+    "handlebars": "~4.0.3",
+    "jquery": "~2.1.4",
+    "jquery-handlebars": "jquery-handlebars-plugin#~1.2.5",
+    "momentjs": "~2.10.6",
+    "normalize-css": "normalize.css#~3.0.3",
+    "nprogress": "~0.2.0",
+    "open-sans": "~1.1.0",
+    "skeleton": "~2.0.4",
+    "jquery.serializeJSON": "~2.6.1"
+  },
+  "devDependencies": {}
+}

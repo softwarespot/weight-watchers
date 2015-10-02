@@ -1,0 +1,82 @@
+/**
+ * Custom CSS
+ *
+ * Modified: 2015/10/02
+ * @author softwarespot
+ */
+
+ /*Body styling*/
+ body {
+    background: #fafafa;
+    font-family: 'Open Sans', sans-serif, Arial;
+    color: #222;
+}
+
+/*Style a links as well as increasing the clickable area*/
+a {
+    background: transparent;
+    color: #2980b9;
+    margin: -.5em;
+    padding: .5em;
+    position: relative;
+    text-decoration: none;
+    -webkit-transition: all .3s ease-out;
+    transition: all .3s ease-out;
+}
+
+a:hover {
+    color: #3498db;
+}
+
+a img {
+    -webkit-transition: -webkit-transform .3s ease-out;
+    transition: transform .3s ease-out;
+}
+
+a img:hover {
+    -webkit-transform: scale(1.3, 1.3);
+    transform: scale(1.3, 1.3);
+}
+
+.container {
+    padding: 20px 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.error-box {
+    background: #e74c3c;
+    display: inline-block;
+    padding: 20px;
+}
+
+.orange {
+    background: #e67e22;
+}
+
+.red {
+    background: #e74c3c;
+    color: #fafafa;
+}
+
+/*Mobile first queries*/
+
+/*Larger than mobile*/
+@media (min-width: 400px) {
+}
+
+/*Larger than phablet*/
+@media (min-width: 550px) {
+}
+
+/*Larger than tablet*/
+@media (min-width: 750px) {
+}
+
+/*Larger than desktop*/
+@media (min-width: 1000px) {
+}
+
+/*Larger than Desktop HD*/
+@media (min-width: 1200px) {
+}
