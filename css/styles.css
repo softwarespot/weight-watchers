@@ -59,6 +59,14 @@ a img:hover {
     color: #fafafa;
 }
 
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
 /*Mobile first queries*/
 
 /*Larger than mobile*/

@@ -48,7 +48,7 @@ App.weight = (function (window, document, $, core, undefined) {
             NProgress.done();
 
             // Hide the error message
-            $_weightFormError.hide();
+            $_weightFormError.addClass('hide');
 
             // Clear the weight list session
             _session.clear();
@@ -104,7 +104,7 @@ App.weight = (function (window, document, $, core, undefined) {
             var weightValue = form.value;
             if (!isValidWeight(weightValue)) {
                 // Show the error message
-                $_weightFormError.show();
+                $_weightFormError.removeClass('hide');
                 return;
             }
 
@@ -115,7 +115,7 @@ App.weight = (function (window, document, $, core, undefined) {
             $_weightFormInput.val('');
 
             // Hide the error message
-            $_weightFormError.hide();
+            $_weightFormError.addClass('hide');
 
             // Add the weight value
             _add(weightValue);
@@ -211,7 +211,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Disable the submit button
         $_weightFormSubmit.prop('disabled', true);
-        $_weightFormError.hide();
+        $_weightFormError.addClass('hide');
 
         _weightsList = _session.get();
 
