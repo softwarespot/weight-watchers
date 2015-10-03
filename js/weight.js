@@ -34,14 +34,14 @@ App.weight = (function (window, document, $, core, undefined) {
         // When the current key is released event string
         keyup: 'keyup.app.weight',
 
-        // Submit event string
-        submit: 'submit.app.weight',
-
         // Remove event string
         remove: 'click.remove.app.weight',
 
         // Reset event string
         reset: 'click.reset.app.weight',
+
+        // Submit event string
+        submit: 'submit.app.weight',
 
         // When the reset event is invoked, call the following function
         destroy: function ( /*event*/ ) {
@@ -52,9 +52,6 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Clear the weight list session
             _session.clear();
-
-            // Clear the weights array
-            core.arrayClear(_weightsList);
 
             // Render the template
             _render(_weightsList);
@@ -100,7 +97,6 @@ App.weight = (function (window, document, $, core, undefined) {
             event.preventDefault();
 
             var form = event.currentTarget[0];
-
             // $form.serializeJSON():
 
             // Disable the submit button
@@ -121,6 +117,7 @@ App.weight = (function (window, document, $, core, undefined) {
                 NProgress.done();
             }, 2000);
 
+            // Clear the input contents
             $_weightFormInput.val('');
 
             // Hide the error message
@@ -139,19 +136,22 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // Session handler for the weights list
     var _session = {
-        // Unique weight list session id
+        // Unique weights list session id
         key: GUID + '_app.weight_list',
 
         // Clear the weights list session storage item
         clear: function () {
             sessionStorage.removeItem(this.key);
+
+            // Clear the elements in the weights array
+            core.arrayClear(_weightsList);
         },
 
         // Get the weights list that was previously stored in the session storage
         get: function () {
             var items = sessionStorage.getItem(this.key);
 
-            // If null then return an empty string; otherwise, parse as a JSON object
+            // If null then return an empty string; otherwise, parse as a JSON object literal
             return core.isNull(items) ? [] : JSON.parse(items);
         },
 
@@ -206,7 +206,7 @@ App.weight = (function (window, document, $, core, undefined) {
         // Combine the passed config
         $.extend(defaultConfig, config);
 
-        // Data attribute for the id
+        // Data attribute for the id value
         _dataAttributeId = config.data_id;
 
         // Store the template strings
@@ -251,7 +251,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         $_weightFormError = null;
 
-        // Clear the weights array
+        // Clear the elements in the weights array
         core.arrayClear(_weightsList);
 
         _isInitialised = false;
@@ -275,6 +275,7 @@ App.weight = (function (window, document, $, core, undefined) {
     function _cacheDom(dom) {
         $_document = $(document);
         $_content = $(dom.weight_list);
+
         $_weightForm = $(dom.forms.weight);
         $_weightFormInput = $_weightForm.find('input[type="text"]');
         $_weightFormReset = $_weightForm.find('[type="reset"]');
@@ -297,6 +298,7 @@ App.weight = (function (window, document, $, core, undefined) {
         $_weightForm.on(_events.submit, _events.submission);
         $_weightFormInput.on(_events.keyup, _events.keyRelease);
         $_weightFormReset.on(_events.reset, _events.destroy);
+
         _isEventsBound = true;
     }
 
@@ -314,6 +316,7 @@ App.weight = (function (window, document, $, core, undefined) {
         $_weightForm.off(_events.submit, _events.submission);
         $_weightFormInput.off(_events.keyup, _events.keyRelease);
         $_weightFormReset.off(_events.reset, _events.destroy);
+
         _isEventsBound = false;
     }
 
@@ -324,7 +327,8 @@ App.weight = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _add(value) {
-        if (!core.isNumber(value)) {
+        // If not a float then parse as a floating ppint number datatype
+        if (!core.isFloat(value)) {
             value = parseFloat(value); // Important, as the database will be DECIMAL(5,1)
         }
 
@@ -336,29 +340,31 @@ App.weight = (function (window, document, $, core, undefined) {
             id: _internalId,
             value: value,
             time: nowTimeStamp,
-            iso8601: moment.unix(nowTimeStamp).toISOString(),
-            username: 'User ' + _internalId
+            username: 'User ' + _internalId,
+            iso8601: moment.unix(nowTimeStamp).toISOString()
         });
 
+        // Increase the internal id
         _internalId++;
     }
 
     /**
      * Remove a weight object from the internal array
      *
-     * @param {number} id Id of the object
+     * @param {number} id Id of the object to find
      * @return {undefined}
      */
     function _remove(id) {
-        if (!core.isNumber(id)) {
+        // If not an integer then parse as an integer number datatype
+        if (!core.isInteger(id)) {
             id = parseInt(id);
         }
 
-        // In browsers that support ES2015, for...of can be used
+        // In browsers that support ES2015, for...of can be used or .find()
         for (var i = 0, length = _weightsList.length; i < length; i++) {
             var weight = _weightsList[i];
 
-            // Remove the item from the array
+            // Remove the item from the weights list array
             if (weight.id === id) {
                 _weightsList.splice(i, 1);
                 break;
@@ -391,7 +397,7 @@ App.weight = (function (window, document, $, core, undefined) {
             value = '' + value;
         }
 
-        return value.length > 0 && _reIsValidWeight.test(value);
+        return value.trim().length > 0 && _reIsValidWeight.test(value);
     }
 
     // Invoked when the DOM has loaded
