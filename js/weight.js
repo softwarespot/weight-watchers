@@ -67,13 +67,11 @@ App.weight = (function (window, document, $, core, undefined) {
             if (!isValidWeight(weightValue)) {
                 // Disable the submit button
                 $_weightFormSubmit.prop('disabled', true);
-                $_weightFormSubmit.addClass('red');
                 return;
             }
 
             // Enabled the submit button
             $_weightFormSubmit.prop('disabled', false);
-            $_weightFormSubmit.removeClass('red');
         },
 
         // When the remove event is invoked, call the following function
@@ -101,7 +99,6 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Disable the submit button
             $_weightFormSubmit.prop('disabled', true);
-            $_weightFormSubmit.addClass('red');
 
             // If an invalid weight value, the disable the submit button
             var weightValue = form.value;
@@ -214,7 +211,6 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Disable the submit button
         $_weightFormSubmit.prop('disabled', true);
-        $_weightFormSubmit.addClass('red');
         $_weightFormError.hide();
 
         _weightsList = _session.get();
