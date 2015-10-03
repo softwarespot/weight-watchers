@@ -200,6 +200,24 @@ App.api = (function (window, document, $, core, undefined) {
         });
     }
 
+    /**
+     * Ajax GET request
+     *
+     * @return {object} jQuery XHR promise
+     */
+    function get() {
+        return undefined;
+    }
+
+    /**
+     * Ajax POST request
+     *
+     * @return {object} jQuery XHR promise
+     */
+    function post() {
+        return undefined;
+    }
+
     // Invoked when the DOM has loaded
     $(function () {
         init({});
@@ -210,6 +228,8 @@ App.api = (function (window, document, $, core, undefined) {
         init: init,
         destroy: destroy,
         getVersion: getVersion,
-        HTTP: HTTP
+        HTTP: HTTP,
+        get: get,
+        post: post
     };
 })(this, this.document, this.jQuery, App.core);
