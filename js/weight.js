@@ -3,7 +3,7 @@
 /**
  * Weight module
  *
- * Modified: 2015/10/02
+ * Modified: 2015/10/03
  * @author softwarespot
  */
 App.weight = (function (window, document, $, core, undefined) {
@@ -328,11 +328,15 @@ App.weight = (function (window, document, $, core, undefined) {
             value = parseFloat(value); // Important, as the database will be DECIMAL(5,1)
         }
 
+        // Get a epoch timestamp of the current date and time i.e. now
+        var nowTimeStamp = moment().unix();
+
         // Push the 'fake' object to the internal array
         _weightsList.push({
             id: _internalId,
             value: value,
-            time: moment().unix(), // Same as using now()
+            time: nowTimeStamp,
+            iso8601: moment.unix(nowTimeStamp).toISOString(),
             username: 'User ' + _internalId
         });
 
