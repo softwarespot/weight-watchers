@@ -123,9 +123,9 @@ App.core = (function (window, document, $, undefined) {
      * @return {undefined}
      */
     function ajax() {
-        // Simulate an ajax request with a 2 second delay progress bar
+        // Simulate an ajax request with a 1 second delay progress bar
         NProgress.start();
-        setTimeout(NProgress.done, 2000);
+        setTimeout(NProgress.done, 1000);
     }
 
     /**
