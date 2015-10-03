@@ -111,11 +111,8 @@ App.weight = (function (window, document, $, core, undefined) {
                 return;
             }
 
-            // Simulate an ajax request with a 2 second progress bar
-            NProgress.start();
-            setTimeout(function () {
-                NProgress.done();
-            }, 2000);
+            // Simulate an ajax request
+            core.ajax();
 
             // Clear the input contents
             $_weightFormInput.val('');
@@ -223,8 +220,9 @@ App.weight = (function (window, document, $, core, undefined) {
         _weightsList = _session.get();
 
         // If items exist in the array, then get the last element object and the id
-        if (_weightsList.length > 0) {
-            _internalId = _weightsList[_weightsList.length - 1].id;
+        var peek = core.arrayPeek(_weightsList);
+        if (!core.isUndefined(peek)) {
+            _internalId = peek.id;
         }
         _internalId++;
 
@@ -382,7 +380,7 @@ App.weight = (function (window, document, $, core, undefined) {
     function _render(data) {
         $_content.handlebars('add', _templateWeightList, data, {
             remove_type: 'same',
-            validate: false
+            validate: !core.isEmpty(data)
         });
     }
 

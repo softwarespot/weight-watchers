@@ -38,6 +38,9 @@ App.core = (function (window, document, $, undefined) {
     // Store the object prototype
     var _objectPrototype = Object.prototype;
 
+    // Store the hasOwnProperty method
+    var _objectHasOwnProperty = _objectPrototype.hasOwnProperty;
+
     // Store the toString method
     var _objectToString = _objectPrototype.toString;
 
@@ -115,6 +118,17 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
+     * Simulate an ajax request by displaying a progress bar
+     *
+     * @return {undefined}
+     */
+    function ajax() {
+        // Simulate an ajax request with a 2 second delay progress bar
+        NProgress.start();
+        setTimeout(NProgress.done, 2000);
+    }
+
+    /**
      * Clear the contents of an array, but maintain the same reference
      *
      * @param {array} array The array to clear
@@ -130,6 +144,31 @@ App.core = (function (window, document, $, undefined) {
         while (array.length > 0) {
             array.pop();
         }
+    }
+
+    /**
+     * Look at the last item in the array
+     *
+     * @param {array} array The array to peek at
+     * @return {mixed|undefined} The last item pushed onto the array; otherwise, undefined
+     */
+    function arrayPeek(array) {
+        if (!isArray(array) || array.length === 0) {
+            return undefined;
+        }
+
+        return array[array.length - 1];
+    }
+
+    /**
+     * Check if an object contains a key
+     *
+     * @param {object} object Object to check
+     * @param {string} property Property to check exists in the object
+     * @return {boolean} True the property exists; otherwise, false
+     */
+    function has(object, property) {
+        return _objectHasOwnProperty.call(object, property);
     }
 
     /**
@@ -149,6 +188,30 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True the value is an array datatype; otherwise, false
      */
     var isArray = Array.isArray;
+
+    /**
+     * Check if a variable is empty
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True the value is empty; otherwise, false
+     */
+    function isEmpty(value) {
+        if (isNullOrUndefined(value)) {
+            return true;
+        }
+
+        if (isArray(value) || isString(value)) {
+            return value.length === 0;
+        }
+
+        for (var key in value) {
+            if (has(value, key)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Check if a variable is a float datatype
@@ -344,9 +407,13 @@ App.core = (function (window, document, $, undefined) {
         destroy: destroy,
         getAppName: getAppName,
         getVersion: getVersion,
+        ajax: ajax,
         arrayClear: arrayClear,
+        arrayPeek: arrayPeek,
+        has: has,
         isArray: isArray,
         isBoolean: isBoolean,
+        isEmpty: isEmpty,
         isFloat: isFloat,
         isFunction: isFunction,
         isInteger: isInteger,
