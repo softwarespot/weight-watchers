@@ -29,6 +29,28 @@ App.weight = (function (window, document, $, core, undefined) {
     // Store the id value. Testing only
     var _internalId = 0;
 
+    // Store the jQuery selector object for the document
+    var $_document = null;
+
+    // Store the jQuery selector object to add the weight data to it
+    var $_content = null;
+
+    // Store the jQuery selector objects for the weight form
+    var $_weightForm = null;
+    var $_weightFormInput = null;
+    var $_weightFormReset = null;
+    var $_weightFormSubmit = null;
+
+    var $_weightFormError = null;
+
+    var _dataAttributeId = null;
+
+    // Template string selectors
+    var _templateWeightList = null;
+
+    // If the value is an integer (without leading zeros) or a floating point value with a single decimal
+    var _reIsValidWeight = /^(?!0+)(?:\d+(?:\.\d)?)$/;
+
     // Events object
     var _events = {
         // When the current key is released event string
@@ -58,7 +80,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the keyup event is invoked, call the following function
-        keyRelease: function (event) {
+        release: function (event) {
             // Prevent default propagation
             event.preventDefault();
 
@@ -158,28 +180,6 @@ App.weight = (function (window, document, $, core, undefined) {
             sessionStorage.setItem(this.key, JSON.stringify(array));
         }
     };
-
-    // Store the jQuery selector object for the document
-    var $_document = null;
-
-    // Store the jQuery selector object to add the weight data to it
-    var $_content = null;
-
-    // Store the jQuery selector objects for the weight form
-    var $_weightForm = null;
-    var $_weightFormInput = null;
-    var $_weightFormReset = null;
-    var $_weightFormSubmit = null;
-
-    var $_weightFormError = null;
-
-    var _dataAttributeId = null;
-
-    // Template string selectors
-    var _templateWeightList = null;
-
-    // If the value is an integer (without leading zeros) or a floating point value with a single decimal
-    var _reIsValidWeight = /^(?!0+)(?:\d+(?:\.\d)?)$/;
 
     // Methods
 
@@ -290,7 +290,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         $_document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removal);
         $_weightForm.on(_events.submit, _events.submission);
-        $_weightFormInput.on(_events.keyup, _events.keyRelease);
+        $_weightFormInput.on(_events.keyup, _events.release);
         $_weightFormReset.on(_events.reset, _events.destroy);
 
         _isEventsBound = true;
@@ -308,7 +308,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         $_document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removal);
         $_weightForm.off(_events.submit, _events.submission);
-        $_weightFormInput.off(_events.keyup, _events.keyRelease);
+        $_weightFormInput.off(_events.keyup, _events.release);
         $_weightFormReset.off(_events.reset, _events.destroy);
 
         _isEventsBound = false;
