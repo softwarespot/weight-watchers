@@ -130,14 +130,18 @@ App.weight = (function (window, document, $, core, undefined) {
                 return;
             }
 
-            // Simulate an ajax request
-            core.ajax();
-
             // Clear the input contents
             $_weightFormInput.val('');
 
             // Hide the error message
             $_weightFormError.addClass('hide');
+
+            // Simulate an ajax request
+            core.ajax();
+
+            // AJAX POST
+
+            // AJAX GET
 
             // Add the weight value
             _add(weightValue);
@@ -212,6 +216,8 @@ App.weight = (function (window, document, $, core, undefined) {
         // Disable the submit button
         $_weightFormSubmit.prop('disabled', true);
         $_weightFormError.addClass('hide');
+
+        // AJAX GET
 
         _weightsList = _session.get();
 
