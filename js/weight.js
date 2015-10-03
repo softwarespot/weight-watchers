@@ -331,15 +331,12 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Push the 'fake' object to the internal array
         _weightsList.push({
-            id: _internalId,
+            id: _internalId++,
             value: value,
             time: nowTimeStamp,
-            username: 'User ' + _internalId,
+            username: 'User ' + core.randomNumber(10, 20),
             iso8601: moment.unix(nowTimeStamp).toISOString()
         });
-
-        // Increase the internal id
-        _internalId++;
     }
 
     /**
