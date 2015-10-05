@@ -137,7 +137,7 @@ App.weight = (function (window, document, $, core, undefined) {
             $_weightFormError.addClass('hide');
 
             // Simulate an ajax request
-            core.ajax();
+            core.api.fetch();
 
             // AJAX POST
 

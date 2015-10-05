@@ -118,17 +118,6 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
-     * Simulate an ajax request by displaying a progress bar
-     *
-     * @return {undefined}
-     */
-    function ajax() {
-        // Simulate an ajax request with a 1 second delay progress bar
-        NProgress.start();
-        setTimeout(NProgress.done, 1000);
-    }
-
-    /**
      * Clear the contents of an array, but maintain the same reference
      *
      * @param {array} array The array to clear
@@ -407,7 +396,6 @@ App.core = (function (window, document, $, undefined) {
         destroy: destroy,
         getAppName: getAppName,
         getVersion: getVersion,
-        ajax: ajax,
         arrayClear: arrayClear,
         arrayPeek: arrayPeek,
         has: has,
