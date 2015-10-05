@@ -3,7 +3,7 @@
 /**
  * Weight module
  *
- * Modified: 2015/10/03
+ * Modified: 2015/10/05
  * @author softwarespot
  */
 App.weight = (function (window, document, $, core, undefined) {
@@ -105,7 +105,7 @@ App.weight = (function (window, document, $, core, undefined) {
             _remove(id);
 
             // Save the current state of the weights list
-            _session.save(_weightsList);
+            _session.set(_weightsList);
 
             // Render the template
             _render(_weightsList);
@@ -147,7 +147,7 @@ App.weight = (function (window, document, $, core, undefined) {
             _add(weightValue);
 
             // Save the current state of the weights list
-            _session.save(_weightsList);
+            _session.set(_weightsList);
 
             // Render the template
             _render(_weightsList);
@@ -167,6 +167,11 @@ App.weight = (function (window, document, $, core, undefined) {
             core.arrayClear(_weightsList);
         },
 
+        // Alias for clear()
+        remove: function () {
+            this.clear();
+        },
+
         // Get the weights list that was previously stored in the session storage
         get: function () {
             var items = sessionStorage.getItem(this.key);
@@ -176,7 +181,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // Save the weights list to the session storage
-        save: function (array) {
+        set: function (array) {
             if (!core.isArray(array)) {
                 return;
             }
