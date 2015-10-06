@@ -208,7 +208,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     function fetch() {
         // Simulate an ajax request with a 1 second delay progress bar
         NProgress.start();
-        setTimeout(NProgress.done, 1000);
+        window.setTimeout(NProgress.done, 1000);
     }
 
     /**
@@ -216,7 +216,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      *
      * @return {object} jQuery XHR promise
      */
-    function del(resourceUrl, callback) {
+    function del(url, callback) {
         return undefined;
     }
 
@@ -225,7 +225,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      *
      * @return {object} jQuery XHR promise
      */
-    function get(resourceUrl, callback) {
+    function get(url, callback) {
         return undefined;
     }
 
@@ -234,8 +234,45 @@ App.core.api = (function (window, document, $, core, undefined) {
      *
      * @return {object} jQuery XHR promise
      */
-    function post(resourceUrl, callback) {
+    function post(url, callback) {
         return undefined;
+    }
+
+    /**
+     * Parse a url by replacing segment such as {item}, with the
+     *
+     * @param {string} url Url string to parse
+     * @param {Object} object Object literal with one level only. The keys should match the segments in the url
+     * @return {string|null} Parsed string; otherwise, null
+     */
+    function parseUrl(url, object) {
+        // Check if the url is a string and the object parameter is an object literal
+        if (!core.isString(url) || !core.isObjectLiteral(object)) {
+            return null;
+        }
+
+        // Clone the url, so the replaced values, if they contain {}, don't interfere with matching
+        var urlClone = '' + url;
+
+        // Regular expression to parse items between {}
+        var reParseURLParts = /{([^\}]+)}/g;
+        while (true) {
+            // Get the matches and check if any were found
+            var match = reParseURLParts.exec(urlClone);
+            if (core.isNull(match)) {
+                break;
+            }
+
+            // Store the key and check if it exists in the object literal
+            var key = match[1];
+            if (!core.has(object, key) || core.isUndefined(object[key])) {
+                continue;
+            }
+
+            // Replace the url string with the value of the full match
+            var fullMatch = match[0];
+            url = url.replace(fullMatch, object[key]);
+        }
     }
 
     // Invoked when the DOM has loaded
@@ -252,6 +289,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         fetch: fetch,
         delete: del,
         get: get,
-        post: post
+        post: post,
+        parseUrl: parseUrl
     };
 })(this, this.document, this.jQuery, App.core);
