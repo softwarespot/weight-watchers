@@ -266,6 +266,8 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Done, the ajax request was successful
         xhr.then(function () {
+            _weightsList = _session.get();
+
             for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
                 _add(core.randomNumber(45, 200) * 1.0);
             }
