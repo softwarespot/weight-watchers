@@ -6,7 +6,7 @@
  * Modified: 2015/10/02
  * @author softwarespot
  */
-App.api = (function (window, document, $, core, undefined) {
+App.core.api = (function (window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -20,7 +20,7 @@ App.api = (function (window, document, $, core, undefined) {
      *
      * @type {object}
      */
-    var HTTP = {
+    var HTTPStatus = {
 
         // Success
 
@@ -201,11 +201,31 @@ App.api = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Simulate an ajax request by displaying a progress bar
+     *
+     * @return {undefined}
+     */
+    function fetch() {
+        // Simulate an ajax request with a 1 second delay progress bar
+        NProgress.start();
+        setTimeout(NProgress.done, 1000);
+    }
+
+    /**
+     * Ajax DELETE request
+     *
+     * @return {object} jQuery XHR promise
+     */
+    function del(resourceUrl, callback) {
+        return undefined;
+    }
+
+    /**
      * Ajax GET request
      *
      * @return {object} jQuery XHR promise
      */
-    function get() {
+    function get(resourceUrl, callback) {
         return undefined;
     }
 
@@ -214,7 +234,7 @@ App.api = (function (window, document, $, core, undefined) {
      *
      * @return {object} jQuery XHR promise
      */
-    function post() {
+    function post(resourceUrl, callback) {
         return undefined;
     }
 
@@ -228,7 +248,9 @@ App.api = (function (window, document, $, core, undefined) {
         init: init,
         destroy: destroy,
         getVersion: getVersion,
-        HTTP: HTTP,
+        HTTPStatus: HTTPStatus,
+        fetch: fetch,
+        delete: del,
         get: get,
         post: post
     };
