@@ -214,7 +214,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Ajax DELETE request
      *
-     * @param {String} url Url to DELETE
+     * @param {string} url Url to DELETE
      * @return {object} jQuery XHR promise
      */
     function del(url, object) {
@@ -245,7 +245,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Ajax GET request
      *
-     * @param {String} url Url to GET
+     * @param {string} url Url to GET
      * @return {object} jQuery XHR promise
      */
     function get(url, object) {
@@ -276,7 +276,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Ajax PUT request
      *
-     * @param {String} url Url to PUT
+     * @param {string} url Url to PUT
      * @return {object} jQuery XHR promise
      */
     function put(url, object) {
@@ -307,7 +307,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Ajax POST request
      *
-     * @param {String} url Url to POST
+     * @param {string} url Url to POST
      * @return {object} jQuery XHR promise
      */
     function post(url, object) {
