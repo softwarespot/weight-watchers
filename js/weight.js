@@ -266,7 +266,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Done, the ajax request was successful
         xhr.then(function () {
-            _weightsList = _session.get();
+            _weightInit();
 
             for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
                 _add(core.randomNumber(45, 200) * 1.0);
@@ -275,16 +275,16 @@ App.weight = (function (window, document, $, core, undefined) {
             // Save the current state of the weights list
             _session.set(_weightsList);
 
-            // Initialise the weights list
-            _weightInit();
+            // Render the weights list
+            _weightInit(true);
         });
 
         // Fail, an issue occurred with the request
         xhr.catch(function () {
             // On error
 
-            // Initialise the weights list
-            _weightInit();
+            // Render the weights list
+            _weightInit(true);
         });
 
         _isInitialised = true;
@@ -444,7 +444,7 @@ App.weight = (function (window, document, $, core, undefined) {
      *
      * @return {undefined}
      */
-    function _weightInit() {
+    function _weightInit(isRender) {
         _weightsList = _session.get();
 
         // If items exist in the array, then get the last element object and the id
@@ -454,8 +454,10 @@ App.weight = (function (window, document, $, core, undefined) {
         }
         _internalId++;
 
-        // Render the template
-        _render(_weightsList);
+        if (core.isBoolean(isRender) && isRender) {
+            // Render the template
+            _render(_weightsList);
+        }
     }
 
     /**
