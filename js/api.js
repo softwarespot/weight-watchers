@@ -208,7 +208,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     function fetch() {
         // Simulate an ajax request with a 1 second delay progress bar
         NProgress.start();
-        window.setTimeout(NProgress.done, 1000);
+        window.setTimeout(NProgress.done, 750);
     }
 
     /**
@@ -222,7 +222,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
-            if (!core.isString(url)) {
+            if (core.isNull(url)) {
                 reject();
             }
 
@@ -232,13 +232,13 @@ App.core.api = (function (window, document, $, core, undefined) {
             // Simulate an ajax request with a 1 second delay progress bar
             window.setTimeout(function () {
                 NProgress.done();
-                // This will fail once in a while
-                if (core.randomNumber(0, 100) === 0) {
+                // This will fail once in a while, due to 0 - 1000
+                if (core.randomNumber(0, 1000) === 0) {
                     reject();
                 } else {
                     resolve();
                 }
-            }, 1000);
+            }, 750);
         });
     }
 
@@ -253,7 +253,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
-            if (!core.isString(url)) {
+            if (core.isNull(url)) {
                 reject();
             }
 
@@ -263,13 +263,13 @@ App.core.api = (function (window, document, $, core, undefined) {
             // Simulate an ajax request with a 1 second delay progress bar
             window.setTimeout(function () {
                 NProgress.done();
-                // This will fail once in a while
-                if (core.randomNumber(0, 100) === 0) {
+                // This will fail once in a while, due to 0 - 1000
+                if (core.randomNumber(0, 1000) === 0) {
                     reject();
                 } else {
                     resolve();
                 }
-            }, 1000);
+            }, 750);
         });
     }
 
@@ -284,7 +284,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
-            if (!core.isString(url)) {
+            if (core.isNull(url)) {
                 reject();
             }
 
@@ -294,13 +294,13 @@ App.core.api = (function (window, document, $, core, undefined) {
             // Simulate an ajax request with a 1 second delay progress bar
             window.setTimeout(function () {
                 NProgress.done();
-                // This will fail once in a while
-                if (core.randomNumber(0, 100) === 0) {
+                // This will fail once in a while, due to 0 - 1000
+                if (core.randomNumber(0, 1000) === 0) {
                     reject();
                 } else {
                     resolve();
                 }
-            }, 1000);
+            }, 750);
         });
     }
 
@@ -315,7 +315,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
-            if (!core.isString(url)) {
+            if (core.isNull(url)) {
                 reject();
             }
 
@@ -325,13 +325,13 @@ App.core.api = (function (window, document, $, core, undefined) {
             // Simulate an ajax request with a 1 second delay progress bar
             window.setTimeout(function () {
                 NProgress.done();
-                // This will fail once in a while
-                if (core.randomNumber(0, 100) === 0) {
+                // This will fail once in a while, due to 0 - 1000
+                if (core.randomNumber(0, 1000) === 0) {
                     reject();
                 } else {
                     resolve();
                 }
-            }, 1000);
+            }, 750);
         });
     }
 
