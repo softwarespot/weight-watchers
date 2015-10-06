@@ -15,6 +15,13 @@ App.weight = (function (window, document, $, core, undefined) {
     // Unique global identifier. Internal usage only
     var GUID = '772C021E-61EA-4B15-8330-B2274E891371';
 
+    // API resource URIs
+    var _api = {
+        WEIGHTS: '/weights',
+        WEIGHTS_USERNAME: '/weights/{username}',
+        WEIGHT_USERNAME_ID: '/weights/{username}/{id}'
+    };
+
     // Fields
 
     // Store if the module has been initialised
@@ -28,6 +35,9 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // Store the id value. Testing only
     var _internalId = 0;
+
+    // Generate a random username
+    var _username = ['softwarespot', 'squidge', 'brainbox'];
 
     // Store the jQuery selector object for the document
     var $_document = null;
@@ -101,14 +111,31 @@ App.weight = (function (window, document, $, core, undefined) {
             // Prevent default propagation
             event.preventDefault();
 
+            // Get the id value based on the data-attribute
             var id = event.currentTarget.getAttribute(_dataAttributeId);
-            _remove(id);
 
-            // Save the current state of the weights list
-            _session.set(_weightsList);
+            // Simulate an ajax GET request
+            var xhr = core.api.get(_api.WEIGHTS_USERNAME, {
+                username: 'softwarespot',
+                id: id
+            });
 
-            // Render the template
-            _render(_weightsList);
+            // Done, the ajax request was successful
+            xhr.then(function () {
+                _remove(id);
+
+                // Save the current state of the weights list
+                _session.set(_weightsList);
+
+                // Render the template
+                _render(_weightsList);
+            });
+
+            // Fail, an issue occurred with the request
+            xhr.catch(function () {
+                // On error
+                window.alert('Some error occurred with DELETE\'in the weight value');
+            });
         },
 
         // When the submit event is invoked, call the following function
@@ -136,21 +163,28 @@ App.weight = (function (window, document, $, core, undefined) {
             // Hide the error message
             $_weightFormError.addClass('hide');
 
-            // Simulate an ajax request
-            core.api.fetch();
+            // Simulate an ajax POST request
+            var xhr = core.api.post(_api.WEIGHTS_USERNAME, {
+                username: 'softwarespot'
+            });
 
-            // AJAX POST
+            // Done, the ajax request was successful
+            xhr.then(function () {
+                // Add the weight value
+                _add(weightValue);
 
-            // AJAX GET
+                // Save the current state of the weights list
+                _session.set(_weightsList);
 
-            // Add the weight value
-            _add(weightValue);
+                // Render the template
+                _render(_weightsList);
+            });
 
-            // Save the current state of the weights list
-            _session.set(_weightsList);
-
-            // Render the template
-            _render(_weightsList);
+            // Fail, an issue occurred with the request
+            xhr.catch(function () {
+                // On error
+                window.alert('Some error occurred with POST\'in the weight value');
+            });
         }
     };
 
@@ -222,19 +256,34 @@ App.weight = (function (window, document, $, core, undefined) {
         $_weightFormSubmit.prop('disabled', true);
         $_weightFormError.addClass('hide');
 
-        // AJAX GET
+        // Generate a random username
+        _username = _username[core.randomNumber(0, _username.length - 1)];
 
-        _weightsList = _session.get();
+        // Simulate an ajax GET request
+        var xhr = core.api.get(_api.WEIGHTS_USERNAME, {
+            username: 'softwarespot'
+        });
 
-        // If items exist in the array, then get the last element object and the id
-        var peek = core.arrayPeek(_weightsList);
-        if (!core.isUndefined(peek)) {
-            _internalId = peek.id;
-        }
-        _internalId++;
+        // Done, the ajax request was successful
+        xhr.then(function () {
+            for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
+                _add(core.randomNumber(45, 200) * 1.0);
+            }
 
-        // Render the template
-        _render(_weightsList);
+            // Save the current state of the weights list
+            _session.set(_weightsList);
+
+            // Initialise the weights list
+            _weightInit();
+        });
+
+        // Fail, an issue occurred with the request
+        xhr.catch(function () {
+            // On error
+
+            // Initialise the weights list
+            _weightInit();
+        });
 
         _isInitialised = true;
     }
@@ -345,7 +394,7 @@ App.weight = (function (window, document, $, core, undefined) {
             id: _internalId++,
             value: value,
             time: nowTimeStamp,
-            username: 'User ' + core.randomNumber(10, 20),
+            username: _username,
             iso8601: moment.unix(nowTimeStamp).toISOString()
         });
     }
@@ -386,6 +435,25 @@ App.weight = (function (window, document, $, core, undefined) {
             remove_type: 'same',
             validate: !core.isEmpty(data)
         });
+    }
+
+    /**
+     * Initialise the weights list
+     *
+     * @return {undefined}
+     */
+    function _weightInit() {
+        _weightsList = _session.get();
+
+        // If items exist in the array, then get the last element object and the id
+        var peek = core.arrayPeek(_weightsList);
+        if (!core.isUndefined(peek)) {
+            _internalId = peek.id;
+        }
+        _internalId++;
+
+        // Render the template
+        _render(_weightsList);
     }
 
     /**

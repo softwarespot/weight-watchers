@@ -214,28 +214,125 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Ajax DELETE request
      *
+     * @param {String} url Url to DELETE
      * @return {object} jQuery XHR promise
      */
-    function del(url, callback) {
-        return undefined;
+    function del(url, object) {
+        // Add jQuery ajax function here
+        return new Promise(function (resolve, reject) {
+            // Reject the promise if not a string
+            url = parseUrl(url, object);
+            if (!core.isString(url)) {
+                reject();
+            }
+
+            // Start the progress bar
+            NProgress.start();
+
+            // Simulate an ajax request with a 1 second delay progress bar
+            window.setTimeout(function () {
+                NProgress.done();
+                // This will fail once in a while
+                if (core.randomNumber(0, 100) === 0) {
+                    reject();
+                } else {
+                    resolve();
+                }
+            }, 1000);
+        });
     }
 
     /**
      * Ajax GET request
      *
+     * @param {String} url Url to GET
      * @return {object} jQuery XHR promise
      */
-    function get(url, callback) {
-        return undefined;
+    function get(url, object) {
+        // Add jQuery ajax function here
+        return new Promise(function (resolve, reject) {
+            // Reject the promise if not a string
+            url = parseUrl(url, object);
+            if (!core.isString(url)) {
+                reject();
+            }
+
+            // Start the progress bar
+            NProgress.start();
+
+            // Simulate an ajax request with a 1 second delay progress bar
+            window.setTimeout(function () {
+                NProgress.done();
+                // This will fail once in a while
+                if (core.randomNumber(0, 100) === 0) {
+                    reject();
+                } else {
+                    resolve();
+                }
+            }, 1000);
+        });
+    }
+
+    /**
+     * Ajax PUT request
+     *
+     * @param {String} url Url to PUT
+     * @return {object} jQuery XHR promise
+     */
+    function put(url, object) {
+        // Add jQuery ajax function here
+        return new Promise(function (resolve, reject) {
+            // Reject the promise if not a string
+            url = parseUrl(url, object);
+            if (!core.isString(url)) {
+                reject();
+            }
+
+            // Start the progress bar
+            NProgress.start();
+
+            // Simulate an ajax request with a 1 second delay progress bar
+            window.setTimeout(function () {
+                NProgress.done();
+                // This will fail once in a while
+                if (core.randomNumber(0, 100) === 0) {
+                    reject();
+                } else {
+                    resolve();
+                }
+            }, 1000);
+        });
     }
 
     /**
      * Ajax POST request
      *
+     * @param {String} url Url to POST
      * @return {object} jQuery XHR promise
      */
-    function post(url, callback) {
-        return undefined;
+    function post(url, object) {
+        // Add jQuery ajax function here
+        return new Promise(function (resolve, reject) {
+            // Reject the promise if not a string
+            url = parseUrl(url, object);
+            if (!core.isString(url)) {
+                reject();
+            }
+
+            // Start the progress bar
+            NProgress.start();
+
+            // Simulate an ajax request with a 1 second delay progress bar
+            window.setTimeout(function () {
+                NProgress.done();
+                // This will fail once in a while
+                if (core.randomNumber(0, 100) === 0) {
+                    reject();
+                } else {
+                    resolve();
+                }
+            }, 1000);
+        });
     }
 
     /**
@@ -252,13 +349,13 @@ App.core.api = (function (window, document, $, core, undefined) {
         }
 
         // Clone the url, so the replaced values, if they contain {}, don't interfere with matching
-        var urlClone = '' + url;
+        var urlReplace = '' + url;
 
         // Regular expression to parse items between {}
         var reParseURLParts = /{([^\}]+)}/g;
         while (true) {
             // Get the matches and check if any were found
-            var match = reParseURLParts.exec(urlClone);
+            var match = reParseURLParts.exec(urlReplace);
             if (core.isNull(match)) {
                 break;
             }
@@ -273,6 +370,8 @@ App.core.api = (function (window, document, $, core, undefined) {
             var fullMatch = match[0];
             url = url.replace(fullMatch, object[key]);
         }
+
+        return url;
     }
 
     // Invoked when the DOM has loaded
@@ -289,6 +388,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         fetch: fetch,
         delete: del,
         get: get,
+        put: put,
         post: post,
         parseUrl: parseUrl
     };
