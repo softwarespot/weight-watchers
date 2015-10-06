@@ -320,6 +320,25 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
+     * Check if a variable is an object literal
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True the value is an object literal; otherwise, false
+     */
+    function isObjectLiteral(value) {
+        if (!_isObjectLike(value)) {
+            return false;
+        }
+
+        // Based on the idea by jQuery
+        if (value.constructor && !has(value.constructor.prototype, 'isPrototypeOf')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Check if a variable is a string datatype
      *
      * @param {mixed} value Value to check
@@ -412,6 +431,7 @@ App.core = (function (window, document, $, undefined) {
         isNullOrUndefined: isNullOrUndefined,
         isNumber: isNumber,
         isObject: isObject,
+        isObjectLiteral: isObjectLiteral,
         isString: isString,
         isStringFloat: isStringFloat,
         isStringInteger: isStringInteger,
