@@ -50,7 +50,7 @@ Call the following command to invoke all tasks except for `gulp vendor`.
 
 #### Bower
 
-3rd party vendor packages are managed via the use [Bower](http://bower.io), a JavaScript dependency package manager. Therefore, once you've followed the the instructions online of how to install [Bower](http://bower.io), then simply afterwards run the following command:
+3rd party vendor packages are managed via the use of [Bower](http://bower.io), a JavaScript dependency package manager. Therefore, once you've followed the the instructions online of how to install [Bower](http://bower.io), then simply afterwards run the following command:
 
 ```shell
     bower install
