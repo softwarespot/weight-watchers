@@ -3,7 +3,7 @@
 /**
  * Weight module
  *
- * Modified: 2015/10/05
+ * Modified: 2015/10/07
  * @author softwarespot
  */
 App.weight = (function (window, document, $, core, undefined) {
