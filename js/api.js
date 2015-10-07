@@ -15,12 +15,27 @@ App.core.api = (function (window, document, $, core, undefined) {
     // Unique global identifier. Internal usage only
     // var GUID = '27AB85AB-3AD5-42C6-A086-30FF65668693';
 
+    // Fake fetch time
+    var FETCH_TIME = 750;
+
+    /**
+     * Common RESTful methods
+     *
+     * @type {object}
+     */
+    var methods = {
+        DELETE: 'delete',
+        GET: 'get',
+        POST: 'post',
+        PUT: 'put'
+    };
+
     /**
      * Common HTTP status codes
      *
      * @type {object}
      */
-    var HTTPStatus = {
+    var httpStatus = {
 
         // Success
 
@@ -208,37 +223,69 @@ App.core.api = (function (window, document, $, core, undefined) {
     function fetch() {
         // Simulate an ajax request with a 1 second delay progress bar
         NProgress.start();
-        window.setTimeout(NProgress.done, 750);
+        window.setTimeout(NProgress.done, FETCH_TIME);
     }
 
     /**
-     * Ajax DELETE request
+     * Simple wrapper
      *
-     * @param {string} url Url to DELETE
-     * @return {object} jQuery XHR promise
+     * @param {string} url Url to parse
+     * @param {object} method methods.* option e.g. methods.GET
+     * @param {object} object Object to parse with the url
+     * @param {object} body Body to pass to the request if methods.PUT or methods.POST is used
+     * @return {object} Fetch promise object
      */
-    function del(url, object) {
-        // Add jQuery ajax function here
+    function _fetchWrapper(url, method, object, body) {
+        // Use fetch() here from GitHub, which is essentially a polyfill
+
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
             if (core.isNull(url)) {
+                window.console.log('fetch() in failed URL parsing...', url, method, object);
                 reject();
             }
 
-            // Start the progress bar
-            NProgress.start();
+            window.console.log('fetch() in progress...', url, method, object);
 
-            // Simulate an ajax request with a 1 second delay progress bar
+            if (method === methods.PUT || method === methods.POST) {
+                // Use the body with the fetch()
+                window.console.log('fetch() body...', body);
+            }
+
+            // Simulate an ajax request with a 750 millisecond delay progress bar
             window.setTimeout(function () {
-                NProgress.done();
                 // This will fail once in a while, due to 0 - 1000
                 if (core.randomNumber(0, 1000) === 0) {
                     reject();
                 } else {
                     resolve();
                 }
-            }, 750);
+            }, FETCH_TIME);
+        });
+    }
+
+    /**
+     * Ajax DELETE request
+     *
+     * @param {string} url Url to DELETE
+     * @return {object} Promise object
+     */
+    function del(url, object) {
+        return new Promise(function (resolve, reject) {
+            // Start the progress bar
+            NProgress.start();
+
+            // Create a fetch request
+            _fetchWrapper(url, methods.DELETE, object)
+                .then(function (response) {
+                    NProgress.done();
+                    resolve(response);
+                })
+                .catch(function (exception) {
+                    NProgress.done();
+                    reject(exception);
+                });
         });
     }
 
@@ -246,30 +293,23 @@ App.core.api = (function (window, document, $, core, undefined) {
      * Ajax GET request
      *
      * @param {string} url Url to GET
-     * @return {object} jQuery XHR promise
+     * @return {object} Promise object
      */
     function get(url, object) {
-        // Add jQuery ajax function here
         return new Promise(function (resolve, reject) {
-            // Reject the promise if not a string
-            url = parseUrl(url, object);
-            if (core.isNull(url)) {
-                reject();
-            }
-
             // Start the progress bar
             NProgress.start();
 
-            // Simulate an ajax request with a 1 second delay progress bar
-            window.setTimeout(function () {
-                NProgress.done();
-                // This will fail once in a while, due to 0 - 1000
-                if (core.randomNumber(0, 1000) === 0) {
-                    reject();
-                } else {
-                    resolve();
-                }
-            }, 750);
+            // Create a fetch request
+            _fetchWrapper(url, methods.GET, object)
+                .then(function (response) {
+                    NProgress.done();
+                    resolve(response);
+                })
+                .catch(function (exception) {
+                    NProgress.done();
+                    reject(exception);
+                });
         });
     }
 
@@ -277,30 +317,25 @@ App.core.api = (function (window, document, $, core, undefined) {
      * Ajax PUT request
      *
      * @param {string} url Url to PUT
-     * @return {object} jQuery XHR promise
+     * @param {object} object Key/value pair to overwrite parts of the url. See parseUrl()
+     * @param {object} object JSON to pass to the request
+     * @return {object} Promise object
      */
-    function put(url, object) {
-        // Add jQuery ajax function here
+    function put(url, object, body) {
         return new Promise(function (resolve, reject) {
-            // Reject the promise if not a string
-            url = parseUrl(url, object);
-            if (core.isNull(url)) {
-                reject();
-            }
-
             // Start the progress bar
             NProgress.start();
 
-            // Simulate an ajax request with a 1 second delay progress bar
-            window.setTimeout(function () {
-                NProgress.done();
-                // This will fail once in a while, due to 0 - 1000
-                if (core.randomNumber(0, 1000) === 0) {
-                    reject();
-                } else {
-                    resolve();
-                }
-            }, 750);
+            // Create a fetch request
+            _fetchWrapper(url, methods.PUT, object, body)
+                .then(function (response) {
+                    NProgress.done();
+                    resolve(response);
+                })
+                .catch(function (exception) {
+                    NProgress.done();
+                    reject(exception);
+                });
         });
     }
 
@@ -308,30 +343,25 @@ App.core.api = (function (window, document, $, core, undefined) {
      * Ajax POST request
      *
      * @param {string} url Url to POST
-     * @return {object} jQuery XHR promise
+     * @param {object} object Key/value pair to overwrite parts of the url. See parseUrl()
+     * @param {object} object JSON to pass to the request
+     * @return {object} Promise object
      */
-    function post(url, object) {
-        // Add jQuery ajax function here
+    function post(url, object, body) {
         return new Promise(function (resolve, reject) {
-            // Reject the promise if not a string
-            url = parseUrl(url, object);
-            if (core.isNull(url)) {
-                reject();
-            }
-
             // Start the progress bar
             NProgress.start();
 
-            // Simulate an ajax request with a 1 second delay progress bar
-            window.setTimeout(function () {
-                NProgress.done();
-                // This will fail once in a while, due to 0 - 1000
-                if (core.randomNumber(0, 1000) === 0) {
-                    reject();
-                } else {
-                    resolve();
-                }
-            }, 750);
+            // Create a fetch request
+            _fetchWrapper(url, methods.POST, object, body)
+                .then(function (response) {
+                    NProgress.done();
+                    resolve(response);
+                })
+                .catch(function (exception) {
+                    NProgress.done();
+                    reject(exception);
+                });
         });
     }
 
@@ -339,7 +369,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * Parse a url by replacing segment such as {item}, with the
      *
      * @param {string} url Url string to parse
-     * @param {Object} object Object literal with one level only. The keys should match the segments in the url
+     * @param {object} object Object literal with one level only. The keys should match the segments in the url
      * @return {string|null} Parsed string; otherwise, null
      */
     function parseUrl(url, object) {
@@ -384,7 +414,8 @@ App.core.api = (function (window, document, $, core, undefined) {
         init: init,
         destroy: destroy,
         getVersion: getVersion,
-        HTTPStatus: HTTPStatus,
+        Methods: methods,
+        HTTPStatus: httpStatus,
         fetch: fetch,
         delete: del,
         get: get,
