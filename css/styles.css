@@ -1,7 +1,7 @@
 /**
  * Custom CSS
  *
- * Modified: 2015/10/02
+ * Modified: 2015/10/07
  * @author softwarespot
  */
 
@@ -36,6 +36,20 @@ a img {
 a img:hover {
     -webkit-transform: scale(1.3, 1.3);
     transform: scale(1.3, 1.3);
+}
+
+/*Navigation*/
+nav {
+    /*display: block;*/
+    /*padding: 5px;*/
+}
+
+nav a {
+    /*float: right;*/
+    background: #ecf0f1;
+    display: inline-block;
+    padding: 15px;
+    margin: 0 2.5px 0 0;
 }
 
 .container {
@@ -87,4 +101,13 @@ a img:hover {
 
 /*Larger than Desktop HD*/
 @media (min-width: 1200px) {
+}
+
+/*Skeleten CSS override*/
+.button-primary {
+    background: #3498db;
+}
+
+.button-primary:hover {
+    background: #2980b9;
 }
