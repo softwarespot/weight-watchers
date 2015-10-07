@@ -19,7 +19,8 @@ App.weight = (function (window, document, $, core, undefined) {
     var _api = {
         WEIGHTS: '/weights',
         WEIGHTS_USERNAME: '/weights/{username}',
-        WEIGHT_USERNAME_ID: '/weights/{username}/{id}'
+        WEIGHT_USERNAME_ID: '/weights/{id}',
+        USERS: 'users'
     };
 
     // Fields
