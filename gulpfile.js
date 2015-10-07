@@ -123,6 +123,7 @@ gulp.task('uglify', function () {
     return gulp.src([
             dest + '/app.js',
             dest + '/api.js',
+            dest + '/navigation.js',
             dest + '/weight.js'
         ])
         .pipe(concat(Assets.js.custom.minified))
