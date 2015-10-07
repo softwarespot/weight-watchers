@@ -122,7 +122,9 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Done, the ajax request was successful
-            xhr.then(function () {
+            xhr.then(function (weight) {
+                id = core.isDebug() ? id : weight.id;
+
                 _remove(id);
 
                 // Save the current state of the weights list
@@ -170,9 +172,9 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Done, the ajax request was successful
-            xhr.then(function () {
+            xhr.then(function (weight) {
                 // Generate a weight value object
-                var weight = _generate(weightValue);
+                weight = core.isDebug() ? _generate(weightValue) : weight;
 
                 // Add the weight value object
                 if (_add(weight)) {
@@ -269,12 +271,18 @@ App.weight = (function (window, document, $, core, undefined) {
         });
 
         // Done, the ajax request was successful
-        xhr.then(function () {
+        xhr.then(function (weights) {
             _weightInit();
 
-            for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
-                // Generate and automatically add
-                _add(_generate(core.randomNumber(45, 200) * 1.0));
+            if (core.isDebug()) {
+                for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
+                    // Generate and automatically add
+                    _add(_generate(core.randomNumber(45, 200) * 1.0));
+                }
+            } else {
+                weights.forEach(function (weight) {
+                    _add(weight);
+                });
             }
 
             // Save the current state of the weights list

@@ -60,6 +60,12 @@ App.core.api = (function (window, document, $, core, undefined) {
         // Redirection
 
         /**
+         * Indicates multiple options for the resource that the client may follow
+         * @type {number}
+         */
+        MULTIPLE_CHOICES: 300,
+
+        /**
          * The resource has not been modified since the last request
          * @type {number}
          */
@@ -227,6 +233,32 @@ App.core.api = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Check the response status was a SUCCESS
+     *
+     * @param  {object} response Response object returned by fetch()
+     * @return {object} The response initially passed; otherwise, throws an error
+     */
+    function _fetchCheckStatus(response) {
+        if (response.status >= httpStatus.OK && response.status < httpStatus.MULTIPLE_CHOICES) {
+            return response;
+        } else {
+            var error = new Error(response.statusText);
+            error.response = response;
+            throw error;
+        }
+    }
+
+    /**
+     * Parse JSON in the response object
+     * @param {object} response Response object returned by fetch()
+     * @return {object|null} JSON object; otherwise, null
+     */
+    function _fetchParseJSON(response) {
+        var json = response.json();
+        return json ? json : null;
+    }
+
+    /**
      * Simple wrapper
      *
      * @param {string} url Url to parse
@@ -236,36 +268,58 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Fetch promise object
      */
     function _fetchWrapper(url, method, object, body) {
-        // Use fetch() here from GitHub, which is essentially a polyfill
-
-        if (core.isDebug()) {
-            window.console.log('Is in debugging mode');
-        }
-
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
-            if (core.isNull(url)) {
-                window.console.log('fetch() in failed URL parsing...', url, method, object);
-                reject();
-            }
 
-            window.console.log('fetch() in progress...', url, method, object);
-
-            if (method === methods.PUT || method === methods.POST) {
-                // Use the body with the fetch()
-                window.console.log('fetch() body...', body);
-            }
-
-            // Simulate an ajax request with a 750 millisecond delay progress bar
-            window.setTimeout(function () {
-                // This will fail once in a while, due to 0 - 1000
-                if (core.randomNumber(0, 1000) === 0) {
+            if (core.isDebug()) {
+                if (core.isNull(url)) {
                     reject();
-                } else {
-                    resolve();
                 }
-            }, FETCH_TIME);
+
+                // Simulate an ajax request with a 750 millisecond delay progress bar
+                window.setTimeout(function () {
+                    // This will fail once in a while, due to 0 - 1000
+                    if (core.randomNumber(0, 1000) === 0) {
+                        reject();
+                    } else {
+                        resolve();
+                    }
+                }, FETCH_TIME);
+            } else {
+                // Lets use GitHub's fetch instead
+                var init = {
+                    method: method,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                var isBody = method === methods.PUT || method === methods.POST;
+                if (isBody) {
+                    // Use the body with the fetch()
+                    window.console.log('fetch() body...', body);
+                    init.body = window.JSON.stringify(body);
+                }
+
+                window.console.log('fetch() in progress...', url, init);
+
+                // Start fetching the resource
+                var xhr = window.fetch(url, init);
+                xhr.then(_fetchCheckStatus);
+
+                if (isBody) {
+                    xhr.then(_fetchParseJSON);
+                }
+
+                xhr.then(function (data) {
+                    resolve(data);
+                });
+                xhr.catch(function () {
+                    reject();
+                });
+            }
         });
     }
 
