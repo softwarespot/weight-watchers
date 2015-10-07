@@ -238,6 +238,10 @@ App.core.api = (function (window, document, $, core, undefined) {
     function _fetchWrapper(url, method, object, body) {
         // Use fetch() here from GitHub, which is essentially a polyfill
 
+        if (core.isDebug()) {
+            window.console.log('Is in debugging mode');
+        }
+
         return new Promise(function (resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);

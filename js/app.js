@@ -53,6 +53,9 @@ App.core = (function (window, document, $, undefined) {
         INTEGER: /(?:^-?\d+$)/,
     };
 
+    // Store when the application is in debugging mode
+    var _isDebug = false;
+
     // Methods
 
     /**
@@ -115,6 +118,28 @@ App.core = (function (window, document, $, undefined) {
      */
     function getVersion() {
         return VERSION;
+    }
+
+    /**
+     * Is the application in debugging mode
+     * @return {boolean} True, the application is in debugging mode; otherwise, false
+     */
+    function isDebug() {
+        return _isDebug;
+    }
+
+    /**
+     * Set whether or not in debugging mode
+     *
+     * @param {boolean} value True, in debugging mode; otherwise, false. Anything else is ignored
+     * @return {undefined}
+     */
+    function setIsDebug(value) {
+        if (!isBoolean(value)) {
+            return;
+        }
+
+        _isDebug = value;
     }
 
     /**
@@ -415,6 +440,8 @@ App.core = (function (window, document, $, undefined) {
         destroy: destroy,
         getAppName: getAppName,
         getVersion: getVersion,
+        isDebug: isDebug,
+        setIsDebug: setIsDebug,
         arrayClear: arrayClear,
         arrayPeek: arrayPeek,
         has: has,
