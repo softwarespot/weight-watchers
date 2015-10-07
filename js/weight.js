@@ -170,14 +170,17 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Done, the ajax request was successful
             xhr.then(function () {
-                // Add the weight value
-                _add(weightValue);
+                // Generate a weight value object
+                var weight = _generate(weightValue);
 
-                // Save the current state of the weights list
-                _session.set(_weightsList);
+                // Add the weight value object
+                if (_add(weight)) {
+                    // Save the current state of the weights list
+                    _session.set(_weightsList);
 
-                // Render the template
-                _render(_weightsList);
+                    // Render the template
+                    _render(_weightsList);
+                }
             });
 
             // Fail, an issue occurred with the request
@@ -269,7 +272,8 @@ App.weight = (function (window, document, $, core, undefined) {
             _weightInit();
 
             for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
-                _add(core.randomNumber(45, 200) * 1.0);
+                // Generate and automatically add
+                _add(_generate(core.randomNumber(45, 200) * 1.0));
             }
 
             // Save the current state of the weights list
@@ -377,34 +381,57 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     /**
-     * Add a weight value to the internal array by creating a new object
+     * Add a weight value object to the internal array
      *
-     * @param {number} value Valid weight value
-     * @return {undefined}
+     * @param {object} weight Valid weight value object
+     * @return {boolean} True it was added; otherwise, false
      */
-    function _add(value) {
-        // If not a float then parse as a floating ppint number datatype
-        if (!core.isFloat(value)) {
-            value = parseFloat(value); // Important, as the database will be DECIMAL(5,1)
+    function _add(weight) {
+        if (core.isNull(weight)) {
+            return false;
         }
 
-        // Get a epoch timestamp of the current date and time i.e. now
+        // Push the object to the internal array
+        _weightsList.push(weight);
+
+        return true;
+    }
+
+    /**
+     * Generate a 'fake' weight value object
+     *
+     * @param {number} value Valid weight value
+     * @return {object|null} Weight value object; otherwise, null on error
+     */
+    function _generate(value) {
+        // If not a float then parse as a floating point number datatype
+        if (!core.isFloat(value)) {
+            // Important, as the database will be DECIMAL(5,1)
+            value = parseFloat(value);
+        }
+
+        // If the weight is zero, which is totally wrong, then return null
+        if (value === 0) {
+            return null;
+        }
+
+        // Get an epoch timestamp of the current date and time i.e. now
         var nowTimeStamp = moment().unix();
 
-        // Push the 'fake' object to the internal array
-        _weightsList.push({
+        // Return a weight value object
+        return {
             id: _internalId++,
             value: value,
             time: nowTimeStamp,
             username: _username,
             iso8601: moment.unix(nowTimeStamp).toISOString()
-        });
+        };
     }
 
     /**
-     * Remove a weight object from the internal array
+     * Remove a weight value object from the internal array
      *
-     * @param {number} id Id of the object to find
+     * @param {number} id Id of the object to fine
      * @return {undefined}
      */
     function _remove(id) {
@@ -413,7 +440,11 @@ App.weight = (function (window, document, $, core, undefined) {
             id = parseInt(id);
         }
 
-        // In browsers that support ES2015, for...of can be used or .find()
+        if (id === 0) {
+            return;
+        }
+
+        // In browsers that support ES2015, for...of can be used or even .find()
         for (var i = 0, length = _weightsList.length; i < length; i++) {
             var weight = _weightsList[i];
 
@@ -454,6 +485,7 @@ App.weight = (function (window, document, $, core, undefined) {
         }
         _internalId++;
 
+        // If render is boolean and true
         if (core.isBoolean(isRender) && isRender) {
             // Render the template
             _render(_weightsList);
