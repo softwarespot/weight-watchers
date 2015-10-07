@@ -19,7 +19,7 @@ Call the following command to start 'watching' for any changes to the main CSS a
 ```
 
 ##### CSSMin
-Call the following command to invoke CSSmin, which will minify the main CSS file(s) and output to a styles.min.css file respectively
+Call the following command to invoke CSSmin, which will minify the main CSS file(s) and output to a styles.min.css file respectively.
 ```shell
     gulp cssmin
 ```
