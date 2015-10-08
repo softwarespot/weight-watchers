@@ -222,17 +222,6 @@ App.core.api = (function (window, document, $, core, undefined) {
     }
 
     /**
-     * Simulate an ajax request by displaying a progress bar
-     *
-     * @return {undefined}
-     */
-    function fetch() {
-        // Simulate an ajax request with a 1 second delay progress bar
-        NProgress.start();
-        window.setTimeout(NProgress.done, FETCH_TIME);
-    }
-
-    /**
      * Check the response status was a SUCCESS
      *
      * @param  {object} response Response object returned by fetch()
@@ -324,9 +313,21 @@ App.core.api = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Simulate an ajax request by displaying a progress bar
+     *
+     * @return {undefined}
+     */
+    function fetch() {
+        // Simulate an ajax request with a 1 second delay progress bar
+        NProgress.start();
+        window.setTimeout(NProgress.done, FETCH_TIME);
+    }
+
+    /**
      * Ajax DELETE request
      *
      * @param {string} url Url to DELETE
+     * @param {object} object Key/value pair to overwrite parts of the url. See parseUrl()
      * @return {object} Promise object
      */
     function del(url, object) {
@@ -351,6 +352,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * Ajax GET request
      *
      * @param {string} url Url to GET
+     * @param {object} object Key/value pair to overwrite parts of the url. See parseUrl()
      * @return {object} Promise object
      */
     function get(url, object) {
