@@ -101,7 +101,7 @@ App.core.emitter = (function (window, document, $, core, undefined) {
      */
     function off(event, callback) {
         // Check if the event if a valid string and callback function
-        if (!_isEventString(event) || core.isFunction(callback)) {
+        if (!_isEventString(event) || !core.isFunction(callback)) {
             return;
         }
 
@@ -131,7 +131,7 @@ App.core.emitter = (function (window, document, $, core, undefined) {
      */
     function on(event, callback) {
         // Check if the event if a valid string and callback function
-        if (!_isEventString(event) || core.isFunction(callback)) {
+        if (!_isEventString(event) || !core.isFunction(callback)) {
             return;
         }
 
