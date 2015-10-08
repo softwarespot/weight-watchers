@@ -124,6 +124,8 @@ gulp.task('uglify', function () {
             dest + '/app.js',
             dest + '/api.js',
             dest + '/emitter.js',
+            // Non-core library
+            dest + '/events.js',
             dest + '/navigation.js',
             dest + '/weight.js'
         ])

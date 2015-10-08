@@ -68,8 +68,15 @@
     <!--Scripts-->
     <script src="js/vendor.min.js"></script>
     <script src="js/scripts.min.js"></script>
-    <script>/* global App */
-        App.core.setIsDebug(true);</script>
+    <script>
+        /* global App */
+        App.core.setIsDebug(true);
+
+        // Register en event for when a navigation item is selected
+        App.core.emitter.on(App.events.NAVIGATION_CLICK, function (link) {
+            window.console.log('Navigation selection for => ' + link);
+        });
+    </script>
 
     <!--START: Templates-->
     <script id="template-weight-list" type="text/x-handlebars">
