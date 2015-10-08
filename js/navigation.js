@@ -15,6 +15,9 @@ App.navigation = (function (window, document, $, core, undefined) {
     // Unique global identifier. Internal usage only
     // var GUID = 'DDB8034C-DE48-418C-81B4-E8CDB9BFAF1E';
 
+    // Click event for the emitter
+    var CLICK_EVENT = 'click.navigation.app';
+
     // Fields
 
     // Store if the module has been initialised
@@ -46,6 +49,9 @@ App.navigation = (function (window, document, $, core, undefined) {
 
             // Create a regular expression object to test valid id fragments
             var reIdentifier = new RegExp('^#' + identifier + '$');
+
+            // Emit to all registered, that the item was selected
+            core.emitter.emit(CLICK_EVENT, href);
 
             // Only bind if it's a valid anchor link
             if (!reIdentifier.test(href)) {
