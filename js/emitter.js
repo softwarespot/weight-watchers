@@ -7,7 +7,7 @@
  * Modified: 2015/10/08
  * @author softwarespot
  */
-App.emitter = (function (window, document, $, core, undefined) {
+App.core.emitter = (function (window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
