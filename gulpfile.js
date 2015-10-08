@@ -123,6 +123,7 @@ gulp.task('uglify', function () {
     return gulp.src([
             dest + '/app.js',
             dest + '/api.js',
+            dest + '/emitter.js',
             dest + '/navigation.js',
             dest + '/weight.js'
         ])
