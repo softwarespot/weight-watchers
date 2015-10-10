@@ -6,7 +6,7 @@
  * Modified: YYYY/MM/DD
  * @author author
  */
-App.base = (function (window, document, $, undefined) {
+App.base = (function (window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -16,6 +16,9 @@ App.base = (function (window, document, $, undefined) {
     // var GUID = '27AB85AB-3AD5-42C6-A086-30FF65668693';
 
     // Fields
+
+    // Has the events been binded
+    var _isEventsBound = false;
 
     // Store if the module has been initialised
     var _isInitialised = false;
@@ -40,6 +43,7 @@ App.base = (function (window, document, $, undefined) {
         $.extend(defaultConfig, config);
 
         _cacheDom();
+        _bindEvents();
 
         _isInitialised = true;
     }
@@ -63,6 +67,32 @@ App.base = (function (window, document, $, undefined) {
     }
 
     /**
+     * Bind events
+     *
+     * @return {undefined}
+     */
+    function _bindEvents() {
+        if (_isEventsBound) {
+            _unbindEvents();
+        }
+
+        _isEventsBound = true;
+    }
+
+    /**
+     * Unbind events
+     *
+     * @return {undefined}
+     */
+    function _unbindEvents() {
+        if (!_isEventsBound) {
+            return;
+        }
+
+        _isEventsBound = false;
+    }
+
+    /**
      * Initialise all DOM cachable variables
      *
      * @return {undefined}
@@ -80,4 +110,4 @@ App.base = (function (window, document, $, undefined) {
         destroy: destroy,
         getVersion: getVersion
     };
-})(this, this.document, this.jQuery);
+})(this, this.document, this.jQuery, App.core);
