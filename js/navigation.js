@@ -17,6 +17,9 @@ App.navigation = (function (window, document, $, core, undefined) {
 
     // Fields
 
+    // Has the events been binded
+    var _isEventsBound = false;
+
     // Store if the module has been initialised
     var _isInitialised = false;
 
@@ -25,9 +28,6 @@ App.navigation = (function (window, document, $, core, undefined) {
 
     // Store the navigation hyperlinks jQuery selector object
     var $_navigationLinks = null;
-
-    // Has the events been binded
-    var _isEventsBound = false;
 
     // Events object
     var _events = {
@@ -83,12 +83,12 @@ App.navigation = (function (window, document, $, core, undefined) {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    function init(config) {
+    function init( /*config*/ ) {
         // Default config that can be overwritten by passing through the config variable
-        var defaultConfig = {};
+        // var defaultConfig = {};
 
         // Combine the passed config
-        $.extend(defaultConfig, config);
+        // $.extend(defaultConfig, config);
 
         _cacheDom();
         _bindEvents();
@@ -116,16 +116,6 @@ App.navigation = (function (window, document, $, core, undefined) {
      */
     function getVersion() {
         return VERSION;
-    }
-
-    /**
-     * Initialise all DOM cachable variables
-     *
-     * @return {undefined}
-     */
-    function _cacheDom() {
-        $_body = $('html, body');
-        $_navigationLinks = $('header').find('a');
     }
 
     /**
@@ -157,6 +147,16 @@ App.navigation = (function (window, document, $, core, undefined) {
         $_navigationLinks.off(_events.click, _events.navigation);
 
         _isEventsBound = false;
+    }
+
+    /**
+     * Initialise all DOM cachable variables
+     *
+     * @return {undefined}
+     */
+    function _cacheDom() {
+        $_body = $('html, body');
+        $_navigationLinks = $('header').find('a');
     }
 
     /**

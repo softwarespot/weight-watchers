@@ -25,11 +25,11 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // Fields
 
-    // Store if the module has been initialised
-    var _isInitialised = false;
-
     // Has the events been binded
     var _isEventsBound = false;
+
+    // Store if the module has been initialised
+    var _isInitialised = false;
 
     // Store the weights submitted to the back-end API. Testing only
     var _weightsList = [];
@@ -76,25 +76,8 @@ App.weight = (function (window, document, $, core, undefined) {
         // Submit event string
         submit: 'submit.app.weight',
 
-        // When the reset event is invoked, call the following function
-        destroy: function ( /*event*/ ) {
-            NProgress.done();
-
-            // Hide the error message
-            $_weightFormError.addClass('hide');
-
-            // Clear the weight list session
-            _session.clear();
-
-            // Clear the elements in the weights array
-            core.arrayClear(_weightsList);
-
-            // Render the template
-            _render(_weightsList);
-        },
-
         // When the keyup event is invoked, call the following function
-        release: function (event) {
+        keyupFn: function (event) {
             // Prevent default propagation
             event.preventDefault();
 
@@ -110,8 +93,25 @@ App.weight = (function (window, document, $, core, undefined) {
             $_weightFormSubmit.prop('disabled', false);
         },
 
+        // When the reset event is invoked, call the following function
+        resetFn: function ( /*event*/ ) {
+            NProgress.done();
+
+            // Hide the error message
+            $_weightFormError.addClass('hide');
+
+            // Clear the weight list session
+            _session.clear();
+
+            // Clear the elements in the weights array
+            core.arrayClear(_weightsList);
+
+            // Render the template
+            _render(_weightsList);
+        },
+
         // When the remove event is invoked, call the following function
-        removal: function (event) {
+        removeFn: function (event) {
             // Prevent default propagation
             event.preventDefault();
 
@@ -145,7 +145,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the submit event is invoked, call the following function
-        submission: function (event) {
+        submitFn: function (event) {
             // Prevent the form from submitting
             event.preventDefault();
 
@@ -370,6 +370,42 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Bind events
+     *
+     * @return {undefined}
+     */
+    function _bindEvents() {
+        if (_isEventsBound) {
+            _unbindEvents();
+        }
+
+        $_document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
+        $_weightForm.on(_events.submit, _events.submitFn);
+        $_weightFormInput.on(_events.keyup, _events.keyupFn);
+        $_weightFormReset.on(_events.reset, _events.resetFn);
+
+        _isEventsBound = true;
+    }
+
+    /**
+     * Unbind events
+     *
+     * @return {undefined}
+     */
+    function _unbindEvents() {
+        if (!_isEventsBound) {
+            return;
+        }
+
+        $_document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
+        $_weightForm.off(_events.submit, _events.submitFn);
+        $_weightFormInput.off(_events.keyup, _events.keyupFn);
+        $_weightFormReset.off(_events.reset, _events.resetFn);
+
+        _isEventsBound = false;
+    }
+
+    /**
      * Initialise all DOM cachable variables
      *
      * @param {object} dom Object literal containing strings to locate the DOM nodes
@@ -385,42 +421,6 @@ App.weight = (function (window, document, $, core, undefined) {
         $_weightFormSubmit = $_weightForm.find('input[type="submit"]');
 
         $_weightFormError = $(dom.weight_list_error);
-    }
-
-    /**
-     * Bind events
-     *
-     * @return {undefined}
-     */
-    function _bindEvents() {
-        if (_isEventsBound) {
-            _unbindEvents();
-        }
-
-        $_document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removal);
-        $_weightForm.on(_events.submit, _events.submission);
-        $_weightFormInput.on(_events.keyup, _events.release);
-        $_weightFormReset.on(_events.reset, _events.destroy);
-
-        _isEventsBound = true;
-    }
-
-    /**
-     * Unbind events
-     *
-     * @return {undefined}
-     */
-    function _unbindEvents() {
-        if (!_isEventsBound) {
-            return;
-        }
-
-        $_document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removal);
-        $_weightForm.off(_events.submit, _events.submission);
-        $_weightFormInput.off(_events.keyup, _events.release);
-        $_weightFormReset.off(_events.reset, _events.destroy);
-
-        _isEventsBound = false;
     }
 
     /**
