@@ -6,7 +6,7 @@ var App = {};
 /**
  * Core module
  *
- * Modified: 2015/10/07
+ * Modified: 2015/10/10
  * @author softwarespot
  */
 App.core = (function (window, document, $, undefined) {
@@ -65,18 +65,10 @@ App.core = (function (window, document, $, undefined) {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    function init(config) {
+    function init() {
         if (_isInitialised) {
             return;
         }
-
-        // Default config that can be overwritten by passing through the config variable
-        var defaultConfig = {};
-
-        // Combine the passed config
-        $.extend(defaultConfig, config);
-
-        // _cacheDom();
 
         // Disable showing the spinner in the top right hand corner
         NProgress.configure({
@@ -95,13 +87,6 @@ App.core = (function (window, document, $, undefined) {
     function destroy() {
         _isInitialised = false;
     }
-
-    /**
-     * Initialise all DOM cachable variables
-     *
-     * @return {undefined}
-     */
-    // function _cacheDom() {}
 
     /**
      * Get the name of the application name
@@ -433,7 +418,7 @@ App.core = (function (window, document, $, undefined) {
 
     // Invoked when the DOM has loaded
     $(function () {
-        init({});
+        init();
     });
 
     // Public API
