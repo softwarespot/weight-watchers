@@ -201,7 +201,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Clear the weights list session storage item
         clear: function () {
-            sessionStorage.removeItem(this.key);
+            window.sessionStorage.removeItem(this.key);
 
             // Clear the elements in the weights array
             core.arrayClear(_weightsList);
@@ -214,7 +214,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Get the weights list that was previously stored in the session storage
         get: function () {
-            var items = sessionStorage.getItem(this.key);
+            var items = window.sessionStorage.getItem(this.key);
 
             // If null then return an empty string; otherwise, parse as a JSON object literal
             return core.isNull(items) ? [] : JSON.parse(items);
@@ -226,7 +226,7 @@ App.weight = (function (window, document, $, core, undefined) {
                 return;
             }
 
-            sessionStorage.setItem(this.key, JSON.stringify(array));
+            window.sessionStorage.setItem(this.key, JSON.stringify(array));
         }
     };
 
