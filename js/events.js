@@ -3,7 +3,7 @@
 /**
  * Events
  *
- * Modified: 2015/10/08
+ * Modified: 2015/10/10
  * @author softwarespot
  */
 App.core.events = {
