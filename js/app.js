@@ -62,7 +62,6 @@ App.core = (function (window, document, $, undefined) {
     /**
      * Initialise the module
      *
-     * @param {object} config Options to configure the module
      * @return {undefined}
      */
     function init() {
@@ -196,7 +195,7 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True the value is empty; otherwise, false
      */
     function isEmpty(value) {
-        if (isNullOrUndefined(value)) {
+        if (isNullOrUndefined(value) || value === 0) {
             return true;
         }
 
