@@ -125,7 +125,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Done, the ajax request was successful
-            xhr.then(function then(weight) {
+            xhr.then(function thenFetch(weight) {
                 id = core.isDebug() ? id : weight.id;
 
                 _remove(id);
@@ -138,7 +138,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Fail, an issue occurred with the request
-            xhr.catch(function catch() {
+            xhr.catch(function catchFetch() {
                 // On error
                 window.alert('Some error occurred with DELETE\'in the weight value');
             });
@@ -175,7 +175,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Done, the ajax request was successful
-            xhr.then(function then(weight) {
+            xhr.then(function thenFetch(weight) {
                 // Generate a weight value object
                 weight = core.isDebug() ? _generate(weightValue) : weight;
 
@@ -190,7 +190,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Fail, an issue occurred with the request
-            xhr.catch(function catch() {
+            xhr.catch(function catchFetch() {
                 // On error
                 window.alert('Some error occurred with POST\'in the weight value');
             });
@@ -305,7 +305,7 @@ App.weight = (function (window, document, $, core, undefined) {
         });
 
         // Done, the ajax request was successful
-        xhr.then(function then(weights) {
+        xhr.then(function thenFetch(weights) {
             _weightInit();
 
             if (core.isDebug()) {
@@ -327,7 +327,7 @@ App.weight = (function (window, document, $, core, undefined) {
         });
 
         // Fail, an issue occurred with the request
-        xhr.catch(function catch() {
+        xhr.catch(function catchFetch() {
             // On error
 
             // Render the weights list

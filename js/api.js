@@ -303,10 +303,10 @@ App.core.api = (function (window, document, $, core, undefined) {
                     xhr.then(_fetchParseJSON);
                 }
 
-                xhr.then(function then(data) {
+                xhr.then(function thenFetch(data) {
                     resolve(data);
                 });
-                xhr.catch(function catch() {
+                xhr.catch(function catchFetch() {
                     reject();
                 });
             }
@@ -338,11 +338,11 @@ App.core.api = (function (window, document, $, core, undefined) {
 
             // Create a fetch request
             _fetchWrapper(url, methods.DELETE, object)
-                .then(function then(response) {
+                .then(function thenFetch(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function catch(exception) {
+                .catch(function catchFetch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
@@ -363,11 +363,11 @@ App.core.api = (function (window, document, $, core, undefined) {
 
             // Create a fetch request
             _fetchWrapper(url, methods.GET, object)
-                .then(function then(response) {
+                .then(function thenFetch(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function catch(exception) {
+                .catch(function catchFetch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
@@ -389,11 +389,11 @@ App.core.api = (function (window, document, $, core, undefined) {
 
             // Create a fetch request
             _fetchWrapper(url, methods.PUT, object, body)
-                .then(function then(response) {
+                .then(function thenFetch(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function catch(exception) {
+                .catch(function catchFetch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
@@ -415,11 +415,11 @@ App.core.api = (function (window, document, $, core, undefined) {
 
             // Create a fetch request
             _fetchWrapper(url, methods.POST, object, body)
-                .then(function then(response) {
+                .then(function thenFetch(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function catch(exception) {
+                .catch(function catchFetch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
