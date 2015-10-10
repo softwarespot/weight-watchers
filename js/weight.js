@@ -86,6 +86,9 @@ App.weight = (function (window, document, $, core, undefined) {
             // Clear the weight list session
             _session.clear();
 
+            // Clear the elements in the weights array
+            core.arrayClear(_weightsList);
+
             // Render the template
             _render(_weightsList);
         },
@@ -196,37 +199,68 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // Session handler for the weights list
     var _session = {
-        // Unique weights list session id
+        // Unique session id
         key: GUID + '_app.weight_list',
 
-        // Clear the weights list session storage item
-        clear: function () {
-            window.sessionStorage.removeItem(this.key);
+        // Cache the result of has()
+        _has: null,
 
-            // Clear the elements in the weights array
-            core.arrayClear(_weightsList);
+        // Clear the session storage item
+        clear: function () {
+            // There is an issue with IE when running from the local file system
+            try {
+                window.sessionStorage.removeItem(this.key);
+            } catch (ex) {
+                window.console.log('An error occurred with _session.clear()');
+            }
+        },
+
+        // Check if the sessionStorage API exists
+        has: function () {
+            // If called already, then return the cached variable
+            if (this._has) {
+                return this._has();
+            }
+
+            var storage = window.sessionStorage;
+            return core.isObject(storage) &&
+                'key' in storage &&
+                'getItem' in storage &&
+                'setItem' in storage &&
+                'removeItem' in storage &&
+                'clear' in storage;
         },
 
         // Alias for clear()
-        remove: function () {
-            this.clear();
-        },
+        remove: this.clear,
 
-        // Get the weights list that was previously stored in the session storage
+        // Get the data that was previously stored in the session storage
         get: function () {
-            var items = window.sessionStorage.getItem(this.key);
+            var items = null;
+
+            // There is an issue with IE when running from the local file system
+            try {
+                items = window.sessionStorage.getItem(this.key);
+            } catch (ex) {
+                window.console.log('An error occurred with _session.get()');
+            }
 
             // If null then return an empty string; otherwise, parse as a JSON object literal
-            return core.isNull(items) ? [] : JSON.parse(items);
+            return core.isNullOrUndefined(items) ? [] : JSON.parse(items);
         },
 
-        // Save the weights list to the session storage
+        // Save the data to the session storage
         set: function (array) {
             if (!core.isArray(array)) {
                 return;
             }
 
-            window.sessionStorage.setItem(this.key, JSON.stringify(array));
+            // There is an issue with IE when running from the local file system
+            try {
+                window.sessionStorage.setItem(this.key, JSON.stringify(array));
+            } catch (ex) {
+                window.console.log('An error occurred with _session.set()');
+            }
         }
     };
 
