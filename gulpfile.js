@@ -121,12 +121,14 @@ gulp.task('uglify', function () {
     del([dest + '/' + Assets.js.custom.minified]);
 
     return gulp.src([
+            // Core library
             dest + '/app.js',
             dest + '/api.js',
             dest + '/emitter.js',
-            // Non-core library
             dest + '/events.js',
+            // Non-core library
             dest + '/navigation.js',
+            dest + '/user.js',
             dest + '/weight.js'
         ])
         .pipe(concat(Assets.js.custom.minified))
