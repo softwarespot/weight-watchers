@@ -177,6 +177,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      */
     function destroy() {
         $_document = null;
+
         _isInitialised = false;
     }
 
@@ -211,12 +212,12 @@ App.core.api = (function (window, document, $, core, undefined) {
         });
 
         // When an ajax request is started
-        $_document.ajaxStart(function () {
+        $_document.ajaxStart(function ajaxStart() {
             NProgress.start();
         });
 
         // When an ajax request has stopped
-        $_document.ajaxStop(function () {
+        $_document.ajaxStop(function ajaxStop() {
             NProgress.done();
         });
     }
@@ -257,7 +258,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Fetch promise object
      */
     function _fetchWrapper(url, method, object, body) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function promise(resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
 
@@ -267,7 +268,7 @@ App.core.api = (function (window, document, $, core, undefined) {
                 }
 
                 // Simulate an ajax request with a 750 millisecond delay progress bar
-                window.setTimeout(function () {
+                window.setTimeout(function setTimeoutPromise() {
                     // This will fail once in a while, due to 0 - 1000
                     if (core.randomNumber(0, 1000) === 0) {
                         reject();
@@ -302,10 +303,10 @@ App.core.api = (function (window, document, $, core, undefined) {
                     xhr.then(_fetchParseJSON);
                 }
 
-                xhr.then(function (data) {
+                xhr.then(function then(data) {
                     resolve(data);
                 });
-                xhr.catch(function () {
+                xhr.catch(function catch() {
                     reject();
                 });
             }
@@ -331,17 +332,17 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function del(url, object) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.DELETE, object)
-                .then(function (response) {
+                .then(function then(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function (exception) {
+                .catch(function catch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
@@ -356,17 +357,17 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function get(url, object) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.GET, object)
-                .then(function (response) {
+                .then(function then(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function (exception) {
+                .catch(function catch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
@@ -382,17 +383,17 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function put(url, object, body) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.PUT, object, body)
-                .then(function (response) {
+                .then(function then(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function (exception) {
+                .catch(function catch(exception) {
                     NProgress.done();
                     reject(exception);
                 });
@@ -408,17 +409,17 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function post(url, object, body) {
-        return new Promise(function (resolve, reject) {
+        return new Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.POST, object, body)
-                .then(function (response) {
+                .then(function then(response) {
                     NProgress.done();
                     resolve(response);
                 })
-                .catch(function (exception) {
+                .catch(function catch(exception) {
                     NProgress.done();
                     reject(exception);
                 });

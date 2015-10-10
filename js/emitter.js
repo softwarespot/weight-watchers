@@ -18,6 +18,7 @@ App.core.emitter = (function (window, document, $, core, undefined) {
 
     // Fields
 
+    // Unique events object
     var _events = {};
 
     // Methods
@@ -87,7 +88,7 @@ App.core.emitter = (function (window, document, $, core, undefined) {
         }
 
         // Iterate through the callbacks array and apply the arguments to the function call
-        callbacks.forEach(function (callback) {
+        callbacks.forEach(function forEachCallbacks(callback) {
             callback.apply(this, args);
         });
     }

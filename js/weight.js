@@ -77,7 +77,7 @@ App.weight = (function (window, document, $, core, undefined) {
         submit: 'submit.app.weight',
 
         // When the keyup event is invoked, call the following function
-        keyupFn: function (event) {
+        keyupFn: function keyupFn(event) {
             // Prevent default propagation
             event.preventDefault();
 
@@ -94,7 +94,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the reset event is invoked, call the following function
-        resetFn: function ( /*event*/ ) {
+        resetFn: function resetFn( /*event*/ ) {
             NProgress.done();
 
             // Hide the error message
@@ -111,7 +111,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the remove event is invoked, call the following function
-        removeFn: function (event) {
+        removeFn: function removeFn(event) {
             // Prevent default propagation
             event.preventDefault();
 
@@ -125,7 +125,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Done, the ajax request was successful
-            xhr.then(function (weight) {
+            xhr.then(function then(weight) {
                 id = core.isDebug() ? id : weight.id;
 
                 _remove(id);
@@ -138,14 +138,14 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Fail, an issue occurred with the request
-            xhr.catch(function () {
+            xhr.catch(function catch() {
                 // On error
                 window.alert('Some error occurred with DELETE\'in the weight value');
             });
         },
 
         // When the submit event is invoked, call the following function
-        submitFn: function (event) {
+        submitFn: function submitFn(event) {
             // Prevent the form from submitting
             event.preventDefault();
 
@@ -175,7 +175,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Done, the ajax request was successful
-            xhr.then(function (weight) {
+            xhr.then(function then(weight) {
                 // Generate a weight value object
                 weight = core.isDebug() ? _generate(weightValue) : weight;
 
@@ -190,7 +190,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Fail, an issue occurred with the request
-            xhr.catch(function () {
+            xhr.catch(function catch() {
                 // On error
                 window.alert('Some error occurred with POST\'in the weight value');
             });
@@ -206,7 +206,7 @@ App.weight = (function (window, document, $, core, undefined) {
         _has: null,
 
         // Clear the session storage item
-        clear: function () {
+        clear: function clear() {
             // There is an issue with IE when running from the local file system
             try {
                 window.sessionStorage.removeItem(this.key);
@@ -216,7 +216,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // Check if the sessionStorage API exists
-        has: function () {
+        has: function has() {
             // If called already, then return the cached variable
             if (this._has) {
                 return this._has();
@@ -235,7 +235,7 @@ App.weight = (function (window, document, $, core, undefined) {
         remove: this.clear,
 
         // Get the data that was previously stored in the session storage
-        get: function () {
+        get: function get() {
             var items = null;
 
             // There is an issue with IE when running from the local file system
@@ -250,7 +250,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // Save the data to the session storage
-        set: function (array) {
+        set: function set(array) {
             if (!core.isArray(array)) {
                 return;
             }
@@ -305,7 +305,7 @@ App.weight = (function (window, document, $, core, undefined) {
         });
 
         // Done, the ajax request was successful
-        xhr.then(function (weights) {
+        xhr.then(function then(weights) {
             _weightInit();
 
             if (core.isDebug()) {
@@ -314,7 +314,7 @@ App.weight = (function (window, document, $, core, undefined) {
                     _add(_generate(core.randomNumber(45, 200) * 1.0));
                 }
             } else {
-                weights.forEach(function (weight) {
+                weights.forEach(function forEachWeights(weight) {
                     _add(weight);
                 });
             }
@@ -327,7 +327,7 @@ App.weight = (function (window, document, $, core, undefined) {
         });
 
         // Fail, an issue occurred with the request
-        xhr.catch(function () {
+        xhr.catch(function catch() {
             // On error
 
             // Render the weights list

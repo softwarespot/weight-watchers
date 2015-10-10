@@ -29,7 +29,7 @@ App.user = (function (window, document, $, core, undefined) {
         signIn: core.events.NAVIGATION_CLICK,
 
         // When the sign in event is invoked, call the following function
-        signInFn: function (link) {
+        signInFn: function signInFn(link) {
             // If the link selected was not the sign in link, then do nothing
             if (link !== '#signin-section') {
                 return;

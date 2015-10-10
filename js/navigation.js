@@ -35,7 +35,7 @@ App.navigation = (function (window, document, $, core, undefined) {
         navigation: 'click.app.navigation',
 
         // When the click event is invoked, call the following function
-        navigationFn: function (event) {
+        navigationFn: function navigationFn(event) {
             // Get the href attribute using vanilla JavaScript
             var href = event.currentTarget.getAttribute('href');
 
