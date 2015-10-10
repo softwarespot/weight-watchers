@@ -32,10 +32,10 @@ App.navigation = (function (window, document, $, core, undefined) {
     // Events object
     var _events = {
         // Click event string
-        click: 'click.app.navigation',
+        navigation: 'click.app.navigation',
 
         // When the click event is invoked, call the following function
-        navigation: function (event) {
+        navigationFn: function (event) {
             // Get the href attribute using vanilla JavaScript
             var href = event.currentTarget.getAttribute('href');
 
@@ -63,7 +63,7 @@ App.navigation = (function (window, document, $, core, undefined) {
 
             // If an error occurred i.e. no node was found in the DOM, the return false
             // Used to be isjQueryNotEmpty($element)
-            if ($element.length === 0) {
+            if (!core.isjQueryNotEmpty($element)) {
                 return false;
             }
 
@@ -106,6 +106,7 @@ App.navigation = (function (window, document, $, core, undefined) {
 
         $_body = null;
         $_navigationLinks = null;
+
         _isInitialised = false;
     }
 
@@ -129,7 +130,7 @@ App.navigation = (function (window, document, $, core, undefined) {
         }
 
         // Navigation hyperlink elements
-        $_navigationLinks.on(_events.click, _events.navigation);
+        $_navigationLinks.on(_events.navigation, _events.navigationFn);
 
         _isEventsBound = true;
     }
@@ -144,7 +145,7 @@ App.navigation = (function (window, document, $, core, undefined) {
             return;
         }
 
-        $_navigationLinks.off(_events.click, _events.navigation);
+        $_navigationLinks.off(_events.navigation, _events.navigationFn);
 
         _isEventsBound = false;
     }
