@@ -26,10 +26,15 @@ App.user = (function (window, document, $, core, undefined) {
     // Events object
     var _events = {
         // Sign in event string
-        signIn: core.events.NAVIGATION_CLICK + '#signin-section',
+        signIn: core.events.NAVIGATION_CLICK,
 
         // When the sign in event is invoked, call the following function
-        signInFn: function () {
+        signInFn: function (link) {
+            // If the link selected was not the sign in link, then do nothing
+            if (link !== '#signin-section') {
+                return;
+            }
+
             window.console.log('Sign in was called, but nothing took place as of yet');
         }
     };
@@ -116,7 +121,7 @@ App.user = (function (window, document, $, core, undefined) {
 
     // Invoked when the DOM has loaded
     $(function () {
-        // init({});
+        init();
     });
 
     // Public API
