@@ -113,7 +113,7 @@ App.core.emitter = (function (window, document, $, core, undefined) {
             return;
         }
 
-        // If the callback function exists in the callbacks array, then remove the array
+        // If the callback function exists in the callbacks array, then remove the callback
         // using the provided index value
         var index = callbacks.indexOf(callback);
         if (index !== -1) {
