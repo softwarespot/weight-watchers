@@ -281,7 +281,7 @@ App.core.api = (function (window, document, $, core, undefined) {
                 var init = {
                     method: method,
                     headers: {
-                        'Accept': 'application/json',
+                        Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }
                 };
@@ -306,6 +306,7 @@ App.core.api = (function (window, document, $, core, undefined) {
                 xhr.then(function thenFetch(data) {
                     resolve(data);
                 });
+
                 xhr.catch(function catchFetch() {
                     reject();
                 });

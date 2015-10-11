@@ -150,6 +150,7 @@ App.weight = (function (window, document, $, core, undefined) {
             event.preventDefault();
 
             var form = event.currentTarget[0];
+
             // $form.serializeJSON():
 
             // Disable the submit button
@@ -526,6 +527,7 @@ App.weight = (function (window, document, $, core, undefined) {
         if (!core.isUndefined(peek)) {
             _internalId = peek.id;
         }
+
         _internalId++;
 
         // If render is boolean and true
