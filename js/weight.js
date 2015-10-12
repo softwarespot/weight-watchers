@@ -94,7 +94,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the reset event is invoked, call the following function
-        resetFn: function resetFn( /*event*/ ) {
+        resetFn: function resetFn(/*event*/) {
             NProgress.done();
 
             // Hide the error message
@@ -285,10 +285,10 @@ App.weight = (function (window, document, $, core, undefined) {
         $.extend(defaultConfig, config);
 
         // Data attribute for the id value
-        _dataAttributeId = config.data_id;
+        _dataAttributeId = config.dataId;
 
         // Store the template strings
-        _templateWeightList = config.templates.weight_list;
+        _templateWeightList = config.templates.weightList;
 
         _cacheDom(config.dom);
         _bindEvents();
@@ -414,14 +414,14 @@ App.weight = (function (window, document, $, core, undefined) {
      */
     function _cacheDom(dom) {
         $_document = $(document);
-        $_content = $(dom.weight_list);
+        $_content = $(dom.weightList);
 
         $_weightForm = $(dom.forms.weight);
         $_weightFormInput = $_weightForm.find('input[type="text"]');
         $_weightFormReset = $_weightForm.find('[type="reset"]');
         $_weightFormSubmit = $_weightForm.find('input[type="submit"]');
 
-        $_weightFormError = $(dom.weight_list_error);
+        $_weightFormError = $(dom.weightListError);
     }
 
     /**
@@ -554,16 +554,16 @@ App.weight = (function (window, document, $, core, undefined) {
     // Invoked when the DOM has loaded
     $(function () {
         init({
-            data_id: 'data-weight-id',
+            dataId: 'data-weight-id',
             dom: {
                 forms: {
                     weight: '#weight-post-form'
                 },
-                weight_list: '#weight-list',
-                weight_list_error: '#weight-list-error'
+                weightList: '#weight-list',
+                weightListError: '#weight-list-error'
             },
             templates: {
-                weight_list: '#template-weight-list'
+                weightList: '#template-weight-list'
             }
         });
     });
