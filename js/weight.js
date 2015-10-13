@@ -120,8 +120,8 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Simulate an ajax GET request
             var xhr = core.api.get(_api.WEIGHTS_USERNAME, {
-                username: 'softwarespot',
-                id: id
+                id: id,
+                username: 'softwarespot'
             });
 
             // Done, the ajax request was successful
@@ -175,6 +175,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Simulate an ajax POST request
             var xhr = core.api.post(_api.WEIGHTS_USERNAME, {
+                value: weightValue,
                 username: 'softwarespot'
             });
 
@@ -520,11 +521,11 @@ App.weight = (function (window, document, $, core, undefined) {
     /**
      * Sanitzie the weight value
      *
-     * @param {string} value Weight value to sanitize
+     * @param {string} value Weight value to sanitize e.g. 1, 1,0 or 1.0
      * @return {string} Sanitized weight value; otherwise, original string
      */
     function _sanitize(value) {
-        return value.indexOf(value, ',') !== -1 ? value.replace(',', '.') : value;
+        return core.stringContains(value, ',') ? value.replace(',', '.') : value;
     }
 
     /**

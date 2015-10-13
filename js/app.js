@@ -415,6 +415,21 @@ App.core = (function (window, document, $, undefined) {
         return Math.floor((Math.random() * max) + min);
     }
 
+    /**
+     * Check if a string contains another string
+     *
+     * @param {string} value Value to search in
+     * @param {string} searchFor Value to search for
+     * @return {boolean} True the string is found; otherwise, false
+     */
+    function stringContains(value, searchFor) {
+        if (!isString(value)) {
+            return false;
+        }
+
+        return isFunction(String.prototype.includes) ? value.includes(searchFor) : value.indexOf(searchFor) !== -1;
+    }
+
     // Invoked when the DOM has loaded
     $(function () {
         init();
@@ -450,6 +465,7 @@ App.core = (function (window, document, $, undefined) {
         isStringInteger: isStringInteger,
         isStringNumber: isStringNumber,
         isUndefined: isUndefined,
-        randomNumber: randomNumber
+        randomNumber: randomNumber,
+        stringContains: stringContains
     };
 })(this, this.document, this.jQuery);
