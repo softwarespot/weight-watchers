@@ -60,7 +60,7 @@ App.weight = (function (window, document, $, core, undefined) {
     var _templateWeightList = null;
 
     // If the value is an integer (without leading zeros) or a floating point value with a single decimal
-    var _reIsValidWeight = /^(?!0+)(?:\d+(?:\.\d)?)$/;
+    var _reIsValidWeight = /^(?!0+)(?:\d+(?:[.,]\d)?)$/;
 
     // Events object
     var _events = {
@@ -94,7 +94,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the reset event is invoked, call the following function
-        resetFn: function resetFn(/*event*/) {
+        resetFn: function resetFn( /*event*/ ) {
             NProgress.done();
 
             // Hide the error message
@@ -169,6 +169,9 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Hide the error message
             $_weightFormError.addClass('hide');
+
+            // Sanitize the weight value
+            weightValue = _sanitize(weightValue);
 
             // Simulate an ajax POST request
             var xhr = core.api.post(_api.WEIGHTS_USERNAME, {
@@ -512,6 +515,16 @@ App.weight = (function (window, document, $, core, undefined) {
             remove_type: 'same',
             validate: !core.isEmpty(data)
         });
+    }
+
+    /**
+     * Sanitzie the weight value
+     *
+     * @param {string} value Weight value to sanitize
+     * @return {string} Sanitized weight value; otherwise, original string
+     */
+    function _sanitize(value) {
+        return value.indexOf(value, ',') !== -1 ? value.replace(',', '.') : value;
     }
 
     /**
