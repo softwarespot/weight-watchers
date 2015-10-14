@@ -186,7 +186,28 @@ App.core = (function (window, document, $, undefined) {
      * @param {mixed} value Value to check
      * @returns {boolean} True the value is an array datatype; otherwise, false
      */
-    var isArray = Array.isArray;
+    function _isArray(value) {
+        return _objectToString.call(value) === _objectStrings.ARRAY;
+    }
+
+    /**
+     * Check if a variable is a function datatype
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True the value is a function datatype; otherwise, false
+     */
+    function isFunction(value) {
+        var tag = isObject(value) ? _objectToString.call(value) : '';
+        return tag === _objectStrings.FUNCTION || tag === _objectStrings.GENERATOR;
+    }
+
+    /**
+     * Check if a variable is an array datatype
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True the value is an array datatype; otherwise, false
+     */
+    var isArray = isFunction(Array.isArray) ? Array.isArray : _isArray;
 
     /**
      * Check if a variable is empty
@@ -221,17 +242,6 @@ App.core = (function (window, document, $, undefined) {
     function isFloat(value) {
         // Coerce as a string
         return isNumber(value) && _regExp.FLOAT.test('' + value);
-    }
-
-    /**
-     * Check if a variable is a function datatype
-     *
-     * @param {mixed} value Value to check
-     * @returns {boolean} True the value is a function datatype; otherwise, false
-     */
-    function isFunction(value) {
-        var tag = isObject(value) ? _objectToString.call(value) : '';
-        return tag === _objectStrings.FUNCTION || tag === _objectStrings.GENERATOR;
     }
 
     /**
