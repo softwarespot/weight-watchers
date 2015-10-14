@@ -583,7 +583,7 @@ App.weight = (function (window, document, $, core, undefined) {
     });
 
     // Public API
-    return {
+   return {
         init: init,
         destroy: destroy,
         getVersion: getVersion,

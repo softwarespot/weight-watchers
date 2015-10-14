@@ -45,7 +45,7 @@ App.navigation = (function (window, document, $, core, undefined) {
             var identifier = '(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+';
 
             // Create a regular expression object to test valid id fragments
-            var reIdentifier = new RegExp('^#' + identifier + '$');
+            var reIdentifier = new window.RegExp('^#' + identifier + '$');
 
             // Emit to all registered, that the item was selected
             core.emitter.emit(core.events.NAVIGATION_CLICK, href);

@@ -37,7 +37,7 @@ App.core = (function (window, document, $, undefined) {
     };
 
     // Store the object prototype
-    var _objectPrototype = Object.prototype;
+    var _objectPrototype = window.Object.prototype;
 
     // Store the hasOwnProperty method
     var _objectHasOwnProperty = _objectPrototype.hasOwnProperty;
@@ -207,7 +207,7 @@ App.core = (function (window, document, $, undefined) {
      * @param {mixed} value Value to check
      * @returns {boolean} True the value is an array datatype; otherwise, false
      */
-    var isArray = isFunction(Array.isArray) ? Array.isArray : _isArray;
+    var isArray = isFunction(window.Array.isArray) ? window.Array.isArray : _isArray;
 
     /**
      * Check if a variable is empty
@@ -422,7 +422,7 @@ App.core = (function (window, document, $, undefined) {
         }
 
         // URL: http://www.w3schools.com/jsref/jsref_random.asp
-        return Math.floor((Math.random() * max) + min);
+        return window.Math.floor((window.Math.random() * max) + min);
     }
 
     /**
@@ -437,7 +437,7 @@ App.core = (function (window, document, $, undefined) {
             return false;
         }
 
-        return isFunction(String.prototype.includes) ? value.includes(searchFor) : value.indexOf(searchFor) !== -1;
+        return isFunction(window.String.prototype.includes) ? value.includes(searchFor) : value.indexOf(searchFor) !== -1;
     }
 
     // Invoked when the DOM has loaded

@@ -232,7 +232,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         if (response.status >= httpStatus.OK && response.status < httpStatus.MULTIPLE_CHOICES) {
             return response;
         } else {
-            var error = new Error(response.statusText);
+            var error = new window.Error(response.statusText);
             error.response = response;
             throw error;
         }
@@ -258,7 +258,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Fetch promise object
      */
     function _fetchWrapper(url, method, object, body) {
-        return new Promise(function promise(resolve, reject) {
+        return new window.Promise(function promise(resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
 
@@ -333,7 +333,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function del(url, object) {
-        return new Promise(function promise(resolve, reject) {
+        return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
@@ -358,7 +358,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function get(url, object) {
-        return new Promise(function promise(resolve, reject) {
+        return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
@@ -384,7 +384,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function put(url, object, body) {
-        return new Promise(function promise(resolve, reject) {
+        return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
@@ -410,7 +410,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object} Promise object
      */
     function post(url, object, body) {
-        return new Promise(function promise(resolve, reject) {
+        return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
             NProgress.start();
 
