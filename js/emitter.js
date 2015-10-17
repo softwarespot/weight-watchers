@@ -4,7 +4,7 @@
  * Emitter module
  * Note: This is the same as the mediator pattern or publish-subscribe pattern
  *
- * Modified: 2015/10/10
+ * Modified: 2015/10/17
  * @author softwarespot
  */
 App.core.emitter = (function (window, document, $, core, undefined) {
@@ -30,25 +30,6 @@ App.core.emitter = (function (window, document, $, core, undefined) {
      */
     function getVersion() {
         return VERSION;
-    }
-
-    /**
-     * Check if an event string is a valid string
-     *
-     * @param {string} event Value to check
-     * @return {boolean} True is valid; otherwise, false
-     */
-    function _isEventString(event) {
-        return core.isString(event) && event.trim().length > 0;
-    }
-
-    /**
-     * Check if the callback function array is a valid array
-     * @param {array} callbacks Value to check
-     * @return {boolean} True is valid; otherwise, false
-     */
-    function _isCallbacksArray(callbacks) {
-        return core.isArray(callbacks) && callbacks.length > 0;
     }
 
     /**
@@ -89,8 +70,23 @@ App.core.emitter = (function (window, document, $, core, undefined) {
 
         // Iterate through the callbacks array and apply the arguments to the function call
         callbacks.forEach(function forEachCallbacks(callback) {
-            callback.apply(this, args);
+            // callback.apply(this, args); // Synchronous
+            _emitCallback(this, callback); // Asynchronous
         });
+
+        /**
+         * Queue the calling the callback function (idea by Nicolas Bevacqua)
+         *
+         * @param {object} _this The current context to bind the callback function to
+         * @param {function} callback Callback function to apply the arguments to
+         * @return {undefined}
+         */
+        function _emitCallback(_this, callback) {
+            // Queue the callback function, as setTimeout is asynchronous
+            window.setTimeout(function _emitTimeout() {
+                callback.apply(_this, args);
+            }, 0);
+        }
     }
 
     /**
@@ -147,6 +143,25 @@ App.core.emitter = (function (window, document, $, core, undefined) {
             // Push the callback function to the callbacks array
             callbacks.push(callback);
         }
+    }
+
+    /**
+     * Check if the callback function array is a valid array
+     * @param {array} callbacks Value to check
+     * @return {boolean} True is valid; otherwise, false
+     */
+    function _isCallbacksArray(callbacks) {
+        return core.isArray(callbacks) && callbacks.length > 0;
+    }
+
+    /**
+     * Check if an event string is a valid string
+     *
+     * @param {string} event Value to check
+     * @return {boolean} True is valid; otherwise, false
+     */
+    function _isEventString(event) {
+        return core.isString(event) && event.trim().length > 0;
     }
 
     // Public API
