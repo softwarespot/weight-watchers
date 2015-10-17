@@ -171,26 +171,6 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
-     * Check if a variable is a boolean datatype
-     *
-     * @param {mixed} value Value to check
-     * @returns {boolean} True the value is a boolean datatype; otherwise, false
-     */
-    function isBoolean(value) {
-        return value === true || value === false || (_isObjectLike(value) && _objectToString.call(value) === _objectStrings.BOOLEAN);
-    }
-
-    /**
-     * Check if a variable is an array datatype
-     *
-     * @param {mixed} value Value to check
-     * @returns {boolean} True the value is an array datatype; otherwise, false
-     */
-    function _isArray(value) {
-        return _objectToString.call(value) === _objectStrings.ARRAY;
-    }
-
-    /**
      * Check if a variable is a function datatype
      *
      * @param {mixed} value Value to check
@@ -207,7 +187,19 @@ App.core = (function (window, document, $, undefined) {
      * @param {mixed} value Value to check
      * @returns {boolean} True the value is an array datatype; otherwise, false
      */
-    var isArray = isFunction(window.Array.isArray) ? window.Array.isArray : _isArray;
+    var isArray = isFunction(window.Array.isArray) ? window.Array.isArray : function isArray(value) {
+        return _objectToString.call(value) === _objectStrings.ARRAY;
+    };
+
+    /**
+     * Check if a variable is a boolean datatype
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True the value is a boolean datatype; otherwise, false
+     */
+    function isBoolean(value) {
+        return value === true || value === false || (_isObjectLike(value) && _objectToString.call(value) === _objectStrings.BOOLEAN);
+    }
 
     /**
      * Check if a variable is empty
