@@ -17,7 +17,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // API resource URIs
     var _api = {
-        WEIGHTS: 'weights',
+        WEIGHTS_ALL: 'weights',
         WEIGHTS_USERNAME: 'weights/{username}',
         WEIGHT_USERNAME_ID: 'weights/{id}',
         USERS: 'users'
@@ -121,7 +121,7 @@ App.weight = (function (window, document, $, core, undefined) {
             // Simulate an ajax GET request
             var xhr = core.api.get(_api.WEIGHTS_USERNAME, {
                 id: id,
-                username: 'softwarespot'
+                username: _getUsernameById(id)
             });
 
             // Done, the ajax request was successful
@@ -176,7 +176,7 @@ App.weight = (function (window, document, $, core, undefined) {
             // Simulate an ajax POST request
             var xhr = core.api.post(_api.WEIGHTS_USERNAME, {
                 value: weightValue,
-                username: 'softwarespot'
+                username: _username
             });
 
             // Done, the ajax request was successful
@@ -251,7 +251,7 @@ App.weight = (function (window, document, $, core, undefined) {
             }
 
             // If null then return an empty string; otherwise, parse as a JSON object literal
-            return core.isNullOrUndefined(items) ? [] : JSON.parse(items);
+            return core.isNullOrUndefined(items) ? [] : window.JSON.parse(items);
         },
 
         // Save the data to the session storage
@@ -262,7 +262,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // There is an issue with IE when running from the local file system
             try {
-                window.sessionStorage.setItem(this.key, JSON.stringify(array));
+                window.sessionStorage.setItem(this.key, window.JSON.stringify(array));
             } catch (ex) {
                 window.console.log('An error occurred with _session.set()');
             }
@@ -308,9 +308,7 @@ App.weight = (function (window, document, $, core, undefined) {
         _username = _username[core.randomNumber(0, _username.length - 1)];
 
         // Simulate an ajax GET request
-        var xhr = core.api.get(_api.WEIGHTS_USERNAME, {
-            username: 'softwarespot'
-        });
+        var xhr = core.api.get(_api.WEIGHTS_ALL);
 
         // Done, the ajax request was successful
         xhr.then(function thenFetch(weights) {
@@ -480,9 +478,38 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Get the username of a weight value object based on the id
+     *
+     * @param {number} id Id of the weight value object to find
+     * @return {string|null} Username of the weight value object; otherwise, null
+     */
+    function _getUsernameById(id) {
+        // If not an integer then parse as an integer number datatype
+        if (!core.isInteger(id)) {
+            id = parseInt(id);
+        }
+
+        if (id === 0) {
+            return null;
+        }
+
+        // In browsers that support ES2015, for...of can be used or even .find()
+        for (var i = 0, length = _weightsList.length; i < length; i++) {
+            var weight = _weightsList[i];
+
+            // If the id matches, then return the username
+            if (weight.id === id) {
+                return weight.username;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Remove a weight value object from the internal array
      *
-     * @param {number} id Id of the object to fine
+     * @param {number} id Id of the weight value object to find
      * @return {undefined}
      */
     function _remove(id) {
@@ -561,6 +588,7 @@ App.weight = (function (window, document, $, core, undefined) {
      * @returns {boolean} True the value is representing a valid weight value; otherwise, false
      */
     function isValidWeight(value) {
+        // Coerce as a string
         if (!core.isString(value)) {
             value = '' + value;
         }
@@ -586,7 +614,7 @@ App.weight = (function (window, document, $, core, undefined) {
     });
 
     // Public API
-   return {
+    return {
         init: init,
         destroy: destroy,
         getVersion: getVersion,
