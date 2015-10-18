@@ -164,8 +164,9 @@ public class ApiController {
 	@RequestMapping(value = "/users/{username}/weights", method = RequestMethod.GET, produces = "application/json")
 	ResponseEntity<?> getWeightsByUser(@PathVariable String username) {
 		getLogger().info("api/users/{username}/weights aka getWeightsByUser");
-		
-		// Note: This should be ideally done in the DAO, but it's for testing only!
+
+		// Note: This should be ideally done in the DAO, but it's for testing
+		// only!
 
 		// If the username does not exist, then set the HTTP status code to
 		// NOT_FOUND
@@ -188,6 +189,24 @@ public class ApiController {
 		}
 
 		return new ResponseEntity<List<Weight>>(weights, HttpStatus.OK);
+	}
+
+	/**
+	 * Delete a
+	 *
+	 * @param username
+	 *            Username of the user
+	 * @param id
+	 *            Id of the weight value object
+	 * @return Response entity
+	 */
+	@RequestMapping(value = "/users/{username}/weights/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	ResponseEntity<?> removeWeightByUserAndId(@PathVariable String username, @PathVariable int id) {
+		getLogger().info("/users/{username}/weights/{id} aka removeWeightByUserAndId");
+
+		// Note: The DAO method is missing
+
+		return new ResponseEntity<Object>(null, HttpStatus.OK);
 	}
 
 	/**
