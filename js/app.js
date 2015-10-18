@@ -48,10 +48,10 @@ App.core = (function (window, document, $, undefined) {
     // Regular expressions
     var _regExp = {
         // Float values
-        FLOAT: /(?:^-?\d+\.\d+$)/,
+        FLOAT: /(?:^(?!-?0+)-?\d+\.\d+$)/,
 
         // Integer values
-        INTEGER: /(?:^-?\d+$)/,
+        INTEGER: /(?:^(?!-?0+)-?\d+$)/,
     };
 
     // Store when the application is in debugging mode
