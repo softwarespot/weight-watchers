@@ -75,7 +75,7 @@ App.core.emitter = (function (window, document, $, core, undefined) {
         });
 
         /**
-         * Queue the calling the callback function (idea by Nicolas Bevacqua)
+         * Queue calling the callback function (idea by Nicolas Bevacqua)
          *
          * @param {object} _this The current context to bind the callback function to
          * @param {function} callback Callback function to apply the arguments to
