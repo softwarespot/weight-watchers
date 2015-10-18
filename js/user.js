@@ -61,6 +61,9 @@ App.user = (function (window, document, $, core, undefined) {
         _cacheDom();
         _bindEvents();
 
+        // Set the API prefix
+        core.api.setPrefix('api');
+
         _isInitialised = true;
     }
 

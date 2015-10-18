@@ -3,7 +3,7 @@
 /**
  * API module
  *
- * Modified: 2015/10/10
+ * Modified: 2015/10/18
  * @author softwarespot
  */
 App.core.api = (function (window, document, $, core, undefined) {
@@ -144,6 +144,9 @@ App.core.api = (function (window, document, $, core, undefined) {
 
     // Store the document jQuery selector object
     var $_document = null;
+
+    // API prefix e.g. api/
+    var _prefix = '';
 
     // Methods
 
@@ -296,7 +299,7 @@ App.core.api = (function (window, document, $, core, undefined) {
                 window.console.log('fetch() in progress...', url, init);
 
                 // Start fetching the resource
-                var xhr = window.fetch(url, init);
+                var xhr = window.fetch(getPrefix() + trimSlashes(url), init);
                 xhr.then(_fetchCheckStatus);
 
                 if (isBody) {
@@ -320,7 +323,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function fetch() {
-        // Simulate an ajax request with a 1 second delay progress bar
+        // Simulate an ajax request with a delayed progress bar
         NProgress.start();
         window.setTimeout(NProgress.done, FETCH_TIME);
     }
@@ -443,7 +446,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         // Clone the url, so the replaced values, if they contain {}, don't interfere with matching
         var urlReplace = '' + url;
 
-        // Regular expression to parse items between {}
+        // Regular expression to parse items between {} e.g. {username}
         var reParseURLParts = /{([^\}]+)}/g;
         while (true) {
             // Get the matches and check if any were found
@@ -466,6 +469,43 @@ App.core.api = (function (window, document, $, core, undefined) {
         return url;
     }
 
+    /**
+     * Get the API prefix
+     *
+     * @return {string} Stored API prefix
+     */
+    function getPrefix() {
+        return _prefix;
+    }
+
+    /**
+     * Set the API prefix
+     *
+     * @param {string} prefix API string prefix
+     * @return {undefined}
+     */
+    function setPrefix(prefix) {
+        if (!core.isString(prefix) || prefix.trim().length === 0) {
+            return;
+        }
+
+        _prefix = '/' + trimSlashes(prefix) + '/';
+    }
+
+    /**
+     * Trim forward slashes at the start and end of a string
+     *
+     * @param {string} value Value to trim
+     * @return {string} Trimmed string; otherwise, empty string
+     */
+    function trimSlashes(value) {
+        if (!core.isString(value)) {
+            return '';
+        }
+
+        return value.replace(/(?:^\/+|\/+$)/g, '');
+    }
+
     // Invoked when the DOM has loaded
     $(function () {
         init({});
@@ -483,6 +523,9 @@ App.core.api = (function (window, document, $, core, undefined) {
         get: get,
         put: put,
         post: post,
-        parseUrl: parseUrl
+        parseUrl: parseUrl,
+        getPrefix: getPrefix,
+        setPrefix: setPrefix,
+        trimSlashes: trimSlashes
     };
 })(this, this.document, this.jQuery, App.core);

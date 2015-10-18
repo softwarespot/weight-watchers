@@ -17,9 +17,9 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // API resource URIs
     var _api = {
-        WEIGHTS: '/weights',
-        WEIGHTS_USERNAME: '/weights/{username}',
-        WEIGHT_USERNAME_ID: '/weights/{id}',
+        WEIGHTS: 'weights',
+        WEIGHTS_USERNAME: 'weights/{username}',
+        WEIGHT_USERNAME_ID: 'weights/{id}',
         USERS: 'users'
     };
 
@@ -300,6 +300,9 @@ App.weight = (function (window, document, $, core, undefined) {
         // Disable the submit button
         $_weightFormSubmit.prop('disabled', true);
         $_weightFormError.addClass('hide');
+
+        // Set the API prefix
+        core.api.setPrefix('api');
 
         // Generate a random username
         _username = _username[core.randomNumber(0, _username.length - 1)];
