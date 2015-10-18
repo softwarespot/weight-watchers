@@ -120,7 +120,7 @@ App.weight = (function (window, document, $, core, undefined) {
             var id = event.currentTarget.getAttribute(_dataAttributeId);
 
             // Simulate an ajax GET request
-            var xhr = core.api.delete(_api.WEIGHTS_BY_USERNAME_AND_ID, {
+            var xhr = core.api.delete(_api.WEIGHT_BY_USERNAME_AND_ID, {
                 id: id,
                 username: _getUsernameById(id)
             });
@@ -178,7 +178,9 @@ App.weight = (function (window, document, $, core, undefined) {
             var xhr = core.api.post(_api.WEIGHTS_BY_USERNAME, {
                 username: _username
             }, {
+                id: 0,
                 value: weightValue,
+                time: 0,
                 username: _username
             });
 
