@@ -17,10 +17,11 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // API resource URIs
     var _api = {
+        USERS: 'users',
+        WEIGHT_BY_ID: 'weights/{id}',
+        WEIGHT_BY_USERNAME_AND_ID: 'users/{username}/weights/{id}',
         WEIGHTS_ALL: 'weights',
-        WEIGHTS_USERNAME: 'weights/{username}',
-        WEIGHT_USERNAME_ID: 'weights/{id}',
-        USERS: 'users'
+        WEIGHTS_BY_USERNAME: 'users/{username}/weights'
     };
 
     // Fields
@@ -119,7 +120,7 @@ App.weight = (function (window, document, $, core, undefined) {
             var id = event.currentTarget.getAttribute(_dataAttributeId);
 
             // Simulate an ajax GET request
-            var xhr = core.api.get(_api.WEIGHTS_USERNAME, {
+            var xhr = core.api.delete(_api.WEIGHTS_BY_USERNAME_AND_ID, {
                 id: id,
                 username: _getUsernameById(id)
             });
@@ -174,7 +175,9 @@ App.weight = (function (window, document, $, core, undefined) {
             weightValue = _sanitize(weightValue);
 
             // Simulate an ajax POST request
-            var xhr = core.api.post(_api.WEIGHTS_USERNAME, {
+            var xhr = core.api.post(_api.WEIGHTS_BY_USERNAME, {
+                username: _username
+            }, {
                 value: weightValue,
                 username: _username
             });
@@ -320,6 +323,7 @@ App.weight = (function (window, document, $, core, undefined) {
                     _add(_generate(core.randomNumber(45, 200) * 1.0));
                 }
             } else {
+                window.console.log(weights);
                 weights.forEach(function forEachWeights(weight) {
                     _add(weight);
                 });

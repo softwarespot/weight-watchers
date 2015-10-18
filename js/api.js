@@ -244,11 +244,11 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Parse JSON in the response object
      * @param {object} response Response object returned by fetch()
-     * @return {object|null} JSON object; otherwise, null
+     * @return {object|null} JSON object; otherwise, original response
      */
     function _fetchParseJSON(response) {
         var json = response.json();
-        return json ? json : null;
+        return json ? json : response;
     }
 
     /**
@@ -264,12 +264,9 @@ App.core.api = (function (window, document, $, core, undefined) {
         return new window.Promise(function promise(resolve, reject) {
             // Reject the promise if not a string
             url = parseUrl(url, object);
+            url = getPrefix() + trimSlashes(url);
 
             if (core.isDebug()) {
-                if (core.isNull(url)) {
-                    reject();
-                }
-
                 // Simulate an ajax request with a 750 millisecond delay progress bar
                 window.setTimeout(function setTimeoutPromise() {
                     // This will fail once in a while, due to 0 - 1000
@@ -299,20 +296,15 @@ App.core.api = (function (window, document, $, core, undefined) {
                 window.console.log('fetch() in progress...', url, init);
 
                 // Start fetching the resource
-                var xhr = window.fetch(getPrefix() + trimSlashes(url), init);
-                xhr.then(_fetchCheckStatus);
-
-                if (isBody) {
-                    xhr.then(_fetchParseJSON);
-                }
-
-                xhr.then(function thenFetch(data) {
-                    resolve(data);
-                });
-
-                xhr.catch(function catchFetch() {
-                    reject();
-                });
+                window.fetch(url, init)
+                    .then(_fetchCheckStatus)
+                    .then(_fetchParseJSON)
+                    .then(function thenFetch(data) {
+                        resolve(data);
+                    })
+                    .catch(function catchFetch() {
+                        reject();
+                    });
             }
         });
     }
@@ -440,7 +432,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     function parseUrl(url, object) {
         // Check if the url is a string and the object parameter is an object literal
         if (!core.isString(url) || !core.isObjectLiteral(object)) {
-            return null;
+            return url;
         }
 
         // Clone the url, so the replaced values, if they contain {}, don't interfere with matching
@@ -489,7 +481,7 @@ App.core.api = (function (window, document, $, core, undefined) {
             return;
         }
 
-        _prefix = '/' + trimSlashes(prefix) + '/';
+        _prefix = trimSlashes(prefix) + '/';
     }
 
     /**
