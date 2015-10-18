@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-
-<!-- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%> -->
-
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -102,6 +99,16 @@
     </script>
     <!--END: Templates-->
 
-    <!-- Load date and time: ${serverTime} -->
+    <!--
+        This is for testing purposes only!
+        <c:if test="${empty weights}">
+            No values in database.
+        </c:if>
+        <c:if test="${not empty weights}">
+            <c:forEach var="weight" items="${weights}">
+                <c:out value="${weight.id}, ${weight.value}, ${weight.time}, ${weight.username}"/>
+            </c:forEach>
+        </c:if>
+    -->
 </body>
 </html>
