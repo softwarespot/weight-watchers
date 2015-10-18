@@ -315,6 +315,9 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Done, the ajax request was successful
         xhr.then(function thenFetch(weights) {
+            // Clear the previous session
+            _session.clear();
+
             _weightInit();
 
             if (core.isDebug()) {
@@ -323,7 +326,6 @@ App.weight = (function (window, document, $, core, undefined) {
                     _add(_generate(core.randomNumber(45, 200) * 1.0));
                 }
             } else {
-                window.console.log(weights);
                 weights.forEach(function forEachWeights(weight) {
                     _add(weight);
                 });
