@@ -146,6 +146,21 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
+     * Escape RegExp characters with a prefixed backslash
+     *
+     * @param {string} value String to escape
+     * @return {mixed} Escaped string; otherwise, null if not a string datatype
+     */
+    function escapeRegExChars(value) {
+        if (!isString(value)) {
+            return null;
+        }
+
+        // Escape RegExp special characters
+        return value.replace(_regExp.REGEXP_ESCAPE, '\\$1');
+    }
+
+    /**
      * Look at the last item in the array
      *
      * @param {array} array The array to peek at
@@ -233,7 +248,7 @@ App.core = (function (window, document, $, undefined) {
      */
     function isFloat(value) {
         // Coerce as a string
-        return isNumber(value) && _regExp.FLOAT.test('' + value);
+        return isNumber(value) && _regExp.FLOAT.test(toString(value));
     }
 
     /**
@@ -244,7 +259,7 @@ App.core = (function (window, document, $, undefined) {
      */
     function isInteger(value) {
         // Coerce as a string
-        return isNumber(value) && _regExp.INTEGER.test('' + value);
+        return isNumber(value) && _regExp.INTEGER.test(toString(value));
     }
 
     /**
@@ -432,6 +447,45 @@ App.core = (function (window, document, $, undefined) {
         return isFunction(window.String.prototype.includes) ? value.includes(searchFor) : value.indexOf(searchFor) !== -1;
     }
 
+    /**
+     * Coerce a value to a string. Null or undefined are coerced as an empty string
+     *
+     * @param {mixed} value Value to coerce
+     * @return {string} New string value
+     */
+    function toString(value) {
+        if (isString(value)) {
+            return value;
+        }
+
+        return isNullOrUndefined(value) ? '' : ('' + value);
+    }
+
+    /**
+     * Trim characters from the left-hand and right-hand side of a string. Idea by https://github.com/epeli/underscore.string
+     *
+     * @param {string} value Value to trim
+     * @param {string} characters Character set to trim. If null or undefined, then the native String.prototype.trim will be used
+     * @return {string} Trimmed string
+     */
+    function trim(value, characters) {
+        // Coerce as a string
+        value = toString(value);
+        if (value.length === 0) {
+            return value;
+        }
+
+        // If null or undefined, then use the native trim
+        if (isNullOrUndefined(characters)) {
+            return value.trim();
+        }
+
+        // Coerce as a string and escape the meta regular expression characters
+        characters = '[' + escapeRegExChars(toString(characters)) + ']';
+
+        return value.replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '');
+    }
+
     // Invoked when the DOM has loaded
     $(function () {
         init();
@@ -447,6 +501,7 @@ App.core = (function (window, document, $, undefined) {
         setIsDebug: setIsDebug,
         arrayClear: arrayClear,
         arrayPeek: arrayPeek,
+        escapeRegExChars: escapeRegExChars,
         has: has,
         isArray: isArray,
         isBoolean: isBoolean,
@@ -468,6 +523,8 @@ App.core = (function (window, document, $, undefined) {
         isStringNumber: isStringNumber,
         isUndefined: isUndefined,
         randomNumber: randomNumber,
-        stringContains: stringContains
+        stringContains: stringContains,
+        toString: toString,
+        trim: trim
     };
 })(this, this.document, this.jQuery);

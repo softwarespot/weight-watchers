@@ -437,7 +437,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         }
 
         // Clone the url, so the replaced values, if they contain {}, don't interfere with matching
-        var urlReplace = '' + url;
+        var urlReplace = core.toString(url);
 
         // Regular expression to parse items between {} e.g. {username}
         var reParseURLParts = /{([^\}]+)}/g;
@@ -496,7 +496,7 @@ App.core.api = (function (window, document, $, core, undefined) {
             return '';
         }
 
-        return value.replace(/(?:^\/+|\/+$)/g, '');
+        return core.trim(value, '/');
     }
 
     // Invoked when the DOM has loaded

@@ -598,7 +598,7 @@ App.weight = (function (window, document, $, core, undefined) {
     function isValidWeight(value) {
         // Coerce as a string
         if (!core.isString(value)) {
-            value = '' + value;
+            value = core.toString(value);
         }
 
         return value.trim().length > 0 && _reIsValidWeight.test(value);
