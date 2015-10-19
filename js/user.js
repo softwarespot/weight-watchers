@@ -3,7 +3,7 @@
 /**
  * User module
  *
- * Modified: 2015/10/10
+ * Modified: 2015/10/20
  * @author softwarespot
  */
 App.user = (function (window, document, $, core, undefined) {

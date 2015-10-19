@@ -3,7 +3,7 @@
 /**
  * API module
  *
- * Modified: 2015/10/18
+ * Modified: 2015/10/20
  * @author softwarespot
  */
 App.core.api = (function (window, document, $, core, undefined) {
@@ -26,6 +26,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     var methods = {
         DELETE: 'delete',
         GET: 'get',
+        PATCH: 'patch',
         POST: 'post',
         PUT: 'put'
     };

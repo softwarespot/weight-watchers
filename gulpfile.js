@@ -129,10 +129,10 @@ gulp.task('uglify', function () {
     return gulp.src([
 
             // Core library
-            dest + '/app.js',
-            dest + '/api.js',
-            dest + '/emitter.js',
-            dest + '/events.js',
+            dest + '/core.js',
+            dest + '/core.api.js',
+            dest + '/core.emitter.js',
+            dest + '/core.events.js',
 
             // Non-core library
             dest + '/navigation.js',
