@@ -21,6 +21,9 @@ App.core = (function (window, document, $, undefined) {
     // Unique global identifier. Internal usage only
     // var GUID = 'A76C1BF8-7F80-4D96-B627-CEA9E1BFBED6';
 
+    // Store an empty string
+    var STRING_EMPTY = '';
+
     // Fields
 
     // Store if the module has been initialised
@@ -52,6 +55,9 @@ App.core = (function (window, document, $, undefined) {
 
         // Integer values
         INTEGER: /(?:^(?!-?0+)-?\d+$)/,
+
+        // Strip leading and trailing whitespace. Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+        TRIM: /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g
     };
 
     // Store when the application is in debugging mode
@@ -192,7 +198,7 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True the value is a function datatype; otherwise, false
      */
     function isFunction(value) {
-        var tag = isObject(value) ? _objectToString.call(value) : '';
+        var tag = isObject(value) ? _objectToString.call(value) : STRING_EMPTY;
         return tag === _objectStrings.FUNCTION || tag === _objectStrings.GENERATOR;
     }
 
@@ -444,7 +450,21 @@ App.core = (function (window, document, $, undefined) {
             return false;
         }
 
-        return isFunction(window.String.prototype.includes) ? value.includes(searchFor) : value.indexOf(searchFor) !== -1;
+        return isFunction(window.String.prototype.includes) ? window.String.prototype.includes.call(value, searchFor) : value.indexOf(searchFor) !== -1;
+    }
+
+    /**
+     * Strip leading and trailing whitespace
+     *
+     * @param {string} value String value to strip
+     * @return {string} New string with stripped leading and trailing whitespace; otherwise, an empty string
+     */
+    function stringStripWS(value) {
+        if (!isString(value)) {
+            return STRING_EMPTY;
+        }
+
+        return isFunction(window.String.prototype.trim) ? window.String.prototype.trim.call(value) : value.replace(_regExp.TRIM, STRING_EMPTY);
     }
 
     /**
@@ -455,10 +475,11 @@ App.core = (function (window, document, $, undefined) {
      */
     function toString(value) {
         if (isString(value)) {
+            // Return the original value
             return value;
         }
 
-        return isNullOrUndefined(value) ? '' : ('' + value);
+        return isNullOrUndefined(value) ? STRING_EMPTY : (STRING_EMPTY + value);
     }
 
     /**
@@ -477,13 +498,13 @@ App.core = (function (window, document, $, undefined) {
 
         // If null or undefined, then use the native trim
         if (isNullOrUndefined(characters)) {
-            return value.trim();
+            return stringStripWS(value);
         }
 
         // Coerce as a string and escape the meta regular expression characters
         characters = '[' + escapeRegExChars(toString(characters)) + ']';
 
-        return value.replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '');
+        return value.replace(new window.RegExp('^' + characters + '+|' + characters + '+$', 'g'), STRING_EMPTY);
     }
 
     // Invoked when the DOM has loaded
@@ -524,6 +545,7 @@ App.core = (function (window, document, $, undefined) {
         isUndefined: isUndefined,
         randomNumber: randomNumber,
         stringContains: stringContains,
+        stringStripWS: stringStripWS,
         toString: toString,
         trim: trim
     };
