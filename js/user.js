@@ -15,6 +15,11 @@ App.user = (function (window, document, $, core, undefined) {
     // Unique global identifier. Internal usage only
     // var GUID = 'B33D672B-E507-478E-99D1-3B0CA10CD989';
 
+    // API resource URIs
+    var _api = {
+        USERS: 'users'
+    };
+
     // Fields
 
     // Has the events been binded
@@ -23,10 +28,29 @@ App.user = (function (window, document, $, core, undefined) {
     // Store if the module has been initialised
     var _isInitialised = false;
 
+    // Store the jQuery selector object for the user list
+    var $_userList = null;
+
+    // Template string selectors
+    var _templateUserList = null;
+
     // Events object
     var _events = {
+        // Change event string
+        select: core.events.USER_SELECT,
+
         // Sign in event string
         signIn: core.events.NAVIGATION_CLICK,
+
+        // When an item from the user list is selected
+        selectFn: function selectFn() {
+            // Get the current value
+            var username = event.currentTarget.value;
+            if (core.isString(username)) {
+                // Emit to all registered, that the item was selected
+                core.emitter.emit(_events.select, username);
+            }
+        },
 
         // When the sign in event is invoked, call the following function
         signInFn: function signInFn(link) {
@@ -47,18 +71,21 @@ App.user = (function (window, document, $, core, undefined) {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    function init( /*config*/ ) {
+    function init(config) {
         if (_isInitialised) {
             return;
         }
 
         // Default config that can be overwritten by passing through the config variable
-        // var defaultConfig = {};
+        var defaultConfig = {};
 
         // Combine the passed config
-        // $.extend(defaultConfig, config);
+        $.extend(defaultConfig, config);
 
-        _cacheDom();
+        // Store the template strings
+        _templateUserList = config.templates.userList;
+
+        _cacheDom(config.dom);
         _bindEvents();
 
         // Set the API prefix
@@ -73,6 +100,10 @@ App.user = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function destroy() {
+        _unbindEvents();
+
+        $_userList = null;
+
         _isInitialised = false;
     }
 
@@ -96,6 +127,7 @@ App.user = (function (window, document, $, core, undefined) {
         }
 
         core.emitter.on(_events.signIn, _events.signInFn);
+        $_userList.on(_events.select, _events.selectFn);
 
         _isEventsBound = true;
     }
@@ -111,6 +143,7 @@ App.user = (function (window, document, $, core, undefined) {
         }
 
         core.emitter.off(_events.signInEvent, _events.signIn);
+        $_userList.off(_events.select, _events.selectFn);
 
         _isEventsBound = false;
     }
@@ -118,13 +151,37 @@ App.user = (function (window, document, $, core, undefined) {
     /**
      * Initialise all DOM cachable variables
      *
+     * @param {object} dom Object literal containing strings to locate the DOM nodes
      * @return {undefined}
      */
-    function _cacheDom() {}
+    function _cacheDom(dom) {
+        $_userList = $(dom.userList);
+    }
+
+    /**
+     * Render the weights data
+     *
+     * @param {boolean} isSuccess True renders the 'done' template; otherwise, false renders the 'fail' template
+     * @param {object} data Data to pass to the template
+     * @return {undefined}
+     */
+    function _render(data) {
+        $_content.handlebars('add', _templateWeightList, data, {
+            remove_type: 'same',
+            validate: !core.isEmpty(data)
+        });
+    }
 
     // Invoked when the DOM has loaded
     $(function () {
-        init();
+        init({
+            dom: {
+                userList: 'select[name="username"]'
+            },
+            templates: {
+                userList: ''
+            }
+        });
     });
 
     // Public API

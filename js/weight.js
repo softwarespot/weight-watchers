@@ -74,6 +74,9 @@ App.weight = (function (window, document, $, core, undefined) {
         // Reset event string
         reset: 'click.reset.weight.app',
 
+        // Change event string
+        select: core.events.USER_SELECT,
+
         // Submit event string
         submit: 'submit.weight.app',
 
@@ -143,6 +146,11 @@ App.weight = (function (window, document, $, core, undefined) {
                 // On error
                 window.alert('Some error occurred with DELETE\'in the weight value');
             });
+        },
+
+        // When the user selection is changed
+        selectFn: function selectFn(username) {
+            window.alert(core.stringFormat('Username was changed to "{0}"', username));
         },
 
         // When the submit event is invoked, call the following function
@@ -411,6 +419,7 @@ App.weight = (function (window, document, $, core, undefined) {
             _unbindEvents();
         }
 
+        core.emitter.on(_events.select, _events.selectFn);
         $_document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
         $_weightForm.on(_events.submit, _events.submitFn);
         $_weightFormInput.on(_events.keyup, _events.keyupFn);
@@ -429,6 +438,7 @@ App.weight = (function (window, document, $, core, undefined) {
             return;
         }
 
+        core.emitter.off(_events.select, _events.selectFn);
         $_document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
         $_weightForm.off(_events.submit, _events.submitFn);
         $_weightFormInput.off(_events.keyup, _events.keyupFn);
