@@ -63,8 +63,13 @@ public class WeightDaoImpl implements WeightDao {
 		String sql = "SELECT * FROM Weights WHERE username = ?";
 		Object[] parameters = new Object[] { username };
 		RowMapper<Weight> mapper = new WeightRowMapper();
-		List<Weight> weights = getJdbcTemplate().query(sql, parameters, mapper);
-
+		List<Weight> weights = null;
+		try {
+			weights = getJdbcTemplate().query(sql, parameters, mapper);
+		} catch (DataAccessException e) {
+			//return null, controller handles the setting of http status to NOT_FOUND when it gets a null returned
+			return null;
+		}
 		return weights;
 	}
 
@@ -116,6 +121,18 @@ public class WeightDaoImpl implements WeightDao {
 		// used instead
 		String sql = "INSERT INTO Weights(value, time, username) VALUE(?, NOW(), ?)";
 		Object[] parameters = new Object[] { weight.getValue(), weight.getUsername() };
+		getJdbcTemplate().update(sql, parameters);
+	}
+	
+	/**
+	 * Deletes a weight record from database based on its id.
+	 * 
+	 * @param id
+	 *  		  Id of the Weight object
+	 */
+	public void deleteWeight(int id){
+		String sql = "DELETE FROM Weights WHERE id = ?";
+		Object[] parameters = new Object[]{id};
 		getJdbcTemplate().update(sql, parameters);
 	}
 
