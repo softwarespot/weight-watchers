@@ -130,11 +130,15 @@ public class WeightDaoImpl implements WeightDao {
 	 * @param id
 	 *  		  Id of the Weight object
 	 */
-	public void deleteWeight(int id){
+	public boolean deleteWeight(int id){
 		String sql = "DELETE FROM Weights WHERE id = ?";
 		Object[] parameters = new Object[]{id};
-		getJdbcTemplate().update(sql, parameters);
-	}
+		try {
+			getJdbcTemplate().update(sql, parameters);
+		} catch (DataAccessException e) {
+			return false;
+		}
+		return true;
 
 	/**
 	 * Set the JDBC template object reference
