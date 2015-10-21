@@ -20,4 +20,6 @@ public interface WeightDao {
 	public abstract List<Weight> getWeightsAll();
 	
 	public abstract void saveWeight(Weight weight);
+	
+	public abstract boolean deleteWeight(int id);
 }
