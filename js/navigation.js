@@ -163,8 +163,8 @@ App.navigation = (function (window, document, $, core, undefined) {
     /**
      * Scroll to an element on the page
      *
-     * @param  {HTMLElement} $element jQuery HTMLElement node object
-     * @param  {number|string} speed Speed at which to scroll the element
+     * @param {HTMLElement} $element jQuery HTMLElement node object
+     * @param {number|string} speed Speed at which to scroll the element
      * @return {undefined}
      */
     function _scrollTo($element, speed) {

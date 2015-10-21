@@ -67,6 +67,13 @@ App.base = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Initialise all DOM cachable variables
+     *
+     * @return {undefined}
+     */
+    function _cacheDom() {}
+
+    /**
      * Bind events
      *
      * @return {undefined}
@@ -91,13 +98,6 @@ App.base = (function (window, document, $, core, undefined) {
 
         _isEventsBound = false;
     }
-
-    /**
-     * Initialise all DOM cachable variables
-     *
-     * @return {undefined}
-     */
-    function _cacheDom() {}
 
     // Invoked when the DOM has loaded
     $(function () {

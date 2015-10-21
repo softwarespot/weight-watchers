@@ -384,6 +384,24 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Initialise all DOM cachable variables
+     *
+     * @param {object} dom Object literal containing strings to locate the DOM nodes
+     * @return {undefined}
+     */
+    function _cacheDom(dom) {
+        $_document = $(document);
+        $_content = $(dom.weightList);
+
+        $_weightForm = $(dom.forms.weight);
+        $_weightFormInput = $_weightForm.find('input[type="text"]');
+        $_weightFormReset = $_weightForm.find('[type="reset"]');
+        $_weightFormSubmit = $_weightForm.find('input[type="submit"]');
+
+        $_weightFormError = $(dom.weightListError);
+    }
+
+    /**
      * Bind events
      *
      * @return {undefined}
@@ -417,24 +435,6 @@ App.weight = (function (window, document, $, core, undefined) {
         $_weightFormReset.off(_events.reset, _events.resetFn);
 
         _isEventsBound = false;
-    }
-
-    /**
-     * Initialise all DOM cachable variables
-     *
-     * @param {object} dom Object literal containing strings to locate the DOM nodes
-     * @return {undefined}
-     */
-    function _cacheDom(dom) {
-        $_document = $(document);
-        $_content = $(dom.weightList);
-
-        $_weightForm = $(dom.forms.weight);
-        $_weightFormInput = $_weightForm.find('input[type="text"]');
-        $_weightFormReset = $_weightForm.find('[type="reset"]');
-        $_weightFormSubmit = $_weightForm.find('input[type="submit"]');
-
-        $_weightFormError = $(dom.weightListError);
     }
 
     /**

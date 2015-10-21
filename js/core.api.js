@@ -229,7 +229,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     /**
      * Check the response status was a SUCCESS
      *
-     * @param  {object} response Response object returned by fetch()
+     * @param {object} response Response object returned by fetch()
      * @return {object} The response initially passed; otherwise, throws an error
      */
     function _fetchCheckStatus(response) {
