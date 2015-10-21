@@ -7,5 +7,6 @@
  * @author softwarespot
  */
 App.core.events = {
-    NAVIGATION_CLICK: 'click.navigation.app'
+    NAVIGATION_CLICK: 'click.navigation.app',
+    USER_SELECT: 'select.user.app'
 };

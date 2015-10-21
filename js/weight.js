@@ -66,16 +66,16 @@ App.weight = (function (window, document, $, core, undefined) {
     // Events object
     var _events = {
         // When the current key is released event string
-        keyup: 'keyup.app.weight',
+        keyup: 'keyup.weight.app',
 
         // Remove event string
-        remove: 'click.remove.app.weight',
+        remove: 'click.remove.weight.app',
 
         // Reset event string
-        reset: 'click.reset.app.weight',
+        reset: 'click.reset.weight.app',
 
         // Submit event string
-        submit: 'submit.app.weight',
+        submit: 'submit.weight.app',
 
         // When the keyup event is invoked, call the following function
         keyupFn: function keyupFn(event) {
@@ -210,7 +210,7 @@ App.weight = (function (window, document, $, core, undefined) {
     // Session handler for the weights list
     var _session = {
         // Unique session id
-        key: GUID + '_app.weight_list',
+        key: GUID + '_weight_list.app',
 
         // Cache the result of has()
         _has: null,

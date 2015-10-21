@@ -32,7 +32,7 @@ App.navigation = (function (window, document, $, core, undefined) {
     // Events object
     var _events = {
         // Click event string
-        navigation: 'click.app.navigation',
+        navigation: 'click.navigation.app',
 
         // When the click event is invoked, call the following function
         navigationFn: function navigationFn(event) {
