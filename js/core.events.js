@@ -8,5 +8,5 @@
  */
 App.core.events = {
     NAVIGATION_CLICK: 'click.navigation.app',
-    USER_SELECT: 'select.user.app'
+    USER_SELECT: 'change.user.app'
 };
