@@ -454,6 +454,33 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
+     * String format. Similar to the C# implementation
+     * URL: http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format. User: @Filipiz
+     *
+     * @param {string} value String value to replace
+     * @param {...items} items Items to replace the string identifiers with e.g. stringFormat('Some string like {0}', 'this')
+     * @return {string} Formatted string, with {n} identifiers replaced with the passed arguments
+     */
+    function stringFormat(value) {
+        // Create a temporary arguments array, skipping the first element, as this contains the value
+        var items = [];
+        for (var i = 1, length = arguments.length; i < length; i++) {
+            items.push(arguments[i]);
+        }
+
+        // Coerce as a string
+        value = toString(value);
+
+        // Iterate through the items replacing the identifiers e.g. {n} with the array item that matches the index value
+        items.forEach(function forEachFormat(element, index) {
+            var regExp = new window.RegExp('\\{' + index + '\\}', 'gi');
+            value = value.replace(regExp, element);
+        });
+
+        return value;
+    }
+
+    /**
      * Strip leading and trailing whitespace
      *
      * @param {string} value String value to strip
@@ -545,6 +572,7 @@ App.core = (function (window, document, $, undefined) {
         isUndefined: isUndefined,
         randomNumber: randomNumber,
         stringContains: stringContains,
+        stringFormat: stringFormat,
         stringStripWS: stringStripWS,
         toString: toString,
         trim: trim
