@@ -166,7 +166,7 @@ App.user = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _render(data) {
-        $_content.handlebars('add', _templateWeightList, data, {
+        $_content.handlebars('add', _templateUserList, data, {
             remove_type: 'same',
             validate: !core.isEmpty(data)
         });

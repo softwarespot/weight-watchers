@@ -108,10 +108,10 @@ App.weight = (function (window, document, $, core, undefined) {
             _session.clear();
 
             // Clear the elements in the weights array
-            core.arrayClear(_weightsList);
+            core.arrayClear(_get());
 
             // Render the template
-            _render(_weightsList);
+            _render(_get());
         },
 
         // When the remove event is invoked, call the following function
@@ -135,10 +135,10 @@ App.weight = (function (window, document, $, core, undefined) {
                 _remove(id);
 
                 // Save the current state of the weights list
-                _session.set(_weightsList);
+                _session.set(_get());
 
                 // Render the template
-                _render(_weightsList);
+                _render(_get());
             });
 
             // Fail, an issue occurred with the request
@@ -150,7 +150,47 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // When the user selection is changed
         selectFn: function selectFn(username) {
-            window.alert(core.stringFormat('Username was changed to "{0}"', username));
+            _username = username;
+
+            // Simulate an ajax GET request
+            core.api.get(_api.WEIGHTS_BY_USERNAME, {
+                username: _username
+            })
+
+            // Done, the ajax request was successful
+            .then(function thenFetch(weights) {
+                // Clear the previous session
+                _session.clear();
+
+                // Update the internal id (for testing only)
+                _weightInit();
+
+                if (core.isDebug()) {
+                    for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
+                        // Generate and automatically add
+                        _add(_generate(core.randomNumber(45, 200) * 1.0)); // Cast as a floating point value
+                    }
+                } else {
+                    weights.forEach(function forEachWeights(weight) {
+                        _add(weight);
+                    });
+                }
+
+                // Save the current state of the weights list
+                _session.set(_get());
+
+                // Update the internal id (for testing only) and render the weights list
+                _weightInit();
+                _render(_get());
+            })
+
+            // Fail, an issue occurred with the request
+            .catch(function catchFetch() {
+                // On error
+
+                // Render the weights list
+                _render(_get());
+            });
         },
 
         // When the submit event is invoked, call the following function
@@ -200,10 +240,10 @@ App.weight = (function (window, document, $, core, undefined) {
                 // Add the weight value object
                 if (_add(weight)) {
                     // Save the current state of the weights list
-                    _session.set(_weightsList);
+                    _session.set(_get());
 
                     // Render the template
-                    _render(_weightsList);
+                    _render(_get());
                 }
             });
 
@@ -320,41 +360,7 @@ App.weight = (function (window, document, $, core, undefined) {
         // Generate a random username
         _username = _username[core.randomNumber(0, _username.length - 1)];
 
-        // Simulate an ajax GET request
-        var xhr = core.api.get(_api.WEIGHTS_ALL);
-
-        // Done, the ajax request was successful
-        xhr.then(function thenFetch(weights) {
-            // Clear the previous session
-            _session.clear();
-
-            _weightInit();
-
-            if (core.isDebug()) {
-                for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
-                    // Generate and automatically add
-                    _add(_generate(core.randomNumber(45, 200) * 1.0));
-                }
-            } else {
-                weights.forEach(function forEachWeights(weight) {
-                    _add(weight);
-                });
-            }
-
-            // Save the current state of the weights list
-            _session.set(_weightsList);
-
-            // Render the weights list
-            _weightInit(true);
-        });
-
-        // Fail, an issue occurred with the request
-        xhr.catch(function catchFetch() {
-            // On error
-
-            // Render the weights list
-            _weightInit(true);
-        });
+        // _events.selectFn(_username);
 
         _isInitialised = true;
     }
@@ -377,7 +383,7 @@ App.weight = (function (window, document, $, core, undefined) {
         $_weightFormError = null;
 
         // Clear the elements in the weights array
-        core.arrayClear(_weightsList);
+        core.arrayClear(_get());
 
         _isInitialised = false;
     }
@@ -448,6 +454,19 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     /**
+     * Check if a variable is a string and representing a valid weight value i.e. 3 or 3.1
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True the value is representing a valid weight value; otherwise, false
+     */
+    function isValidWeight(value) {
+        // Coerce as a string
+        value = core.toString(value);
+
+        return !core.isEmpty(value) && _reIsValidWeight.test(value);
+    }
+
+    /**
      * Add a weight value object to the internal array
      *
      * @param {object} weight Valid weight value object
@@ -493,6 +512,22 @@ App.weight = (function (window, document, $, core, undefined) {
             username: _username,
             iso8601: moment.unix(nowTimeStamp).toISOString()
         };
+    }
+
+    /**
+     * Get the weight list or a weight value object
+     *
+     * @param {number} index Optional index. If invalid i.e. undefined, then the weight list array is returned
+     * @return {array|object} Weight list array or individual weight value object
+     */
+    function _get(index) {
+        if (!core.isInteger(index) || index < 0 || index >= _weightsList.length) {
+            return _weightsList;
+        }
+
+        var weight = _weightsList[index];
+
+        return core.isUndefined(weight) ? _weightsList : weight;
     }
 
     /**
@@ -567,7 +602,7 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     /**
-     * Sanitzie the weight value
+     * Sanitize the weight value
      *
      * @param {string} value Weight value to sanitize e.g. 1, 1,0 or 1.0
      * @return {string} Sanitized weight value; otherwise, original string
@@ -581,7 +616,7 @@ App.weight = (function (window, document, $, core, undefined) {
      *
      * @return {undefined}
      */
-    function _weightInit(isRender) {
+    function _weightInit() {
         _weightsList = _session.get();
 
         // If items exist in the array, then get the last element object and the id
@@ -591,27 +626,6 @@ App.weight = (function (window, document, $, core, undefined) {
         }
 
         _internalId++;
-
-        // If render is boolean and true
-        if (core.isBoolean(isRender) && isRender) {
-            // Render the template
-            _render(_weightsList);
-        }
-    }
-
-    /**
-     * Check if a variable is a string and representing a valid weight value i.e. 3 or 3.1
-     *
-     * @param {mixed} value Value to check
-     * @returns {boolean} True the value is representing a valid weight value; otherwise, false
-     */
-    function isValidWeight(value) {
-        // Coerce as a string
-        if (!core.isString(value)) {
-            value = core.toString(value);
-        }
-
-        return value.trim().length > 0 && _reIsValidWeight.test(value);
     }
 
     // Invoked when the DOM has loaded
