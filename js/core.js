@@ -458,7 +458,7 @@ App.core = (function (window, document, $, undefined) {
      * URL: http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format. User: @Filipiz
      *
      * @param {string} value String value to replace
-     * @param {...items} items Items to replace the string identifiers with e.g. stringFormat('Some string like {0}', 'this')
+     * @param {arguments} arguments Arguments to replace the string identifiers with e.g. stringFormat('Some string like {0}', 'this')
      * @return {string} Formatted string, with {n} identifiers replaced with the passed arguments
      */
     function stringFormat(value) {
