@@ -450,7 +450,9 @@ App.core = (function (window, document, $, undefined) {
             return false;
         }
 
-        return isFunction(window.String.prototype.includes) ? window.String.prototype.includes.call(value, searchFor) : value.indexOf(searchFor) !== -1;
+        return isFunction(window.String.prototype.includes) ?
+            window.String.prototype.includes.call(value, searchFor) :
+            value.indexOf(searchFor) !== -1;
     }
 
     /**
@@ -491,7 +493,9 @@ App.core = (function (window, document, $, undefined) {
             return STRING_EMPTY;
         }
 
-        return isFunction(window.String.prototype.trim) ? window.String.prototype.trim.call(value) : value.replace(_regExp.TRIM, STRING_EMPTY);
+        return isFunction(window.String.prototype.trim) ?
+            window.String.prototype.trim.call(value) :
+            value.replace(_regExp.TRIM, STRING_EMPTY);
     }
 
     /**
