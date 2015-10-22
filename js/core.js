@@ -510,7 +510,7 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
-     * Trim characters from the left-hand and right-hand side of a string. Idea by https://github.com/epeli/underscore.string
+     * Trim characters from the left-hand and right-hand side of a string. Idea by underscore.string, URL: https://github.com/epeli/underscore.string
      *
      * @param {string} value Value to trim
      * @param {string} characters Character set to trim. If null or undefined, then the native String.prototype.trim will be used
