@@ -445,15 +445,10 @@ App.core = (function (window, document, $, undefined) {
      * @param {string} searchFor Value to search for
      * @return {boolean} True the string is found; otherwise, false
      */
-    function stringContains(value, searchFor) {
-        if (!isString(value)) {
-            return false;
-        }
-
-        return isFunction(window.String.prototype.includes) ?
-            window.String.prototype.includes.call(value, searchFor) :
-            value.indexOf(searchFor) !== -1;
-    }
+    var stringContains = isFunction(window.String.prototype.includes) ?
+        window.String.prototype.includes.call : function stringContains(value, searchFor) {
+            return toString(value).indexOf(searchFor) !== -1;
+        };
 
     /**
      * String format. Similar to the C# implementation
