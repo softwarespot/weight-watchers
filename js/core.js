@@ -154,7 +154,7 @@ App.core = (function (window, document, $, undefined) {
     /**
      * Escape RegExp characters with a prefixed backslash
      *
-     * @param {string} value String to escape
+     * @param {string} value String value to escape
      * @return {mixed} Escaped string; otherwise, null if not a string datatype
      */
     function escapeRegExChars(value) {
@@ -439,7 +439,7 @@ App.core = (function (window, document, $, undefined) {
     /**
      * Check if a string contains another string
      *
-     * @param {string} value Value to search in
+     * @param {string} value String value to search in
      * @param {string} searchFor Value to search for
      * @return {boolean} True the string is found; otherwise, false
      */
@@ -511,7 +511,7 @@ App.core = (function (window, document, $, undefined) {
     /**
      * Trim characters from the left-hand and right-hand side of a string. Idea by underscore.string, URL: https://github.com/epeli/underscore.string
      *
-     * @param {string} value Value to trim
+     * @param {string} value String value to trim
      * @param {string} characters Character set to trim. If null or undefined, then the native String.prototype.trim will be used
      * @return {string} Trimmed string
      */
