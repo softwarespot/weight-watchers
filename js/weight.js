@@ -24,6 +24,9 @@ App.weight = (function (window, document, $, core, undefined) {
         WEIGHTS_BY_USERNAME: 'users/{username}/weights'
     };
 
+    // Date format for ensuring a weight value isn't entered twice for the same day
+    var DATE_FORMAT = 'YYYYMMDD';
+
     // Fields
 
     // Has the events been binded
@@ -35,8 +38,14 @@ App.weight = (function (window, document, $, core, undefined) {
     // Store the weights submitted to the back-end API. Testing only
     var _weightsList = [];
 
+    // Store dates of the added weight values. Testing only
+    var _weightsDate = new window.Set();
+
     // Store the id value. Testing only
     var _internalId = 0;
+
+    // Store the next 'moment' date object. Testing only
+    var _dateNext = null;
 
     // Generate a random username
     var _username = ['softwarespot', 'squidge', 'brainbox'];
@@ -132,6 +141,7 @@ App.weight = (function (window, document, $, core, undefined) {
             xhr.then(function thenFetch(weight) {
                 id = core.isDebug() ? id : weight.id;
 
+                // Remove the weight value object from the weights list
                 _remove(id);
 
                 // Save the current state of the weights list
@@ -144,7 +154,7 @@ App.weight = (function (window, document, $, core, undefined) {
             // Fail, an issue occurred with the request
             xhr.catch(function catchFetch() {
                 // On error
-                window.alert('Some error occurred with DELETE\'in the weight value');
+                window.console.log('Some error occurred with DELETE\'in the weight value');
             });
         },
 
@@ -166,10 +176,20 @@ App.weight = (function (window, document, $, core, undefined) {
                 _weightInit();
 
                 if (core.isDebug()) {
-                    for (var i = 0, length = core.randomNumber(5, 20); i < length; i++) {
+                    var length = core.randomNumber(5, 20);
+
+                    // Check if the next date is a 'moment' object and set to a random date before today
+                    if (!moment.isMoment(_dateNext)) {
+                        _dateNext = moment().subtract(length + core.randomNumber(5, 200), 'days');
+                    }
+
+                    for (var i = 0; i < length; i++) {
                         // Generate and automatically add
                         _add(_generate(core.randomNumber(45, 200) * 1.0)); // Cast as a floating point value
                     }
+
+                    // Clear the next date as the current date will be used from now on
+                    _dateNext = null;
                 } else {
                     weights.forEach(function forEachWeights(weight) {
                         _add(weight);
@@ -250,7 +270,7 @@ App.weight = (function (window, document, $, core, undefined) {
             // Fail, an issue occurred with the request
             xhr.catch(function catchFetch() {
                 // On error
-                window.alert('Some error occurred with POST\'in the weight value');
+                window.console.log('Some error occurred with POST\'in the weight value');
             });
         }
     };
@@ -477,8 +497,18 @@ App.weight = (function (window, document, $, core, undefined) {
             return false;
         }
 
+        // Check if the weight object value has not already been set by formatting the 'moment' date object
+        // to YYYYMMDD and storing in a set collection
+        var date = moment.unix(weight.time).format(DATE_FORMAT);
+        if (_weightsDate.has(date)) {
+            return false;
+        }
+
         // Push the object to the internal array
         _weightsList.push(weight);
+
+        // Add the date to the internal set
+        _weightsDate.add(date);
 
         return true;
     }
@@ -493,7 +523,7 @@ App.weight = (function (window, document, $, core, undefined) {
         // If not a float then parse as a floating point number datatype
         if (!core.isFloat(value)) {
             // Important, as the database will be DECIMAL(5,1)
-            value = parseFloat(value);
+            value = window.parseFloat(value);
         }
 
         // If the weight is zero, which is totally wrong, then return null
@@ -502,7 +532,15 @@ App.weight = (function (window, document, $, core, undefined) {
         }
 
         // Get an epoch timestamp of the current date and time i.e. now
-        var nowTimeStamp = moment().unix();
+        var nowTimeStamp = 0;
+        if (moment.isMoment(_dateNext)) {
+            nowTimeStamp = _dateNext.unix();
+
+            // Add one day to the next date 'moment' object
+            _dateNext = _dateNext.add(1, 'days');
+        } else {
+            nowTimeStamp = moment().unix();
+        }
 
         // Return a weight value object
         return {
@@ -539,7 +577,7 @@ App.weight = (function (window, document, $, core, undefined) {
     function _getUsernameById(id) {
         // If not an integer then parse as an integer number datatype
         if (!core.isInteger(id)) {
-            id = parseInt(id);
+            id = window.parseInt(id);
         }
 
         if (id === 0) {
@@ -568,7 +606,7 @@ App.weight = (function (window, document, $, core, undefined) {
     function _remove(id) {
         // If not an integer then parse as an integer number datatype
         if (!core.isInteger(id)) {
-            id = parseInt(id);
+            id = window.parseInt(id);
         }
 
         if (id === 0) {
@@ -618,6 +656,7 @@ App.weight = (function (window, document, $, core, undefined) {
      */
     function _weightInit() {
         _weightsList = _session.get();
+        _weightsDate.clear();
 
         // If items exist in the array, then get the last element object and the id
         var peek = core.arrayPeek(_weightsList);

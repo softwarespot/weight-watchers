@@ -253,7 +253,6 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True the value is a float; otherwise, false
      */
     function isFloat(value) {
-        // Coerce as a string
         return isNumber(value) && _regExp.FLOAT.test(toString(value));
     }
 
@@ -264,7 +263,6 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True the value is an integer; otherwise, false
      */
     function isInteger(value) {
-        // Coerce as a string
         return isNumber(value) && _regExp.INTEGER.test(toString(value));
     }
 
@@ -445,10 +443,13 @@ App.core = (function (window, document, $, undefined) {
      * @param {string} searchFor Value to search for
      * @return {boolean} True the string is found; otherwise, false
      */
-    var stringContains = isFunction(window.String.prototype.includes) ?
-        window.String.prototype.includes.call : function stringContains(value, searchFor) {
-            return toString(value).indexOf(searchFor) !== -1;
-        };
+    function stringContains(value, searchFor) {
+        value = toString(value);
+
+        return isFunction(window.String.prototype.includes) ?
+            window.String.prototype.includes.call(value, searchFor) :
+            value.indexOf(searchFor) !== -1;
+    }
 
     /**
      * String format. Similar to the C# implementation
@@ -465,7 +466,6 @@ App.core = (function (window, document, $, undefined) {
             items.push(arguments[i]);
         }
 
-        // Coerce as a string
         value = toString(value);
 
         // Iterate through the items replacing the identifiers e.g. {n} with the array item that matches the index value
@@ -516,7 +516,6 @@ App.core = (function (window, document, $, undefined) {
      * @return {string} Trimmed string
      */
     function trim(value, characters) {
-        // Coerce as a string
         value = toString(value);
         if (value.length === 0) {
             return value;
