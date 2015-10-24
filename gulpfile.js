@@ -172,6 +172,7 @@ gulp.task('vendor', function () {
     // Concatenate and uglify scripts
     gulp.src([
             bowerComponents + 'jquery/dist/jquery.js',
+            bowerComponents + 'es6-collections/index.js',
             bowerComponents + 'es6-promise/promise.js',
             bowerComponents + 'fetch/fetch.js',
             bowerComponents + 'handlebars/handlebars.js',
