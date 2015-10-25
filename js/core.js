@@ -460,7 +460,7 @@ App.core = (function (window, document, $, undefined) {
      * @return {string} Formatted string, with {n} identifiers replaced with the passed arguments
      */
     function stringFormat(value) {
-        // Create a temporary arguments array, skipping the first element, as this contains the value
+        // Create a temporary arguments array, skipping the first element, as this contains the string value
         var items = [];
         for (var i = 1, length = arguments.length; i < length; i++) {
             items.push(arguments[i]);
