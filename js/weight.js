@@ -295,18 +295,18 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Check if the sessionStorage API exists
         has: function has() {
-            // If called already, then return the cached variable
-            if (this._has) {
-                return this._has();
+            // If it's the first time being called, then cache the result
+            if (core.isNull(this._has)) {
+                var storage = window.sessionStorage;
+                this._has = core.isObject(storage) &&
+                    'key' in storage &&
+                    'getItem' in storage &&
+                    'setItem' in storage &&
+                    'removeItem' in storage &&
+                    'clear' in storage;
             }
 
-            var storage = window.sessionStorage;
-            return core.isObject(storage) &&
-                'key' in storage &&
-                'getItem' in storage &&
-                'setItem' in storage &&
-                'removeItem' in storage &&
-                'clear' in storage;
+            return this._has;
         },
 
         // Alias for clear()
@@ -324,7 +324,7 @@ App.weight = (function (window, document, $, core, undefined) {
             }
 
             // If null then return an empty string; otherwise, parse as a JSON object literal
-            return core.isNullOrUndefined(items) ? [] : window.JSON.parse(items);
+            return core.isEmpty(items) ? [] : window.JSON.parse(items);
         },
 
         // Save the data to the session storage
