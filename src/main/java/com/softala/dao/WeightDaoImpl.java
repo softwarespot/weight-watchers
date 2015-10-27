@@ -120,7 +120,7 @@ public class WeightDaoImpl implements WeightDao {
 	public void saveWeight(Weight weight) {
 		// Note that weight.getTime() is ignored and the SQL function NOW() is
 		// used instead
-		String sql = "INSERT INTO Weights(value, time, username) VALUE(?, NOW(), ?)";
+		String sql = "INSERT INTO Weights(value, time, username) VALUES (?, NOW(), ?)";
 		Object[] parameters = new Object[] { weight.getValue(), weight.getUsername() };
 		getJdbcTemplate().update(sql, parameters);
 	}
