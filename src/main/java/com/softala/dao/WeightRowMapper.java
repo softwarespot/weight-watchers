@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 
 import com.softala.bean.Weight;
-import com.softala.bean.WeightImpl;
 
 /**
  * Class for mapping database rows to object
@@ -15,8 +14,8 @@ import com.softala.bean.WeightImpl;
  */
 public class WeightRowMapper implements RowMapper<Weight> {
 
-	public WeightImpl mapRow(ResultSet resultSet, int rowNum) throws SQLException {
-		WeightImpl weight = new WeightImpl();
+	public Weight mapRow(ResultSet resultSet, int rowNum) throws SQLException {
+		Weight weight = new Weight();
 		weight.setId(resultSet.getInt("id"));
 		weight.setValue(resultSet.getFloat("value"));
 		weight.setTime(resultSet.getTimestamp("time"));
