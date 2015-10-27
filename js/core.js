@@ -113,6 +113,7 @@ App.core = (function (window, document, $, undefined) {
 
     /**
      * Is the application in debugging mode
+     *
      * @return {boolean} True, the application is in debugging mode; otherwise, false
      */
     function isDebug() {
