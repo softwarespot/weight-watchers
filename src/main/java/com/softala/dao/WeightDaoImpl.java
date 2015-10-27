@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -139,6 +140,7 @@ public class WeightDaoImpl implements WeightDao {
 			return false;
 		}
 		return true;
+	}
 
 	/**
 	 * Set the JDBC template object reference
