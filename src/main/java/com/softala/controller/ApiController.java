@@ -192,7 +192,7 @@ public class ApiController {
 	}
 
 	/**
-	 * Delete a
+	 * Delete a user weight value
 	 *
 	 * @param username
 	 *            Username of the user
@@ -204,9 +204,11 @@ public class ApiController {
 	ResponseEntity<?> removeWeightByUserAndId(@PathVariable String username, @PathVariable int id) {
 		getLogger().info("/users/{username}/weights/{id} aka removeWeightByUserAndId");
 
-		// Note: The DAO method is missing
+		if (getDao().deleteWeight(id)) {
+			return new ResponseEntity<Object>(null, HttpStatus.OK);
+		}
 
-		return new ResponseEntity<Object>(null, HttpStatus.OK);
+		return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
 	}
 
 	/**

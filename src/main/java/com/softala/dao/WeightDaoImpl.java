@@ -68,7 +68,8 @@ public class WeightDaoImpl implements WeightDao {
 		try {
 			weights = getJdbcTemplate().query(sql, parameters, mapper);
 		} catch (DataAccessException e) {
-			//return null, controller handles the setting of http status to NOT_FOUND when it gets a null returned
+			// return null, controller handles the setting of http status to
+			// NOT_FOUND when it gets a null returned
 			return null;
 		}
 		return weights;
@@ -100,7 +101,7 @@ public class WeightDaoImpl implements WeightDao {
 	/**
 	 * Returns a list of Weight objects of all database records
 	 *
-	 * @return An list of Weight objects
+	 * @return A list of Weight objects
 	 */
 	public List<Weight> getWeightsAll() {
 		String sql = "SELECT * FROM Weights";
@@ -116,24 +117,32 @@ public class WeightDaoImpl implements WeightDao {
 	 *
 	 * @param weight
 	 *            Weight object
+	 * @return True, the Weight object was saved; otherwise, false
 	 */
-	public void saveWeight(Weight weight) {
+	public boolean saveWeight(Weight weight) {
 		// Note that weight.getTime() is ignored and the SQL function NOW() is
 		// used instead
 		String sql = "INSERT INTO Weights(value, time, username) VALUE(?, NOW(), ?)";
 		Object[] parameters = new Object[] { weight.getValue(), weight.getUsername() };
-		getJdbcTemplate().update(sql, parameters);
+		try {
+			getJdbcTemplate().update(sql, parameters);
+		} catch (DataAccessException e) {
+			return false;
+		}
+
+		return true;
 	}
-	
+
 	/**
 	 * Deletes a weight record from database based on its id.
 	 * 
 	 * @param id
-	 *  		  Id of the Weight object
+	 *            Id of the Weight object
+	 * @return True, the Weight object was removed; otherwise, false
 	 */
-	public boolean deleteWeight(int id){
+	public boolean deleteWeight(int id) {
 		String sql = "DELETE FROM Weights WHERE id = ?";
-		Object[] parameters = new Object[]{id};
+		Object[] parameters = new Object[] { id };
 		try {
 			getJdbcTemplate().update(sql, parameters);
 		} catch (DataAccessException e) {
