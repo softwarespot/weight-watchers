@@ -51,9 +51,6 @@
             <select name="username">
                 <!--Add the usernames dynamically-->
                 <option value="" disabled selected>Choose a username</option>
-                <option value="softwarespot">softwarespot</option>
-                <option value="squidge">squidge</option>
-                <option value="brainbox">brainbox</option>
             </select>
             <br/>
             <input type="submit" value="Create" class="button-primary">
