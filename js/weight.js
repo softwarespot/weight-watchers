@@ -3,7 +3,7 @@
 /**
  * Weight module
  *
- * Modified:  2015/10/21
+ * Modified:  2015/10/28
  * @author softwarespot
  */
 App.weight = (function (window, document, $, core, undefined) {
@@ -468,14 +468,16 @@ App.weight = (function (window, document, $, core, undefined) {
             return false;
         }
 
+        // Add missing properties
+
         // Create an ISO-8601 format of the timestamp
         weight.iso8601 = window.moment(weight.time).toISOString();
 
-        // Push the object to the internal array
-        _weightsList.push(weight);
-
         // Add the date to the internal set
         _weightsDate.add(date);
+
+        // Push the object to the internal array
+        _weightsList.push(weight);
 
         return true;
     }
