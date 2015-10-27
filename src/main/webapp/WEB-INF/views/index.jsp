@@ -50,7 +50,6 @@
             <input type="text" name="value" value="" placeholder="Enter your weight"/>
             <select name="username">
                 <!--Add the usernames dynamically-->
-                <option value="" disabled selected>Choose a username</option>
             </select>
             <br/>
             <input type="submit" value="Create" class="button-primary">
@@ -105,7 +104,18 @@
                 {{/each}}
             <table>
         {{else}}
-            <h4>Whoops! It appears no values have been entered.</h4>
+            <h4>It appears no values have been entered.</h4>
+        {{/if}}
+    </script>
+
+    <script id="template-user-list" type="text/x-handlebars">
+        {{#if usernames}}
+            <option value="" disabled selected>Choose a username</option>
+            {{#each usernames}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        {{else}}
+            <option value="" disabled selected>No users were found</option>
         {{/if}}
     </script>
     <!--END: Templates-->
