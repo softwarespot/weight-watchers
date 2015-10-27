@@ -179,8 +179,8 @@ App.weight = (function (window, document, $, core, undefined) {
                     var length = core.randomNumber(5, 20);
 
                     // Check if the next date is a 'moment' object and set to a random date before today
-                    if (!moment.isMoment(_dateNext)) {
-                        _dateNext = moment().subtract(length + core.randomNumber(5, 200), 'days');
+                    if (!window.moment.isMoment(_dateNext)) {
+                        _dateNext = window.moment().subtract(length + core.randomNumber(5, 200), 'days');
                     }
 
                     for (var i = 0; i < length; i++) {
@@ -499,10 +499,13 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Check if the weight object value has not already been set by formatting the 'moment' date object
         // to YYYYMMDD and storing in a set collection
-        var date = moment(weight.time).format(DATE_FORMAT);
+        var date = window.moment(weight.time).format(DATE_FORMAT);
         if (_weightsDate.has(date)) {
             return false;
         }
+
+        // Create an ISO-8601 format of the timestamp
+        weight.iso8601 = window.moment(weight.time).toISOString();
 
         // Push the object to the internal array
         _weightsList.push(weight);
@@ -533,13 +536,13 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Get an epoch timestamp of the current date and time i.e. now
         var nowTimeStamp = 0;
-        if (moment.isMoment(_dateNext)) {
+        if (window.moment.isMoment(_dateNext)) {
             nowTimeStamp = _dateNext.valueOf();
 
             // Add one day to the next date 'moment' object
             _dateNext = _dateNext.add(1, 'days');
         } else {
-            nowTimeStamp = moment().valueOf();
+            nowTimeStamp = window.moment().valueOf();
         }
 
         // Return a weight value object
@@ -547,8 +550,7 @@ App.weight = (function (window, document, $, core, undefined) {
             id: _internalId++,
             value: value,
             time: nowTimeStamp,
-            username: _username,
-            iso8601: moment(nowTimeStamp).toISOString()
+            username: _username
         };
     }
 
