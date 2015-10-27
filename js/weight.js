@@ -499,7 +499,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Check if the weight object value has not already been set by formatting the 'moment' date object
         // to YYYYMMDD and storing in a set collection
-        var date = moment.unix(weight.time).format(DATE_FORMAT);
+        var date = moment(weight.time).format(DATE_FORMAT);
         if (_weightsDate.has(date)) {
             return false;
         }
@@ -534,12 +534,12 @@ App.weight = (function (window, document, $, core, undefined) {
         // Get an epoch timestamp of the current date and time i.e. now
         var nowTimeStamp = 0;
         if (moment.isMoment(_dateNext)) {
-            nowTimeStamp = _dateNext.unix();
+            nowTimeStamp = _dateNext.valueOf();
 
             // Add one day to the next date 'moment' object
             _dateNext = _dateNext.add(1, 'days');
         } else {
-            nowTimeStamp = moment().unix();
+            nowTimeStamp = moment().valueOf();
         }
 
         // Return a weight value object
@@ -548,7 +548,7 @@ App.weight = (function (window, document, $, core, undefined) {
             value: value,
             time: nowTimeStamp,
             username: _username,
-            iso8601: moment.unix(nowTimeStamp).toISOString()
+            iso8601: moment(nowTimeStamp).toISOString()
         };
     }
 
