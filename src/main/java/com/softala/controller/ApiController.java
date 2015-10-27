@@ -35,7 +35,7 @@ public class ApiController {
 	/**
 	 * Logging factory method
 	 */
-	private static final Logger _logger = LoggerFactory.getLogger(ApiController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 
 	/**
 	 * Get the logger object reference
@@ -43,14 +43,14 @@ public class ApiController {
 	 * @return The logger object reference
 	 */
 	public static Logger getLogger() {
-		return _logger;
+		return logger;
 	}
 
 	/**
 	 * Weight data access object
 	 */
 	@Inject
-	private WeightDaoImpl _dao;
+	private WeightDaoImpl dao;
 
 	/**
 	 *
@@ -84,7 +84,17 @@ public class ApiController {
 	 * @return Weight data access object
 	 */
 	public WeightDaoImpl getDao() {
-		return _dao;
+		return this.dao;
+	}
+
+	/**
+	 * Set the weight data access object
+	 * 
+	 * @param dao
+	 *            Weight data access object
+	 */
+	public void setDao(WeightDaoImpl dao) {
+		this.dao = dao;
 	}
 
 	/**
@@ -211,13 +221,4 @@ public class ApiController {
 		return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
 	}
 
-	/**
-	 * Set the weight data access object
-	 * 
-	 * @param dao
-	 *            Weight data access object
-	 */
-	public void setDao(WeightDaoImpl dao) {
-		this._dao = dao;
-	}
 }

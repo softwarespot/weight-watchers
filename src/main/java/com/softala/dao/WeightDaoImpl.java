@@ -24,7 +24,7 @@ import com.softala.dao.WeightRowMapper;
 public class WeightDaoImpl implements WeightDao {
 
 	@Inject
-	private JdbcTemplate _jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	/**
 	 * Get the JDBC template object reference
@@ -32,7 +32,17 @@ public class WeightDaoImpl implements WeightDao {
 	 * @return JDBC template object reference
 	 */
 	public JdbcTemplate getJdbcTemplate() {
-		return _jdbcTemplate;
+		return this.jdbcTemplate;
+	}
+
+	/**
+	 * Set the JDBC template object reference
+	 * 
+	 * @param jdbcTemplate
+	 *            JDBC template object reference to set with
+	 */
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	/**
@@ -148,16 +158,7 @@ public class WeightDaoImpl implements WeightDao {
 		} catch (DataAccessException e) {
 			return false;
 		}
-		return true;
-	}
 
-	/**
-	 * Set the JDBC template object reference
-	 * 
-	 * @param jdbcTemplate
-	 *            JDBC template object reference to set with
-	 */
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this._jdbcTemplate = jdbcTemplate;
+		return true;
 	}
 }
