@@ -93,8 +93,8 @@ App.user = (function (window, document, $, core, undefined) {
             .catch(function catchFetch() {
                 // On error
 
-                // Render the user list
-                _render(storage);
+                // Render the user list, passing in a value that is incorrect
+                _render(null);
             });
         },
 
