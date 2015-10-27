@@ -13,7 +13,7 @@ App.user = (function (window, document, $, core, undefined) {
     var VERSION = '1.0.0';
 
     // Unique global identifier. Internal usage only
-    // var GUID = 'B33D672B-E507-478E-99D1-3B0CA10CD989';
+    var GUID = 'B33D672B-E507-478E-99D1-3B0CA10CD765';
 
     // API resource URIs
     var _api = {
@@ -31,8 +31,14 @@ App.user = (function (window, document, $, core, undefined) {
     // Store the jQuery selector object for the user list
     var $_userList = null;
 
+    // Generate a random array of username
+    var _users = ['softwarespot', 'squidge', 'brainbox'];
+
     // Template string selectors
     var _templateUserList = null;
+
+    // Generic session handler
+    var _sessionHandler = new core.session(GUID + '_users,app');
 
     // Events object
     var _events = {
@@ -50,6 +56,46 @@ App.user = (function (window, document, $, core, undefined) {
                 // Emit to all registered, that the item was selected
                 core.emitter.emit(_events.select, username);
             }
+        },
+
+        // When the get users is invoked, call the following function
+        usersFn: function usersFn() {
+            var storage = _sessionHandler.get();
+
+            if (!core.isNull(storage)) {
+                // Render the user list
+                _render({
+                    usernames: window.JSON.parse(storage)
+                });
+
+                return;
+            }
+
+            // Simulate an ajax GET request
+            core.api.get(_api.USERS)
+
+            // Done, the ajax request was successful
+            .then(function thenFetch(users) {
+                if (core.isDebug()) {
+                    users = _users;
+                }
+
+                // Store the user list
+                _sessionHandler.set(window.JSON.stringify(users));
+
+                // Render the user list
+                _render({
+                    usernames: users
+                });
+            })
+
+            // Fail, an issue occurred with the request
+            .catch(function catchFetch() {
+                // On error
+
+                // Render the user list
+                _render(storage);
+            });
         },
 
         // When the sign in event is invoked, call the following function
@@ -90,6 +136,8 @@ App.user = (function (window, document, $, core, undefined) {
 
         // Set the API prefix
         core.api.setPrefix('api');
+
+        _events.usersFn();
 
         _isInitialised = true;
     }
@@ -166,10 +214,15 @@ App.user = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _render(data) {
-        $_content.handlebars('add', _templateUserList, data, {
+        // Get the template as compiled only, as the jQuery-handlebars wrapper is not required
+        var html = $_userList.handlebars('add', _templateUserList, data, {
             remove_type: 'same',
+            type: 'COMPILED',
             validate: !core.isEmpty(data)
         });
+
+        // Append to the user list
+        $_userList.append(html);
     }
 
     // Invoked when the DOM has loaded
@@ -179,7 +232,7 @@ App.user = (function (window, document, $, core, undefined) {
                 userList: 'select[name="username"]'
             },
             templates: {
-                userList: ''
+                userList: '#template-user-list'
             }
         });
     });

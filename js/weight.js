@@ -47,8 +47,8 @@ App.weight = (function (window, document, $, core, undefined) {
     // Store the next 'moment' date object. Testing only
     var _dateNext = null;
 
-    // Generate a random username
-    var _username = ['softwarespot', 'squidge', 'brainbox'];
+    // Store the selected username
+    var _username = null;
 
     // Store the jQuery selector object for the document
     var $_document = null;
@@ -262,7 +262,7 @@ App.weight = (function (window, document, $, core, undefined) {
                     // Save the current state of the weights list
                     _session.set(_get());
 
-                    // Render the template
+                    // Render the weights list
                     _render(_get());
                 }
             });
@@ -275,70 +275,39 @@ App.weight = (function (window, document, $, core, undefined) {
         }
     };
 
+    // Generic session handler
+    var _sessionHandler = new core.session(GUID + '_weight_list.app');
+
     // Session handler for the weights list
     var _session = {
-        // Unique session id
-        key: GUID + '_weight_list.app',
-
-        // Cache the result of has()
-        _has: null,
-
         // Clear the session storage item
         clear: function clear() {
-            // There is an issue with IE when running from the local file system
-            try {
-                window.sessionStorage.removeItem(this.key);
-            } catch (ex) {
-                window.console.log('An error occurred with _session.clear()');
-            }
+            _sessionHandler.clear()
         },
 
         // Check if the sessionStorage API exists
         has: function has() {
-            // If it's the first time being called, then cache the result
-            if (core.isNull(this._has)) {
-                var storage = window.sessionStorage;
-                this._has = core.isObject(storage) &&
-                    'key' in storage &&
-                    'getItem' in storage &&
-                    'setItem' in storage &&
-                    'removeItem' in storage &&
-                    'clear' in storage;
-            }
-
-            return this._has;
+            return _sessionHandler.has()
         },
 
-        // Alias for clear()
+        // Clear the session storage item
         remove: this.clear,
 
         // Get the data that was previously stored in the session storage
         get: function get() {
-            var items = null;
-
-            // There is an issue with IE when running from the local file system
-            try {
-                items = window.sessionStorage.getItem(this.key);
-            } catch (ex) {
-                window.console.log('An error occurred with _session.get()');
-            }
+            var items = _sessionHandler.get();
 
             // If null then return an empty string; otherwise, parse as a JSON object literal
             return core.isEmpty(items) ? [] : window.JSON.parse(items);
         },
 
-        // Save the data to the session storage
+        // Set the data to the session storage
         set: function set(array) {
             if (!core.isArray(array)) {
                 return;
             }
 
-            // There is an issue with IE when running from the local file system
-            try {
-                window.sessionStorage.setItem(this.key, window.JSON.stringify(array));
-            } catch (ex) {
-                window.console.log('An error occurred with _session.set()');
-            }
+            _sessionHandler.set(array);
         }
     };
 
@@ -376,11 +345,6 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Set the API prefix
         core.api.setPrefix('api');
-
-        // Generate a random username
-        _username = _username[core.randomNumber(0, _username.length - 1)];
-
-        // _events.selectFn(_username);
 
         _isInitialised = true;
     }
