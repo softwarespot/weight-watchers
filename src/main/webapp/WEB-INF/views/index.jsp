@@ -48,6 +48,13 @@
 
         <form id="weight-post-form" action="weight" method="POST">
             <input type="text" name="value" value="" placeholder="Enter your weight"/>
+            <select name="username">
+                <!--Add the usernames dynamically-->
+                <option value="" disabled selected>Choose a username</option>
+                <option value="softwarespot">softwarespot</option>
+                <option value="squidge">squidge</option>
+                <option value="brainbox">brainbox</option>
+            </select>
             <br/>
             <input type="submit" value="Create" class="button-primary">
             <input type="reset" value="Reset">
@@ -107,7 +114,7 @@
     <!--END: Templates-->
 
     <!--
-    	This is for testing purposes only!
+        This is for testing purposes only!
         <c:if test="${empty weights}">
             No values in database.
         </c:if>
