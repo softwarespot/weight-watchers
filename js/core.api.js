@@ -300,11 +300,11 @@ App.core.api = (function (window, document, $, core, undefined) {
                 window.fetch(url, init)
                     .then(_fetchCheckStatus)
                     .then(_fetchParseJSON)
-                    .then(function thenFetch(data) {
-                        resolve(data);
+                    .then(function thenFetch(response) {
+                        resolve(response);
                     })
-                    .catch(function catchFetch() {
-                        reject();
+                    .catch(function catchFetch(error) {
+                        reject(error);
                     });
             }
         });
@@ -339,9 +339,9 @@ App.core.api = (function (window, document, $, core, undefined) {
                     window.NProgress.done();
                     resolve(response);
                 })
-                .catch(function catchFetch(exception) {
+                .catch(function catchFetch(error) {
                     window.NProgress.done();
-                    reject(exception);
+                    reject(error);
                 });
         });
     }
@@ -364,9 +364,9 @@ App.core.api = (function (window, document, $, core, undefined) {
                     window.NProgress.done();
                     resolve(response);
                 })
-                .catch(function catchFetch(exception) {
+                .catch(function catchFetch(error) {
                     window.NProgress.done();
-                    reject(exception);
+                    reject(error);
                 });
         });
     }
@@ -390,9 +390,9 @@ App.core.api = (function (window, document, $, core, undefined) {
                     window.NProgress.done();
                     resolve(response);
                 })
-                .catch(function catchFetch(exception) {
+                .catch(function catchFetch(error) {
                     window.NProgress.done();
-                    reject(exception);
+                    reject(error);
                 });
         });
     }
@@ -416,9 +416,9 @@ App.core.api = (function (window, document, $, core, undefined) {
                     window.NProgress.done();
                     resolve(response);
                 })
-                .catch(function catchFetch(exception) {
+                .catch(function catchFetch(error) {
                     window.NProgress.done();
-                    reject(exception);
+                    reject(error);
                 });
         });
     }
