@@ -1,4 +1,4 @@
-/* global App, moment, NProgress */
+/* global App */
 
 /**
  * Weight module
@@ -125,7 +125,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // When the reset event is invoked, call the following function
         resetFn: function resetFn( /*event*/ ) {
-            NProgress.done();
+            window.NProgress.done();
 
             // Hide the error message
             $_weightFormError.addClass('hide');
@@ -286,7 +286,7 @@ App.weight = (function (window, document, $, core, undefined) {
                     // Render the weights list
                     _render(_get());
                 }
-            });
+            })
 
             // Fail, an issue occurred with the request
             .catch(function catchFetch() {
@@ -303,12 +303,12 @@ App.weight = (function (window, document, $, core, undefined) {
     var _session = {
         // Clear the session storage item
         clear: function clear() {
-            _sessionHandler.clear()
+            _sessionHandler.clear();
         },
 
         // Check if the sessionStorage API exists
         has: function has() {
-            return _sessionHandler.has()
+            return _sessionHandler.has();
         },
 
         // Clear the session storage item

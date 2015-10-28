@@ -1,5 +1,3 @@
-/* global NProgress */
-
 // Create an 'App' namespace
 var App = {};
 
@@ -76,7 +74,7 @@ App.core = (function (window, document, $, undefined) {
         }
 
         // Disable showing the spinner in the top right hand corner
-        NProgress.configure({
+        window.NProgress.configure({
             minimum: 0.1,
             showSpinner: false
         });
