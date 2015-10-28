@@ -41,11 +41,15 @@ App.weight = (function (window, document, $, core, undefined) {
     // Store dates of the added weight values. Testing only
     var _weightsDate = new window.Set();
 
+    // Store the next 'moment' date object. Testing only
+    var _dateNext = null;
+
     // Store the id value. Testing only
     var _internalId = 0;
 
-    // Store the next 'moment' date object. Testing only
-    var _dateNext = null;
+    // Store whether to display all values or unique only. Testing only
+    var _isDisplayAll = false;
+    var $_displayAll = null;
 
     // Store the selected username
     var _username = null;
@@ -64,6 +68,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
     var $_weightFormError = null;
 
+    // Store the data-* attribute id
     var _dataAttributeId = null;
 
     // Template string selectors
@@ -74,6 +79,9 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // Events object
     var _events = {
+        // When the display all checkbox is changed event string
+        checked: 'change.display_all.weight.app',
+
         // When the current key is released event string
         keyup: 'keyup.weight.app',
 
@@ -88,6 +96,15 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // Submit event string
         submit: 'submit.weight.app',
+
+        // When the display all checkbox is changed, call the following function
+        displayAllFn: function displayAllFn(event) {
+            var element = event.currentTarget;
+            _isDisplayAll = element.checked;
+
+            // Emit to internally called the bound callback function
+            core.emitter.emit(_events.select, _username);
+        },
 
         // When the keyup event is invoked, call the following function
         keyupFn: function keyupFn(event) {
@@ -160,6 +177,10 @@ App.weight = (function (window, document, $, core, undefined) {
 
         // When the user selection is changed
         selectFn: function selectFn(username) {
+            if (core.isEmpty(username)) {
+                return;
+            }
+
             _username = username;
 
             // Simulate an ajax GET request
@@ -359,6 +380,8 @@ App.weight = (function (window, document, $, core, undefined) {
 
         $_document = null;
         $_content = null;
+        $_displayAll = null;
+
         $_weightForm = null;
         $_weightForm = null;
         $_weightFormReset = null;
@@ -391,6 +414,8 @@ App.weight = (function (window, document, $, core, undefined) {
         $_document = $(document);
         $_content = $(dom.weightList);
 
+        $_displayAll = $(dom.displayAll);
+
         $_weightForm = $(dom.forms.weight);
         $_weightFormInput = $_weightForm.find('input[type="text"]');
         $_weightFormReset = $_weightForm.find('[type="reset"]');
@@ -411,6 +436,8 @@ App.weight = (function (window, document, $, core, undefined) {
 
         core.emitter.on(_events.select, _events.selectFn);
         $_document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
+        $_displayAll.on(_events.checked, _events.displayAllFn);
+
         $_weightForm.on(_events.submit, _events.submitFn);
         $_weightFormInput.on(_events.keyup, _events.keyupFn);
         $_weightFormReset.on(_events.reset, _events.resetFn);
@@ -430,6 +457,8 @@ App.weight = (function (window, document, $, core, undefined) {
 
         core.emitter.off(_events.select, _events.selectFn);
         $_document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
+        $_displayAll.off(_events.checked, _events.displayAllFn);
+
         $_weightForm.off(_events.submit, _events.submitFn);
         $_weightFormInput.off(_events.keyup, _events.keyupFn);
         $_weightFormReset.off(_events.reset, _events.resetFn);
@@ -464,7 +493,7 @@ App.weight = (function (window, document, $, core, undefined) {
         // Check if the weight object value has not already been set by formatting the 'moment' date object
         // to YYYYMMDD and storing in a set collection
         var date = window.moment(weight.time).format(DATE_FORMAT);
-        if (_weightsDate.has(date)) {
+        if (!_isDisplayAll && _weightsDate.has(date)) {
             return false;
         }
 
@@ -643,6 +672,7 @@ App.weight = (function (window, document, $, core, undefined) {
                 forms: {
                     weight: '#weight-post-form'
                 },
+                displayAll: '[name="display-all"]',
                 weightList: '#weight-list',
                 weightListError: '#weight-list-error'
             },
