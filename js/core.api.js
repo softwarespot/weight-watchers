@@ -248,8 +248,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @return {object|null} JSON object; otherwise, original response
      */
     function _fetchParseJSON(response) {
-        var json = response.json();
-        return json ? json : response;
+        return !core.isEmpty(response.text()) ? response.json() : response;
     }
 
     /**
