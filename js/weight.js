@@ -149,13 +149,13 @@ App.weight = (function (window, document, $, core, undefined) {
             var id = event.currentTarget.getAttribute(_dataAttributeId);
 
             // Simulate an ajax GET request
-            var xhr = core.api.delete(_api.WEIGHT_BY_USERNAME_AND_ID, {
+            core.api.delete(_api.WEIGHT_BY_USERNAME_AND_ID, {
                 id: id,
                 username: _getUsernameById(id)
-            });
+            })
 
             // Done, the ajax request was successful
-            xhr.then(function thenFetch(weight) {
+            .then(function thenFetch(weight) {
                 id = core.isDebug() ? id : weight.id;
 
                 // Remove the weight value object from the weights list
@@ -166,10 +166,10 @@ App.weight = (function (window, document, $, core, undefined) {
 
                 // Render the template
                 _render(_get());
-            });
+            })
 
             // Fail, an issue occurred with the request
-            xhr.catch(function catchFetch() {
+            .catch(function catchFetch() {
                 // On error
                 window.console.log('Some error occurred with DELETE\'in the weight value');
             });
@@ -264,17 +264,17 @@ App.weight = (function (window, document, $, core, undefined) {
             weightValue = _sanitize(weightValue);
 
             // Simulate an ajax POST request
-            var xhr = core.api.post(_api.WEIGHTS_BY_USERNAME, {
+            core.api.post(_api.WEIGHTS_BY_USERNAME, {
                 username: _username
             }, {
                 id: 0,
                 value: weightValue,
                 time: 0,
                 username: _username
-            });
+            })
 
             // Done, the ajax request was successful
-            xhr.then(function thenFetch(weight) {
+            .then(function thenFetch(weight) {
                 // Generate a weight value object
                 weight = core.isDebug() ? _generate(weightValue) : weight;
 
@@ -289,7 +289,7 @@ App.weight = (function (window, document, $, core, undefined) {
             });
 
             // Fail, an issue occurred with the request
-            xhr.catch(function catchFetch() {
+            .catch(function catchFetch() {
                 // On error
                 window.console.log('Some error occurred with POST\'in the weight value');
             });
