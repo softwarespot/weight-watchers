@@ -1,4 +1,4 @@
-/* global App, NProgress */
+/* global App */
 
 /**
  * API module
@@ -210,19 +210,19 @@ App.core.api = (function (window, document, $, core, undefined) {
      */
     function _setAjaxGlobal() {
         // Disable showing the spinner in the top right hand corner
-        NProgress.configure({
+        window.NProgress.configure({
             minimum: 0.1,
             showSpinner: false
         });
 
         // When an ajax request is started
         $_document.ajaxStart(function ajaxStart() {
-            NProgress.start();
+            window.NProgress.start();
         });
 
         // When an ajax request has stopped
         $_document.ajaxStop(function ajaxStop() {
-            NProgress.done();
+            window.NProgress.done();
         });
     }
 
@@ -317,8 +317,8 @@ App.core.api = (function (window, document, $, core, undefined) {
      */
     function fetch() {
         // Simulate an ajax request with a delayed progress bar
-        NProgress.start();
-        window.setTimeout(NProgress.done, FETCH_TIME);
+        window.NProgress.start();
+        window.setTimeout(window.NProgress.done, FETCH_TIME);
     }
 
     /**
@@ -331,16 +331,16 @@ App.core.api = (function (window, document, $, core, undefined) {
     function del(url, object) {
         return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
-            NProgress.start();
+            window.NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.DELETE, object)
                 .then(function thenFetch(response) {
-                    NProgress.done();
+                    window.NProgress.done();
                     resolve(response);
                 })
                 .catch(function catchFetch(exception) {
-                    NProgress.done();
+                    window.NProgress.done();
                     reject(exception);
                 });
         });
@@ -356,16 +356,16 @@ App.core.api = (function (window, document, $, core, undefined) {
     function get(url, object) {
         return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
-            NProgress.start();
+            window.NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.GET, object)
                 .then(function thenFetch(response) {
-                    NProgress.done();
+                    window.NProgress.done();
                     resolve(response);
                 })
                 .catch(function catchFetch(exception) {
-                    NProgress.done();
+                    window.NProgress.done();
                     reject(exception);
                 });
         });
@@ -382,16 +382,16 @@ App.core.api = (function (window, document, $, core, undefined) {
     function put(url, object, body) {
         return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
-            NProgress.start();
+            window.NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.PUT, object, body)
                 .then(function thenFetch(response) {
-                    NProgress.done();
+                    window.NProgress.done();
                     resolve(response);
                 })
                 .catch(function catchFetch(exception) {
-                    NProgress.done();
+                    window.NProgress.done();
                     reject(exception);
                 });
         });
@@ -408,16 +408,16 @@ App.core.api = (function (window, document, $, core, undefined) {
     function post(url, object, body) {
         return new window.Promise(function promise(resolve, reject) {
             // Start the progress bar
-            NProgress.start();
+            window.NProgress.start();
 
             // Create a fetch request
             _fetchWrapper(url, methods.POST, object, body)
                 .then(function thenFetch(response) {
-                    NProgress.done();
+                    window.NProgress.done();
                     resolve(response);
                 })
                 .catch(function catchFetch(exception) {
-                    NProgress.done();
+                    window.NProgress.done();
                     reject(exception);
                 });
         });
