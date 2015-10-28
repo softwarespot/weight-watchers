@@ -52,11 +52,13 @@
                 <!--Add the usernames dynamically-->
             </select>
             <br/>
-            <input type="submit" value="Create" class="button-primary">
-            <input type="reset" value="Reset">
+            <input type="submit" value="Create" class="button-primary"/>
+            <input type="reset" value="Reset"/>
         </form>
 
         <div id="weight-list-error" class="error-box hide">Please enter a valid number e.g. 3 or 3.1</div>
+
+        <input type="checkbox" name="display-all" value="display-all"/>&nbsp;Display all the weight values
 
         <div id="weight-list">
         </div>
