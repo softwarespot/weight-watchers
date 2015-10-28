@@ -29,7 +29,7 @@ public class Weight {
 	 */
 	public Weight(int id, float value, Date time, String username) {
 		super();
-		
+
 		this.id = id;
 		this.value = value;
 		this.time = time;

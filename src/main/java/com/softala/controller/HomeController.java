@@ -22,7 +22,7 @@ public class HomeController {
 	 * Logging factory method
 	 */
 	private static final Logger _logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	/**
 	 * Get the logger object reference
 	 * 
