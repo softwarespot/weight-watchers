@@ -66,16 +66,16 @@ public class ApiController {
 		getLogger().info("users/{username}/weights aka addWeightByUser");
 
 		// Check if the username already exists in the database and if it
-		// doesn't return with a NOT_FOUND HTTP status code
+		// doesn't return with a NOT_FOUND HTTP status code and don't return a body
 		if (!getDao().getUsersAll().contains(username)) {
-			return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
 		// Add to the database. Note: There is not error checking done
 		// beforehand
 		getDao().saveWeight(weight);
 
-		return new ResponseEntity<Object>(null, HttpStatus.CREATED);
+		return new ResponseEntity<Void>(HttpStatus.CREATED);
 	}
 
 	/**
@@ -110,9 +110,9 @@ public class ApiController {
 		List<String> usernames = getDao().getUsersAll();
 
 		// Check if the usernames list is empty and if it is, return a NOT_FOUND
-		// HTTP status code
+		// HTTP status code and don't return a body
 		if (usernames.isEmpty()) {
-			return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<List<String>>(usernames, HttpStatus.OK);
@@ -134,9 +134,9 @@ public class ApiController {
 		Weight weight = getDao().getWeightById(id);
 
 		// If the weight was not found, then set the HTTP status code to
-		// NOT_FOUND
+		// NOT_FOUND and don't return a body
 		if (weight == null) {
-			return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<Weight>(weight, HttpStatus.OK);
@@ -155,9 +155,9 @@ public class ApiController {
 		List<Weight> weights = getDao().getWeightsAll();
 
 		// If the weights array is empty, then set the HTTP status code to
-		// NOT_FOUND
+		// NOT_FOUND and don't return a body
 		if (weights.isEmpty()) {
-			return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<List<Weight>>(weights, HttpStatus.OK);
@@ -179,9 +179,9 @@ public class ApiController {
 		// only!
 
 		// If the username does not exist, then set the HTTP status code to
-		// NOT_FOUND
+		// NOT_FOUND and don't return a body
 		if (!getDao().getUsersAll().contains(username)) {
-			return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
 		List<Weight> weights = new ArrayList<Weight>();
@@ -193,9 +193,9 @@ public class ApiController {
 		}
 
 		// If the weights array is empty, then set the HTTP status code to
-		// NOT_FOUND
+		// NOT_FOUND and don't return a body
 		if (weights.isEmpty()) {
-			return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity<List<Weight>>(weights, HttpStatus.OK);
@@ -214,11 +214,11 @@ public class ApiController {
 	ResponseEntity<?> removeWeightByUserAndId(@PathVariable String username, @PathVariable int id) {
 		getLogger().info("/users/{username}/weights/{id} aka removeWeightByUserAndId");
 
-		if (getDao().deleteWeight(id)) {
-			return new ResponseEntity<Object>(null, HttpStatus.OK);
+		if (!getDao().deleteWeight(id)) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<Object>(null, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 }

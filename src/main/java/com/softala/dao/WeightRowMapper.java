@@ -16,6 +16,8 @@ public class WeightRowMapper implements RowMapper<Weight> {
 
 	public Weight mapRow(ResultSet resultSet, int rowNum) throws SQLException {
 		Weight weight = new Weight();
+		
+		// Use the associated setters instead of the constructor
 		weight.setId(resultSet.getInt("id"));
 		weight.setValue(resultSet.getFloat("value"));
 		weight.setTime(resultSet.getTimestamp("time"));

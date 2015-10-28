@@ -82,6 +82,7 @@ public class WeightDaoImpl implements WeightDao {
 			// NOT_FOUND when it gets a null returned
 			return null;
 		}
+
 		return weights;
 	}
 
