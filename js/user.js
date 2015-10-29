@@ -203,7 +203,9 @@ App.user = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _cacheDom(dom) {
-        _$userList = $(dom.userList);
+        var $html = $(dom.html);
+
+        _$userList = $html.find(dom.userList);
     }
 
     /**
@@ -229,6 +231,8 @@ App.user = (function (window, document, $, core, undefined) {
     $(function () {
         init({
             dom: {
+                // Required property
+                html: '#weight-post-form',
                 userList: 'select[name="username"]'
             },
             templates: {

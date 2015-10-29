@@ -411,17 +411,19 @@ App.weight = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _cacheDom(dom) {
-        _$document = $(document);
-        _$content = $(dom.weightList);
+        var $html = $(dom.html);
 
-        _$displayAll = $(dom.displayAll);
+        _$content = $html.find(dom.weightList);
 
-        _$weightForm = $(dom.forms.weight);
+        _$displayAll =  $html.find(dom.displayAll);
+
+        _$weightForm =  $html.find(dom.forms.weight);
         _$weightFormInput = _$weightForm.find('input[type="text"]');
         _$weightFormReset = _$weightForm.find('[type="reset"]');
         _$weightFormSubmit = _$weightForm.find('input[type="submit"]');
+        _$weightFormError =  $html.find(dom.weightListError);
 
-        _$weightFormError = $(dom.weightListError);
+        _$document = $(document);
     }
 
     /**
@@ -669,6 +671,8 @@ App.weight = (function (window, document, $, core, undefined) {
         init({
             dataId: 'data-weight-id',
             dom: {
+                // Required property
+                html: '#weight-section',
                 forms: {
                     weight: '#weight-post-form'
                 },
