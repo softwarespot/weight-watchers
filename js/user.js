@@ -29,7 +29,7 @@ App.user = (function (window, document, $, core, undefined) {
     var _isInitialised = false;
 
     // Store the jQuery selector object for the user list
-    var $_userList = null;
+    var _$userList = null;
 
     // Generate a random array of username
     var _users = ['softwarespot', 'squidge', 'brainbox'];
@@ -150,7 +150,7 @@ App.user = (function (window, document, $, core, undefined) {
     function destroy() {
         _unbindEvents();
 
-        $_userList = null;
+        _$userList = null;
 
         _isInitialised = false;
     }
@@ -175,7 +175,7 @@ App.user = (function (window, document, $, core, undefined) {
         }
 
         core.emitter.on(_events.signIn, _events.signInFn);
-        $_userList.on(_events.select, _events.selectFn);
+        _$userList.on(_events.select, _events.selectFn);
 
         _isEventsBound = true;
     }
@@ -191,7 +191,7 @@ App.user = (function (window, document, $, core, undefined) {
         }
 
         core.emitter.off(_events.signInEvent, _events.signIn);
-        $_userList.off(_events.select, _events.selectFn);
+        _$userList.off(_events.select, _events.selectFn);
 
         _isEventsBound = false;
     }
@@ -203,7 +203,7 @@ App.user = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _cacheDom(dom) {
-        $_userList = $(dom.userList);
+        _$userList = $(dom.userList);
     }
 
     /**
@@ -215,14 +215,14 @@ App.user = (function (window, document, $, core, undefined) {
      */
     function _render(data) {
         // Get the template as compiled only, as the jQuery-handlebars wrapper is not required
-        var html = $_userList.handlebars('add', _templateUserList, data, {
+        var html = _$userList.handlebars('add', _templateUserList, data, {
             remove_type: 'same',
             type: 'COMPILED',
             validate: !core.isEmpty(data)
         });
 
         // Append to the user list
-        $_userList.append(html);
+        _$userList.append(html);
     }
 
     // Invoked when the DOM has loaded

@@ -24,10 +24,10 @@ App.navigation = (function (window, document, $, core, undefined) {
     var _isInitialised = false;
 
     // Store the body jQuery selector object
-    var $_body = null;
+    var _$body = null;
 
     // Store the navigation hyperlinks jQuery selector object
-    var $_navigationLinks = null;
+    var _$navigationLinks = null;
 
     // Events object
     var _events = {
@@ -104,8 +104,8 @@ App.navigation = (function (window, document, $, core, undefined) {
     function destroy() {
         _unbindEvents();
 
-        $_body = null;
-        $_navigationLinks = null;
+        _$body = null;
+        _$navigationLinks = null;
 
         _isInitialised = false;
     }
@@ -130,7 +130,7 @@ App.navigation = (function (window, document, $, core, undefined) {
         }
 
         // Navigation hyperlink elements
-        $_navigationLinks.on(_events.navigation, _events.navigationFn);
+        _$navigationLinks.on(_events.navigation, _events.navigationFn);
 
         _isEventsBound = true;
     }
@@ -145,7 +145,7 @@ App.navigation = (function (window, document, $, core, undefined) {
             return;
         }
 
-        $_navigationLinks.off(_events.navigation, _events.navigationFn);
+        _$navigationLinks.off(_events.navigation, _events.navigationFn);
 
         _isEventsBound = false;
     }
@@ -156,8 +156,8 @@ App.navigation = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _cacheDom() {
-        $_body = $('html, body');
-        $_navigationLinks = $('header').find('a');
+        _$body = $('html, body');
+        _$navigationLinks = $('header').find('a');
     }
 
     /**
@@ -173,7 +173,7 @@ App.navigation = (function (window, document, $, core, undefined) {
         }
 
         // Animate from the body to the top of the element's offset position
-        $_body.animate({
+        _$body.animate({
             scrollTop: $element.offset().top
         }, speed);
     }

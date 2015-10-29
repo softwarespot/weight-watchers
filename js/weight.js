@@ -49,24 +49,24 @@ App.weight = (function (window, document, $, core, undefined) {
 
     // Store whether to display all values or unique only. Testing only
     var _isDisplayAll = false;
-    var $_displayAll = null;
+    var _$displayAll = null;
 
     // Store the selected username
     var _username = null;
 
     // Store the jQuery selector object for the document
-    var $_document = null;
+    var _$document = null;
 
     // Store the jQuery selector object to add the weight data to it
-    var $_content = null;
+    var _$content = null;
 
     // Store the jQuery selector objects for the weight form
-    var $_weightForm = null;
-    var $_weightFormInput = null;
-    var $_weightFormReset = null;
-    var $_weightFormSubmit = null;
+    var _$weightForm = null;
+    var _$weightFormInput = null;
+    var _$weightFormReset = null;
+    var _$weightFormSubmit = null;
 
-    var $_weightFormError = null;
+    var _$weightFormError = null;
 
     // Store the data-* attribute id
     var _dataAttributeId = null;
@@ -115,12 +115,12 @@ App.weight = (function (window, document, $, core, undefined) {
             var weightValue = event.currentTarget.value;
             if (!isValidWeight(weightValue)) {
                 // Disable the submit button
-                $_weightFormSubmit.prop('disabled', true);
+                _$weightFormSubmit.prop('disabled', true);
                 return;
             }
 
             // Enabled the submit button
-            $_weightFormSubmit.prop('disabled', false);
+            _$weightFormSubmit.prop('disabled', false);
         },
 
         // When the reset event is invoked, call the following function
@@ -128,7 +128,7 @@ App.weight = (function (window, document, $, core, undefined) {
             window.NProgress.done();
 
             // Hide the error message
-            $_weightFormError.addClass('hide');
+            _$weightFormError.addClass('hide');
 
             // Clear the weight list session
             _session.clear();
@@ -244,21 +244,21 @@ App.weight = (function (window, document, $, core, undefined) {
             // $form.serializeJSON():
 
             // Disable the submit button
-            $_weightFormSubmit.prop('disabled', true);
+            _$weightFormSubmit.prop('disabled', true);
 
             // If an invalid weight value, the disable the submit button
             var weightValue = form.value;
             if (!isValidWeight(weightValue)) {
                 // Show the error message
-                $_weightFormError.removeClass('hide');
+                _$weightFormError.removeClass('hide');
                 return;
             }
 
             // Clear the input contents
-            $_weightFormInput.val('');
+            _$weightFormInput.val('');
 
             // Hide the error message
-            $_weightFormError.addClass('hide');
+            _$weightFormError.addClass('hide');
 
             // Sanitize the weight value
             weightValue = _sanitize(weightValue);
@@ -361,8 +361,8 @@ App.weight = (function (window, document, $, core, undefined) {
         _bindEvents();
 
         // Disable the submit button
-        $_weightFormSubmit.prop('disabled', true);
-        $_weightFormError.addClass('hide');
+        _$weightFormSubmit.prop('disabled', true);
+        _$weightFormError.addClass('hide');
 
         // Set the API prefix
         core.api.setPrefix('api');
@@ -378,16 +378,16 @@ App.weight = (function (window, document, $, core, undefined) {
     function destroy() {
         _unbindEvents();
 
-        $_document = null;
-        $_content = null;
-        $_displayAll = null;
+        _$document = null;
+        _$content = null;
+        _$displayAll = null;
 
-        $_weightForm = null;
-        $_weightForm = null;
-        $_weightFormReset = null;
-        $_weightFormSubmit = null;
+        _$weightForm = null;
+        _$weightForm = null;
+        _$weightFormReset = null;
+        _$weightFormSubmit = null;
 
-        $_weightFormError = null;
+        _$weightFormError = null;
 
         // Clear the elements in the weights array
         core.arrayClear(_get());
@@ -411,17 +411,17 @@ App.weight = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _cacheDom(dom) {
-        $_document = $(document);
-        $_content = $(dom.weightList);
+        _$document = $(document);
+        _$content = $(dom.weightList);
 
-        $_displayAll = $(dom.displayAll);
+        _$displayAll = $(dom.displayAll);
 
-        $_weightForm = $(dom.forms.weight);
-        $_weightFormInput = $_weightForm.find('input[type="text"]');
-        $_weightFormReset = $_weightForm.find('[type="reset"]');
-        $_weightFormSubmit = $_weightForm.find('input[type="submit"]');
+        _$weightForm = $(dom.forms.weight);
+        _$weightFormInput = _$weightForm.find('input[type="text"]');
+        _$weightFormReset = _$weightForm.find('[type="reset"]');
+        _$weightFormSubmit = _$weightForm.find('input[type="submit"]');
 
-        $_weightFormError = $(dom.weightListError);
+        _$weightFormError = $(dom.weightListError);
     }
 
     /**
@@ -435,12 +435,12 @@ App.weight = (function (window, document, $, core, undefined) {
         }
 
         core.emitter.on(_events.select, _events.selectFn);
-        $_document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
-        $_displayAll.on(_events.checked, _events.displayAllFn);
+        _$document.on(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
+        _$displayAll.on(_events.checked, _events.displayAllFn);
 
-        $_weightForm.on(_events.submit, _events.submitFn);
-        $_weightFormInput.on(_events.keyup, _events.keyupFn);
-        $_weightFormReset.on(_events.reset, _events.resetFn);
+        _$weightForm.on(_events.submit, _events.submitFn);
+        _$weightFormInput.on(_events.keyup, _events.keyupFn);
+        _$weightFormReset.on(_events.reset, _events.resetFn);
 
         _isEventsBound = true;
     }
@@ -456,12 +456,12 @@ App.weight = (function (window, document, $, core, undefined) {
         }
 
         core.emitter.off(_events.select, _events.selectFn);
-        $_document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
-        $_displayAll.off(_events.checked, _events.displayAllFn);
+        _$document.off(_events.remove, '[' + _dataAttributeId + ']', _events.removeFn);
+        _$displayAll.off(_events.checked, _events.displayAllFn);
 
-        $_weightForm.off(_events.submit, _events.submitFn);
-        $_weightFormInput.off(_events.keyup, _events.keyupFn);
-        $_weightFormReset.off(_events.reset, _events.resetFn);
+        _$weightForm.off(_events.submit, _events.submitFn);
+        _$weightFormInput.off(_events.keyup, _events.keyupFn);
+        _$weightFormReset.off(_events.reset, _events.resetFn);
 
         _isEventsBound = false;
     }
@@ -630,7 +630,7 @@ App.weight = (function (window, document, $, core, undefined) {
      * @return {undefined}
      */
     function _render(data) {
-        $_content.handlebars('add', _templateWeightList, data, {
+        _$content.handlebars('add', _templateWeightList, data, {
             remove_type: 'same',
             validate: !core.isEmpty(data)
         });
