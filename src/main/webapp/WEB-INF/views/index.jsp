@@ -48,12 +48,17 @@
 
         <form id="weight-post-form" action="weight" method="POST">
             <input type="text" name="value" value="" placeholder="Enter your weight"/>
+            <select name="username">
+                <!--Add the usernames dynamically-->
+            </select>
             <br/>
-            <input type="submit" value="Create" class="button-primary">
-            <input type="reset" value="Reset">
+            <input type="submit" value="Create" class="button-primary"/>
+            <input type="reset" value="Reset"/>
         </form>
 
         <div id="weight-list-error" class="error-box hide">Please enter a valid number e.g. 3 or 3.1</div>
+
+        <input type="checkbox" name="display-all" value="display-all"/>&nbsp;Display all the weight values
 
         <div id="weight-list">
         </div>
@@ -101,13 +106,24 @@
                 {{/each}}
             <table>
         {{else}}
-            <h4>Whoops! It appears no values have been entered.</h4>
+            <h4>It appears no values have been entered.</h4>
+        {{/if}}
+    </script>
+
+    <script id="template-user-list" type="text/x-handlebars">
+        {{#if usernames}}
+            <option value="" disabled selected>Choose a username</option>
+            {{#each usernames}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        {{else}}
+            <option value="" disabled selected>No users were found</option>
         {{/if}}
     </script>
     <!--END: Templates-->
 
     <!--
-    	This is for testing purposes only!
+        This is for testing purposes only!
         <c:if test="${empty weights}">
             No values in database.
         </c:if>
