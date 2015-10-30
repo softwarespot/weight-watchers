@@ -124,7 +124,7 @@ App.weight = (function (window, document, $, core, undefined) {
         },
 
         // When the reset event is invoked, call the following function
-        resetFn: function resetFn( /*event*/ ) {
+        resetFn: function resetFn() {
             window.NProgress.done();
 
             // Hide the error message
