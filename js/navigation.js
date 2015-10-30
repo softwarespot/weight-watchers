@@ -157,7 +157,7 @@ App.navigation = (function (window, document, $, core, undefined) {
      */
     function _cacheDom() {
         _$body = $('html, body');
-        _$navigationLinks = $('header').find('a');
+        _$navigationLinks = _$body.find('header').find('a');
     }
 
     /**
