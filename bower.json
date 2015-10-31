@@ -12,6 +12,7 @@
   "license": "MIT",
   "ignore": [],
   "dependencies": {
+    "Chart.js": "~1.0.2",
     "font-awesome": "fontawesome#~4.4.0",
     "handlebars": "~4.0.4",
     "jquery": "~2.1.4",

@@ -11,7 +11,7 @@ var del = require('del');
 
 // See the cssmin documentation for more details
 var cssMinSettings = {
-    keepSpecialComments: 0
+    keepSpecialComments: 0,
 };
 
 // See the uglify documentation for more details
@@ -24,8 +24,8 @@ var uglifySettings = {
         drop_console: true,
         /* jscs: enable */
         unsafe: true,
-        unused: true
-    }
+        unused: true,
+    },
 };
 
 // Assets for the project
@@ -41,16 +41,16 @@ var Assets = {
                 './css/**/*.css',
 
                 // Ignore all css file(s) that have the .min.css prefix
-                '!./css/**/*.min.css'
+                '!./css/**/*.min.css',
             ],
 
             // main: 'styles.css',
-            minified: 'styles.min.css'
+            minified: 'styles.min.css',
         },
         vendor: {
             // main: 'vendor.css',
-            minified: 'vendor.min.css'
-        }
+            minified: 'vendor.min.css',
+        },
     },
     js: {
         dest: 'js',
@@ -63,29 +63,29 @@ var Assets = {
                 './js/**/*.js',
 
                 // Ignore all js file(s) that have the .min.js prefix
-                '!./js/**/*.min.js'
+                '!./js/**/*.min.js',
             ],
 
             // main: 'scripts.js',
-            minified: 'scripts.min.js'
+            minified: 'scripts.min.js',
         },
         vendor: {
             // main: 'vendor.js',
-            minified: 'vendor.min.js'
-        }
-    }
+            minified: 'vendor.min.js',
+        },
+    },
 };
 
 // Clean the current directory
-gulp.task('clean', function (cb) {
+gulp.task('clean', function(cb) {
     del([
         './' + Assets.css.dest + '/' + Assets.css.custom.minified,
-        './' + Assets.js.dest + '/' + Assets.js.custom.minified
+        './' + Assets.js.dest + '/' + Assets.js.custom.minified,
     ], cb);
 });
 
 // Minify the main css file(s)
-gulp.task('cssmin', function () {
+gulp.task('cssmin', function() {
     // Store the destination directory
     var dest = './' + Assets.css.dest;
 
@@ -102,24 +102,24 @@ gulp.task('cssmin', function () {
 });
 
 // Check the code meets the following standards outlined in .jshintrc
-gulp.task('jshint', function () {
+gulp.task('jshint', function() {
     return gulp.src(Assets.js.custom.all)
         .pipe(jshint())
         .pipe(jshint.reporter('default'));
 });
 
 // Prettify the main js file(s)
-gulp.task('prettify-js', function () {
+gulp.task('prettify-js', function() {
     gulp.src(Assets.js.custom.all)
         .pipe(prettify({
             config: '.jsbeautifyrc',
-            mode: 'VERIFY_AND_WRITE'
+            mode: 'VERIFY_AND_WRITE',
         }))
         .pipe(gulp.dest('./' + Assets.js.dest));
 });
 
 // Uglify aka minify the main js file(s)
-gulp.task('uglify', function () {
+gulp.task('uglify', function() {
     // Store the destination directory
     var dest = './' + Assets.js.dest;
 
@@ -138,7 +138,7 @@ gulp.task('uglify', function () {
             // Non-core library
             dest + '/navigation.js',
             dest + '/user.js',
-            dest + '/weight.js'
+            dest + '/weight.js',
         ])
         .pipe(concat(Assets.js.custom.minified))
         .pipe(uglify(uglifySettings))
@@ -147,14 +147,14 @@ gulp.task('uglify', function () {
 });
 
 // Concat and uglify the vendor scripts/styles
-gulp.task('vendor', function () {
+gulp.task('vendor', function() {
     // Store the bower_components directory
     var bowerComponents = './bower_components/';
 
     // Copy fonts
     gulp.src([
             bowerComponents + 'font-awesome/fonts/**/*.{eof,svg,ttf,woff,woff2}',
-            bowerComponents + 'open-sans/fonts/**/*.{eof,svg,ttf,woff,woff2}'
+            bowerComponents + 'open-sans/fonts/**/*.{eof,svg,ttf,woff,woff2}',
         ])
         .pipe(gulp.dest('./fonts'));
 
@@ -164,7 +164,7 @@ gulp.task('vendor', function () {
             bowerComponents + 'open-sans/css/open-sans.css',
             bowerComponents + 'normalize-css/normalize.css',
             bowerComponents + 'skeleton/css/skeleton.css',
-            bowerComponents + 'nprogress/nprogress.css'
+            bowerComponents + 'nprogress/nprogress.css',
         ])
         .pipe(concat(Assets.css.vendor.minified))
         .pipe(cssmin(cssMinSettings))
@@ -173,6 +173,7 @@ gulp.task('vendor', function () {
     // Concatenate and uglify scripts
     gulp.src([
             bowerComponents + 'jquery/dist/jquery.js',
+            bowerComponents + 'Chart.js/Chart.js',
             bowerComponents + 'es6-collections/index.js',
             bowerComponents + 'es6-promise/promise.js',
             bowerComponents + 'fetch/fetch.js',
@@ -180,7 +181,7 @@ gulp.task('vendor', function () {
             bowerComponents + 'momentjs/moment.js',
             bowerComponents + 'nprogress/nprogress.js',
             bowerComponents + 'jquery-handlebars/jquery-handlebars.js',
-            bowerComponents + 'jquery.serializeJSON/jquery.serializejson.js'
+            bowerComponents + 'jquery.serializeJSON/jquery.serializejson.js',
         ])
         .pipe(concat(Assets.js.vendor.minified))
         .pipe(uglify(uglifySettings))
@@ -191,7 +192,7 @@ gulp.task('vendor', function () {
 gulp.task('build', ['clean', 'cssmin', 'uglify']);
 
 // Watch for changes to the main css and js file(s)
-gulp.task('watch', function () {
+gulp.task('watch', function() {
     gulp.watch(Assets.css.custom.all, ['cssmin']);
     gulp.watch(Assets.js.custom.all, ['jshint', 'uglify']);
 });
