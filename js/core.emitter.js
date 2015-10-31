@@ -7,7 +7,7 @@
  * Modified:  2015/10/28
  * @author softwarespot
  */
-App.core.emitter = (function (window, document, $, core, undefined) {
+App.core.emitter = (function emitterModule(window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -170,6 +170,6 @@ App.core.emitter = (function (window, document, $, core, undefined) {
         clear: clear,
         emit: emit,
         off: off,
-        on: on
+        on: on,
     };
-})(this, this.document, this.jQuery, App.core);
+})(window, window.document, window.jQuery, window.App.core);

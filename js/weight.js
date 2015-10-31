@@ -6,7 +6,7 @@
  * Modified:  2015/10/28
  * @author softwarespot
  */
-App.weight = (function (window, document, $, core, undefined) {
+App.weight = (function weightModule(window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -21,7 +21,7 @@ App.weight = (function (window, document, $, core, undefined) {
         WEIGHT_BY_ID: 'weights/{id}',
         WEIGHT_BY_USERNAME_AND_ID: 'users/{username}/weights/{id}',
         WEIGHTS_ALL: 'weights',
-        WEIGHTS_BY_USERNAME: 'users/{username}/weights'
+        WEIGHTS_BY_USERNAME: 'users/{username}/weights',
     };
 
     // Date format for ensuring a weight value isn't entered twice for the same day
@@ -151,7 +151,7 @@ App.weight = (function (window, document, $, core, undefined) {
             // Simulate an ajax GET request
             core.api.delete(_api.WEIGHT_BY_USERNAME_AND_ID, {
                 id: id,
-                username: _getUsernameById(id)
+                username: _getUsernameById(id),
             })
 
             // Done, the ajax request was successful
@@ -185,7 +185,7 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Simulate an ajax GET request
             core.api.get(_api.WEIGHTS_BY_USERNAME, {
-                username: _username
+                username: _username,
             })
 
             // Done, the ajax request was successful
@@ -265,12 +265,12 @@ App.weight = (function (window, document, $, core, undefined) {
 
             // Simulate an ajax POST request
             core.api.post(_api.WEIGHTS_BY_USERNAME, {
-                username: _username
+                username: _username,
             }, {
                 id: 0,
                 value: weightValue,
                 time: 0,
-                username: _username
+                username: _username,
             })
 
             // Done, the ajax request was successful
@@ -293,7 +293,7 @@ App.weight = (function (window, document, $, core, undefined) {
                 // On error
                 window.console.log('Some error occurred with POST\'in the weight value');
             });
-        }
+        },
     };
 
     // Generic session handler
@@ -329,7 +329,7 @@ App.weight = (function (window, document, $, core, undefined) {
             }
 
             _sessionHandler.set(array);
-        }
+        },
     };
 
     // Methods
@@ -547,7 +547,7 @@ App.weight = (function (window, document, $, core, undefined) {
             id: _internalId++,
             value: value,
             time: nowTimeStamp,
-            username: _username
+            username: _username,
         };
     }
 
@@ -634,7 +634,7 @@ App.weight = (function (window, document, $, core, undefined) {
     function _render(data) {
         _$content.handlebars('add', _templateWeightList, data, {
             remove_type: 'same',
-            validate: !core.isEmpty(data)
+            validate: !core.isEmpty(data),
         });
     }
 
@@ -667,22 +667,22 @@ App.weight = (function (window, document, $, core, undefined) {
     }
 
     // Invoked when the DOM has loaded
-    $(function () {
+    $(function weightReady() {
         init({
             dataId: 'data-weight-id',
             dom: {
                 // Required property
                 html: '#weight-section',
                 forms: {
-                    weight: '#weight-post-form'
+                    weight: '#weight-post-form',
                 },
                 displayAll: '[name="display-all"]',
                 weightList: '#weight-list',
-                weightListError: '#weight-list-error'
+                weightListError: '#weight-list-error',
             },
             templates: {
-                weightList: '#template-weight-list'
-            }
+                weightList: '#template-weight-list',
+            },
         });
     });
 
@@ -691,6 +691,6 @@ App.weight = (function (window, document, $, core, undefined) {
         init: init,
         destroy: destroy,
         getVersion: getVersion,
-        isValidWeight: isValidWeight
+        isValidWeight: isValidWeight,
     };
-})(this, this.document, this.jQuery, App.core);
+})(window, window.document, window.jQuery, window.App.core);

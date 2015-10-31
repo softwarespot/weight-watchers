@@ -28,7 +28,7 @@ App.base = {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    init: function (config) {
+    init: function init(config) {
         // Default config that can be overwritten by passing through the config variable
         var defaultConfig = {};
 
@@ -43,14 +43,14 @@ App.base = {
      *
      * @return {undefined}
      */
-    destroy: function () {},
+    destroy: function destroy() {},
 
     /**
      * Get the version number of the module
      *
      * @returns {number} Version number
      */
-    getVersion: function () {
+    getVersion: function getVersion() {
         return this.VERSION;
     },
 
@@ -59,5 +59,5 @@ App.base = {
      *
      * @return {undefined}
      */
-    _cacheDom: function () {}
+    _cacheDom: function _cacheDom() {},
 };

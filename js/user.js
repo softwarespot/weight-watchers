@@ -6,7 +6,7 @@
  * Modified:  2015/10/28
  * @author softwarespot
  */
-App.user = (function (window, document, $, core, undefined) {
+App.user = (function userModule(window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -17,7 +17,7 @@ App.user = (function (window, document, $, core, undefined) {
 
     // API resource URIs
     var _api = {
-        USERS: 'users'
+        USERS: 'users',
     };
 
     // Fields
@@ -65,7 +65,7 @@ App.user = (function (window, document, $, core, undefined) {
             if (!core.isNull(storage)) {
                 // Render the user list
                 _render({
-                    usernames: window.JSON.parse(storage)
+                    usernames: window.JSON.parse(storage),
                 });
 
                 return;
@@ -85,7 +85,7 @@ App.user = (function (window, document, $, core, undefined) {
 
                 // Render the user list
                 _render({
-                    usernames: users
+                    usernames: users,
                 });
             })
 
@@ -106,7 +106,7 @@ App.user = (function (window, document, $, core, undefined) {
             }
 
             window.console.log('Sign in was called, but nothing took place as of yet');
-        }
+        },
     };
 
     // Methods
@@ -220,7 +220,7 @@ App.user = (function (window, document, $, core, undefined) {
         var html = _$userList.handlebars('add', _templateUserList, data, {
             remove_type: 'same',
             type: 'COMPILED',
-            validate: !core.isEmpty(data)
+            validate: !core.isEmpty(data),
         });
 
         // Append to the user list
@@ -228,16 +228,16 @@ App.user = (function (window, document, $, core, undefined) {
     }
 
     // Invoked when the DOM has loaded
-    $(function () {
+    $(function userReady() {
         init({
             dom: {
                 // Required property
                 html: '#weight-post-form',
-                userList: 'select[name="username"]'
+                userList: 'select[name="username"]',
             },
             templates: {
-                userList: '#template-user-list'
-            }
+                userList: '#template-user-list',
+            },
         });
     });
 
@@ -245,6 +245,6 @@ App.user = (function (window, document, $, core, undefined) {
     return {
         init: init,
         destroy: destroy,
-        getVersion: getVersion
+        getVersion: getVersion,
     };
-})(this, this.document, this.jQuery, App.core);
+})(window, window.document, window.jQuery, window.App.core);

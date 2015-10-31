@@ -6,7 +6,7 @@
  * Modified: YYYY/MM/DD
  * @author author
  */
-App.base = (function (window, document, $, core, undefined) {
+App.base = (function baseModule(window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -100,7 +100,7 @@ App.base = (function (window, document, $, core, undefined) {
     }
 
     // Invoked when the DOM has loaded
-    $(function () {
+    $(function baseReady() {
         // init({});
     });
 
@@ -108,6 +108,6 @@ App.base = (function (window, document, $, core, undefined) {
     return {
         init: init,
         destroy: destroy,
-        getVersion: getVersion
+        getVersion: getVersion,
     };
-})(this, this.document, this.jQuery, App.core);
+})(window, window.document, window.jQuery, window.App.core);

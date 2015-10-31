@@ -6,7 +6,7 @@
  * Modified:  2015/10/28
  * @author softwarespot
  */
-App.core.api = (function (window, document, $, core, undefined) {
+App.core.api = (function apiModule(window, document, $, core, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -28,7 +28,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         GET: 'get',
         PATCH: 'patch',
         POST: 'post',
-        PUT: 'put'
+        PUT: 'put',
     };
 
     /**
@@ -135,7 +135,7 @@ App.core.api = (function (window, document, $, core, undefined) {
          * The server does not recognise the request method
          * @type {number}
          */
-        NOT_IMPLEMENTED: 501
+        NOT_IMPLEMENTED: 501,
     };
 
     // Fields
@@ -157,7 +157,7 @@ App.core.api = (function (window, document, $, core, undefined) {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    function init( /*config*/ ) {
+    function init(/*config*/) {
         if (_isInitialised) {
             return;
         }
@@ -212,7 +212,7 @@ App.core.api = (function (window, document, $, core, undefined) {
         // Disable showing the spinner in the top right hand corner
         window.NProgress.configure({
             minimum: 0.1,
-            showSpinner: false
+            showSpinner: false,
         });
 
         // When an ajax request is started
@@ -282,8 +282,8 @@ App.core.api = (function (window, document, $, core, undefined) {
                     method: method,
                     headers: {
                         Accept: 'application/json',
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 };
 
                 var isBody = method === methods.PUT || method === methods.POST;
@@ -499,7 +499,7 @@ App.core.api = (function (window, document, $, core, undefined) {
     }
 
     // Invoked when the DOM has loaded
-    $(function () {
+    $(function apiReady() {
         init({});
     });
 
@@ -518,6 +518,6 @@ App.core.api = (function (window, document, $, core, undefined) {
         parseUrl: parseUrl,
         getPrefix: getPrefix,
         setPrefix: setPrefix,
-        trimSlashes: trimSlashes
+        trimSlashes: trimSlashes,
     };
-})(this, this.document, this.jQuery, App.core);
+})(window, window.document, window.jQuery, window.App.core);

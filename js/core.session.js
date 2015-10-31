@@ -6,7 +6,7 @@
  * Modified: 2015/10/28
  * @author softwarespot
  */
-App.core.session = (function (window, core) {
+App.core.session = (function sessionModule(window, core) {
     // Constants
 
     // SemVer version number of the module
@@ -79,7 +79,7 @@ App.core.session = (function (window, core) {
          *
          * @return {boolean} True, it's supported; otherwise, false
          */
-        has: function () {
+        has: function has() {
             return this._has;
         },
 
@@ -109,7 +109,7 @@ App.core.session = (function (window, core) {
          */
         getVersion: function getVersion() {
             return VERSION;
-        }
+        },
     };
 
     /**
@@ -129,4 +129,4 @@ App.core.session = (function (window, core) {
 
     // Public API
     return Session;
-})(this, App.core);
+})(window, window.App.core);
