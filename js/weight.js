@@ -633,7 +633,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
      */
     function _render(data) {
         _$content.handlebars('add', _templateWeightList, data, {
-            remove_type: 'same',
+            removeType: 'same',
             validate: !core.isEmpty(data),
         });
     }

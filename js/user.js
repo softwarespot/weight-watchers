@@ -218,7 +218,7 @@ App.user = (function userModule(window, document, $, core, undefined) {
     function _render(data) {
         // Get the template as compiled only, as the jQuery-handlebars wrapper is not required
         var html = _$userList.handlebars('add', _templateUserList, data, {
-            remove_type: 'same',
+            removeType: 'same',
             type: 'COMPILED',
             validate: !core.isEmpty(data),
         });
