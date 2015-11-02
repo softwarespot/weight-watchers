@@ -4,7 +4,7 @@
  * Emitter module
  * Note: This is the same as the mediator pattern or publish-subscribe pattern
  *
- * Modified:  2015/10/28
+ * Modified:  2015/11/02
  * @author softwarespot
  */
 App.core.emitter = (function emitterModule(window, document, $, core, undefined) {
@@ -18,8 +18,9 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
 
     // Fields
 
-    // Unique events object
+    // Unique events object for both standard and one
     var _events = {};
+    var _eventsOne = {};
 
     // Methods
 
@@ -39,10 +40,11 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
      */
     function clear() {
         _events = {};
+        _eventsOne = {};
     }
 
     /**
-     * Call all registered callbacks for the following event
+     * Call all registered callbacks for the following event string
      *
      * @param {string} event Event string to invoke all registered callback functions of
      * @param {arguments} arg0...argN [optional] Arguments to pass to the callback function e.g. emit('EVENT_STRING', arg0, arg1, argN)
@@ -50,43 +52,22 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
      */
     function emit(event) {
         // Check if the event string is a valid event string
-        if (!_isEventString(event)) {
+        if (!_isEvent(event)) {
             return;
         }
 
-        // Get the callback functions for the event
-        var callbacks = _events[event];
-
-        // Check if the event contains any registered callback functions
-        if (!_isCallbacksArray(callbacks)) {
-            return;
-        }
-
-        // Create a new arguments array, skipping the first element due to this being the event
+        // Create a new arguments array, skipping the first element due to this being the event string
         var args = [];
         for (var i = 1, length = arguments.length; i < length; i++) {
             args.push(arguments[i]);
         }
 
-        // Iterate through the callbacks array and apply the arguments to the function call
-        callbacks.forEach(function forEachCallbacks(callback) {
-            // callback.apply(this, args); // Synchronous
-            _emitCallback(this, callback); // Asynchronous
-        });
+        // Emit for both the standard events object literal and one events object literal
+        _emit(event, args, _events);
+        _emit(event, args, _eventsOne);
 
-        /**
-         * Queue calling the callback function (idea by Nicolas Bevacqua)
-         *
-         * @param {object} _this The current context to bind the callback function to
-         * @param {function} callback Callback function to apply the arguments to
-         * @return {undefined}
-         */
-        function _emitCallback(_this, callback) {
-            // Queue the callback function, as setTimeout is asynchronous
-            window.setTimeout(function _emitTimeout() {
-                callback.apply(_this, args);
-            }, 0);
-        }
+        // Remove all registered one event callback function
+        _eventsOne[event] = null;
     }
 
     /**
@@ -98,15 +79,107 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
      */
     function off(event, callback) {
         // Check if the event if a valid string and callback function
-        if (!_isEventString(event) || !core.isFunction(callback)) {
+        if (!_isEvent(event) || !core.isFunction(callback)) {
             return;
         }
 
-        // Get the callbacks array for the event
-        var callbacks = _events[event];
+        _off(event, callback, _events);
+        _off(event, callback, _eventsOne);
+    }
+
+    /**
+     * Register an event
+     *
+     * @param {string} event Event string to register a callback function
+     * @param {function} callback Callback function to be invoked when the event is 'emitted'
+     * @return {undefined}
+     */
+    function on(event, callback) {
+        // Check if the event is a valid string and callback function
+        if (!_isEvent(event) || !core.isFunction(callback)) {
+            return;
+        }
+
+        _on(event, callback, _events);
+    }
+
+    /**
+     * Register an event that invokes the callback function only once and unregisters once called
+     *
+     * @param {string} event Event string to register a callback function
+     * @param {function} callback Callback function to be invoked when the event is 'emitted'
+     * @return {undefined}
+     */
+    function one(event, callback) {
+        // Check if the event is a valid string and callback function
+        if (!_isEvent(event) || !core.isFunction(callback)) {
+            return;
+        }
+
+        _on(event, callback, _eventsOne);
+    }
+
+    /**
+     * Call all registered callbacks for the following event string
+     *
+     * @param {string} event Event string to invoke all registered callback functions of
+     * @param {array} args Arguments to pass to the callback function
+     * @param {object} events Events object to bind the event string and callback to
+     * @return {undefined}
+     */
+    function _emit(event, args, events) {
+        // Get the callback functions for the event
+        var callbacks = events[event];
 
         // Check if the event contains any registered callback functions
-        if (!_isCallbacksArray(callbacks)) {
+        if (!_isCallbacks(callbacks)) {
+            return;
+        }
+
+        // Iterate through the callbacks array and apply the arguments to the function call
+        callbacks.forEach(function forEachCallbacks(callback) {
+            // callback.apply(this, args); // Synchronous
+            // Queue the callback function, as setTimeout is asynchronous
+            window.setTimeout(function emitTimeout() {
+                callback.apply(this, args);
+            }.bind(this), 0);
+        });
+    }
+
+    /**
+     * Check if the callback function array is a valid array
+     *
+     * @param {array} callbacks Value to check
+     * @return {boolean} True, is valid callback function; otherwise, false
+     */
+    function _isCallbacks(callbacks) {
+        return core.isArray(callbacks) && callbacks.length > 0;
+    }
+
+    /**
+     * Check if an event string is a valid string
+     *
+     * @param {string} event Value to check
+     * @return {boolean} True, is valid event string; otherwise, false
+     */
+    function _isEvent(event) {
+        return core.isString(event) && event.trim().length > 0;
+    }
+
+    /**
+     * Remove an event registration
+     *
+     * @param {string} event Event string to register a callback function
+     * @param {function} callback Callback function to be invoked when the event is 'emitted'
+     * @param {object} events Events object to bind the event string and callback to
+     * @return {undefined}
+     */
+    function _off(event, callback, events) {
+        // Get the callbacks array for the event
+        var callbacks = event[event];
+
+        // Check if the event contains any registered callback functions
+        if (!_isCallbacks(callbacks)) {
             return;
         }
 
@@ -120,48 +193,26 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
     }
 
     /**
-     * Regsiter an event
+     * Create an event registration
      *
      * @param {string} event Event string to register a callback function
      * @param {function} callback Callback function to be invoked when the event is 'emitted'
+     * @param {object} events Events object to bind the event string and callback to
      * @return {undefined}
      */
-    function on(event, callback) {
-        // Check if the event if a valid string and callback function
-        if (!_isEventString(event) || !core.isFunction(callback)) {
-            return;
-        }
+    function _on(event, callback, events) {
 
-        // Ensure the event contains an array
-        _events[event] = _events[event] || [];
+        // Ensure the event contains a valid array datatype
+        events[event] = events[event] || [];
 
         // Get the callbacks array for the event
-        var callbacks = _events[event];
+        var callbacks = events[event];
 
         // Check the callback function isn't already registered for the event
         if (callbacks.indexOf(callback) === -1) {
             // Push the callback function to the callbacks array
             callbacks.push(callback);
         }
-    }
-
-    /**
-     * Check if the callback function array is a valid array
-     * @param {array} callbacks Value to check
-     * @return {boolean} True is valid; otherwise, false
-     */
-    function _isCallbacksArray(callbacks) {
-        return core.isArray(callbacks) && callbacks.length > 0;
-    }
-
-    /**
-     * Check if an event string is a valid string
-     *
-     * @param {string} event Value to check
-     * @return {boolean} True is valid; otherwise, false
-     */
-    function _isEventString(event) {
-        return core.isString(event) && event.trim().length > 0;
     }
 
     // Public API
@@ -171,5 +222,6 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         emit: emit,
         off: off,
         on: on,
+        one: one,
     };
 })(window, window.document, window.jQuery, window.App.core);
