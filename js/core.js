@@ -4,7 +4,7 @@ var App = {};
 /**
  * Core module
  *
- * Modified:  2015/10/28
+ * Modified:  2015/11/05
  * @author softwarespot
  */
 App.core = (function (window, document, $, undefined) {

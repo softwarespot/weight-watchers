@@ -3,7 +3,7 @@
 /**
  * Navigation module
  *
- * Modified:  2015/10/28
+ * Modified:  2015/11/05
  * @author softwarespot
  */
 App.navigation = (function navigationModule(window, document, $, core, undefined) {

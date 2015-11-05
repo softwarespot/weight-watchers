@@ -66,7 +66,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         _emit(event, args, _events);
         _emit(event, args, _eventsOne);
 
-        // Remove all registered one event callback function
+        // Remove all registered one event callback functions
         _eventsOne[event] = null;
     }
 
