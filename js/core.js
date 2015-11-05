@@ -218,7 +218,7 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True, the value is a boolean datatype; otherwise, false
      */
     function isBoolean(value) {
-        return value === true || value === false || (_isObjectLike(value) && _objectToString.call(value) === _objectStrings.BOOLEAN);
+        return value === true || value === false || _objectToString.call(value) === _objectStrings.BOOLEAN;
     }
 
     /**
@@ -322,7 +322,7 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True, the value is a number datatype; otherwise, false
      */
     function isNumber(value) {
-        return typeof value === 'number' || (_isObjectLike(value) && _objectToString.call(value) === _objectStrings.NUMBER);
+        return typeof value === 'number' || _objectToString.call(value) === _objectStrings.NUMBER;
     }
 
     /**
@@ -452,7 +452,7 @@ App.core = (function (window, document, $, undefined) {
 
     /**
      * String format. Similar to the C# implementation
-     * URL: http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format. User: @Filipiz
+     * Idea from StackOverflow, URL: http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format. User: @Filipiz
      *
      * @param {string} value String value to replace
      * @param {arguments} arguments Arguments to replace the string identifiers with e.g. stringFormat('Some string like {0}', 'this')
@@ -495,7 +495,7 @@ App.core = (function (window, document, $, undefined) {
     /**
      * Coerce a value to a string. Null or undefined are coerced as an empty string
      *
-     * @param {mixed} value Value to coerce
+     * @param {mixed} value Value to convert
      * @return {string} New string value
      */
     function toString(value) {
@@ -504,7 +504,7 @@ App.core = (function (window, document, $, undefined) {
             return value;
         }
 
-        return isNullOrUndefined(value) ? STRING_EMPTY : (STRING_EMPTY + value);
+        return isNullOrUndefined(value) || isObjectLiteral(value) ? STRING_EMPTY : (STRING_EMPTY + value);
     }
 
     /**
@@ -574,4 +574,4 @@ App.core = (function (window, document, $, undefined) {
         toString: toString,
         trim: trim
     };
-})(this, this.document, this.jQuery);
+})(window, window.document, window.jQuery);
