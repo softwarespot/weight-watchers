@@ -140,7 +140,7 @@ App.core = (function (window, document, $, undefined) {
      */
     function arrayClear(array) {
         // If not an array then don't continue
-        if (!isArray(array)) {
+        if (!isArray(array) || array.length === 0) {
             return;
         }
 
@@ -148,6 +148,20 @@ App.core = (function (window, document, $, undefined) {
         while (array.length > 0) {
             array.pop();
         }
+    }
+
+    /**
+     * Peek at the last item in the array
+     *
+     * @param {array} array The array to peek at
+     * @return {mixed|undefined} The last item pushed onto the array; otherwise, undefined
+     */
+    function arrayPeek(array) {
+        if (!isArray(array) || array.length === 0) {
+            return undefined;
+        }
+
+        return array[array.length - 1];
     }
 
     /**
@@ -163,20 +177,6 @@ App.core = (function (window, document, $, undefined) {
 
         // Escape RegExp special characters
         return value.replace(_regExp.REGEXP_ESCAPE, '\\$1');
-    }
-
-    /**
-     * Look at the last item in the array
-     *
-     * @param {array} array The array to peek at
-     * @return {mixed|undefined} The last item pushed onto the array; otherwise, undefined
-     */
-    function arrayPeek(array) {
-        if (!isArray(array) || array.length === 0) {
-            return undefined;
-        }
-
-        return array[array.length - 1];
     }
 
     /**
@@ -197,7 +197,7 @@ App.core = (function (window, document, $, undefined) {
      * @returns {boolean} True, the value is a function datatype; otherwise, false
      */
     function isFunction(value) {
-        var tag = isObject(value) ? _objectToString.call(value) : STRING_EMPTY;
+        var tag = isObject(value) ? _objectToString.call(value) : null;
         return tag === _objectStrings.FUNCTION || tag === _objectStrings.GENERATOR;
     }
 
@@ -266,23 +266,23 @@ App.core = (function (window, document, $, undefined) {
     }
 
     /**
-     * Check if a value is an instance of jQuery
+     * Check if a variable is an instance of jQuery
      *
-     * @param {mixed} $value Value to check
-     * @return {boolean} true is an instance of jQuery; otherwise, false
+     * @param {mixed} $element Element to check
+     * @return {boolean} True is an instance of jQuery; otherwise, false
      */
-    function isjQuery($value) {
-        return $value instanceof $;
+    function isjQuery($element) {
+        return $element instanceof $;
     }
 
     /**
-     * Check if a value is an instance of jQuery and contains element nodes
+     * Check if a variable is an instance of jQuery and contains at least one element node
      *
-     * @param {mixed} $value Value to check
-     * @return {boolean} true is an instance of jQuery and contains element nodes; otherwise, false
+     * @param {mixed} $element Element to check
+     * @return {boolean} True is an instance of jQuery and contains at least one element node; otherwise, false
      */
-    function isjQueryNotEmpty($value) {
-        return isjQuery($value) && $value.length !== 0;
+    function isjQueryNotEmpty($element) {
+        return isjQuery($element) && $element.length > 0;
     }
 
     /**
@@ -338,16 +338,6 @@ App.core = (function (window, document, $, undefined) {
         // !!value is basically checking if value is not 'truthy' e.g. null or zero and then inverts that boolean value
         // So, !'Some test' is false and then inverting false is true. There if value contains 'something', continue
         return !!value && (type === 'object' || type === 'function');
-    }
-
-    /**
-     * Check if a variable is an object
-     *
-     * @param {mixed} value Value to check
-     * @returns {boolean} True, the value is an object; otherwise, false
-     */
-    function _isObjectLike(value) {
-        return !!value && typeof value === 'object';
     }
 
     /**
@@ -412,7 +402,7 @@ App.core = (function (window, document, $, undefined) {
     /**
      * Check if a variable is undefined
      *
-     * @param {object} value Value to check
+     * @param {mixed} value Value to check
      * @returns {boolean} True, the value is undefined; otherwise, false
      */
     function isUndefined(value) {
@@ -529,6 +519,16 @@ App.core = (function (window, document, $, undefined) {
         characters = '[' + escapeRegExChars(toString(characters)) + ']';
 
         return value.replace(new window.RegExp('^' + characters + '+|' + characters + '+$', 'g'), STRING_EMPTY);
+    }
+
+    /**
+     * Check if a variable is an object
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True, the value is an object; otherwise, false
+     */
+    function _isObjectLike(value) {
+        return !!value && typeof value === 'object';
     }
 
     // Invoked when the DOM has loaded
