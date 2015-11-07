@@ -54,6 +54,9 @@ App.core = (function (window, document, $, undefined) {
         // Integer values
         INTEGER: /(?:^(?!-?0+)-?\d+$)/,
 
+        // Parse item between {} that are an integer
+        STRING_FORMAT: /(?:{(\d+)})/g,
+
         // Strip leading and trailing whitespace. Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
         TRIM: /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g
     };
@@ -449,21 +452,25 @@ App.core = (function (window, document, $, undefined) {
      * @return {string} Formatted string, with {n} identifiers replaced with the passed arguments
      */
     function stringFormat(value) {
-        // Create a temporary arguments array, skipping the first element, as this contains the string value
-        var items = [];
-        for (var i = 1, length = arguments.length; i < length; i++) {
-            items.push(arguments[i]);
+        // Coerce as a string and check if a valid length
+        value = toString(value);
+        if (value.length === 0) {
+            return value;
         }
 
-        value = toString(value);
+        // Create a temporary arguments array, skipping the first element, as this contains the string value
+        var args = [];
+        for (var i = 1, length = arguments.length; i < length; i++) {
+            args.push(arguments[i]);
+        }
 
-        // Iterate through the items replacing the identifiers e.g. {n} with the array item that matches the index value
-        items.forEach(function forEachFormat(element, index) {
-            var regExp = new window.RegExp('\\{' + index + '\\}', 'gi');
-            value = value.replace(regExp, element);
+        return value.replace(_regExp.STRING_FORMAT, function stringFormatKeys(fullMatch, index) {
+            // Coerce as a number and get the value at the index position in the arguments array
+            index = +index;
+            var value = args[index];
+
+            return isUndefined(value) ? fullMatch : value;
         });
-
-        return value;
     }
 
     /**
