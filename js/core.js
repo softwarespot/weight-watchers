@@ -171,14 +171,14 @@ App.core = (function (window, document, $, undefined) {
      * Escape RegExp characters with a prefixed backslash
      *
      * @param {string} value String value to escape
-     * @return {mixed} Escaped string; otherwise, null if not a string datatype
+     * @return {string} Escaped string; otherwise, an empty string
      */
     function escapeRegExChars(value) {
-        if (!isString(value)) {
-            return null;
+        if (!isString(value) || value.length === 0) {
+            return STRING_EMPTY;
         }
 
-        // Escape RegExp special characters
+        // Escape RegExp special characters only
         return value.replace(_regExp.REGEXP_ESCAPE, '\\$1');
     }
 
