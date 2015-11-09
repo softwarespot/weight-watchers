@@ -244,11 +244,16 @@ App.core.api = (function apiModule(window, document, $, core, undefined) {
 
     /**
      * Parse JSON in the response object
+     *
      * @param {object} response Response object returned by fetch()
      * @return {object|null} JSON object; otherwise, original response
      */
     function _fetchParseJSON(response) {
-        return !core.isEmpty(response.text()) ? response.json() : response;
+        try {
+            return response.json();
+        } catch (ex) {
+            return response;
+        }
     }
 
     /**

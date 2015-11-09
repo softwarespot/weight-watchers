@@ -96,7 +96,9 @@ App.core.session = (function sessionModule(window, core) {
         set: function set(data) {
             // There is an issue with IE when running from the local file system
             try {
-                this._storage.setItem(this._key, data);
+                if (!core.isEmpty(data)) {
+                    this._storage.setItem(this._key, data);
+                }
             } catch (ex) {
                 window.console.log('An error occurred with Session.set()', ex);
             }
