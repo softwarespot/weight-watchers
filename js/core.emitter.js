@@ -16,6 +16,9 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
     // Unique global identifier. Internal usage only
     // var GUID = 'DCCE65D7-978E-468B-8DB2-AC2B40553F27';
 
+    // Value for indexOf
+    var EXISTS = -1;
+
     // Fields
 
     // Unique events object for both standard and one
@@ -186,7 +189,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         // If the callback function exists in the callbacks array, then remove the callback
         // using the provided index value
         var index = callbacks.indexOf(callback);
-        if (index !== -1) {
+        if (index !== EXISTS) {
             // Only remove one value from the callbacks array
             callbacks.splice(index, 1);
         }
@@ -209,7 +212,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         var callbacks = events[event];
 
         // Check the callback function isn't already registered for the event
-        if (callbacks.indexOf(callback) === -1) {
+        if (callbacks.indexOf(callback) === EXISTS) {
             // Push the callback function to the callbacks array
             callbacks.push(callback);
         }
