@@ -4,10 +4,10 @@ var App = {};
 /**
  * Core module
  *
- * Modified:  2015/11/05
+ * Modified: 2015/11/05
  * @author softwarespot
  */
-App.core = (function (window, document, $, undefined) {
+App.core = (function coreModule(window, document, $, undefined) {
     // Constants
 
     // SemVer version number of the module
@@ -34,7 +34,7 @@ App.core = (function (window, document, $, undefined) {
         FUNCTION: '[object Function]',
         GENERATOR: '[object GeneratorFunction]',
         NUMBER: '[object Number]',
-        STRING: '[object String]'
+        STRING: '[object String]',
     };
 
     // Store the object prototype
@@ -58,7 +58,7 @@ App.core = (function (window, document, $, undefined) {
         STRING_FORMAT: /(?:{(\d+)})/g,
 
         // Strip leading and trailing whitespace. Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-        TRIM: /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g
+        TRIM: /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
     };
 
     // Store when the application is in debugging mode
@@ -79,7 +79,7 @@ App.core = (function (window, document, $, undefined) {
         // Disable showing the spinner in the top right hand corner
         window.NProgress.configure({
             minimum: 0.1,
-            showSpinner: false
+            showSpinner: false,
         });
 
         _isInitialised = true;
@@ -539,7 +539,7 @@ App.core = (function (window, document, $, undefined) {
     }
 
     // Invoked when the DOM has loaded
-    $(function () {
+    $(function coreReady() {
         init();
     });
 
@@ -579,6 +579,6 @@ App.core = (function (window, document, $, undefined) {
         stringFormat: stringFormat,
         stringStripWS: stringStripWS,
         toString: toString,
-        trim: trim
+        trim: trim,
     };
 })(window, window.document, window.jQuery);
