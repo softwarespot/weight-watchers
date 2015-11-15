@@ -71,7 +71,7 @@ public class ApiController {
 		// if (!getDao().getUsersAll().contains(username)) {
 		// return new ResponseEntity<Message>(
 		// new Message(Status.UsernameIdInvalid.getValue(), "The following
-		// username did not exist"),
+		// username does not exist"),
 		// HttpStatus.NOT_FOUND);
 		// }
 
@@ -193,7 +193,7 @@ public class ApiController {
 		// NOT_FOUND
 		if (!getDao().getUsersAll().contains(username)) {
 			return new ResponseEntity<Message>(
-					new Message(Status.UsernameIdInvalid.getValue(), "The following username did not exist"),
+					new Message(Status.UsernameIdInvalid.getValue(), "The following username does not exist"),
 					HttpStatus.NOT_FOUND);
 		}
 
