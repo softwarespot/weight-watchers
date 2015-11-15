@@ -16,7 +16,7 @@ App.core.api = (function apiModule(window, document, $, core, undefined) {
     // var GUID = '27AB85AB-3AD5-42C6-A086-30FF65668693';
 
     // Fake fetch time
-    var FETCH_TIME = 750;
+    var FETCH_TIME = 250;
 
     /**
      * Common RESTful methods
@@ -280,7 +280,7 @@ App.core.api = (function apiModule(window, document, $, core, undefined) {
                     } else {
                         resolve();
                     }
-                }, FETCH_TIME);
+                }, core.randomNumber(FETCH_TIME, FETCH_TIME * 5));
             } else {
                 // Lets use GitHub's fetch instead
                 var init = {

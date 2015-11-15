@@ -127,6 +127,9 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
         resetFn: function resetFn() {
             window.NProgress.done();
 
+            // Reset the username
+            _username = null;
+
             // Hide the error message
             _$weightFormError.addClass('hide');
 
