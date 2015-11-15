@@ -48,10 +48,11 @@
             <input type="submit" value="Create" class="button-primary"/>
             <input type="reset" value="Reset"/>
         </form>
+        <input type="checkbox" name="display-all" value="display-all"/>&nbsp;Display all the weight values<br/>
+
+        <canvas id="weightChart" width="600" height="400"></canvas>
 
         <div id="weight-list-error" class="error-box hide">Please enter a valid number e.g. 3 or 3.1</div>
-
-        <input type="checkbox" name="display-all" value="display-all"/>&nbsp;Display all the weight values
 
         <div id="weight-list">
         </div>
@@ -71,8 +72,34 @@
     <script src="js/vendor.min.js"></script>
     <script src="js/scripts.min.js"></script>
     <script>
-        /* global App */
-        App.core.setIsDebug(true);
+        (function (window, $, App) {
+            App.core.setIsDebug(true);
+
+            // Get context with jQuery - using jQuery's .get() method
+            var ctx = $('#weightChart').get(0).getContext('2d');
+            var data = {
+                labels: [
+                    'January', 'February', 'March', 'April',
+                    'May', 'June', 'July', 'August', 'September',
+                    'October', 'November', 'December'
+                ],
+                datasets: [
+                    {
+                        label: 'My First dataset',
+                        fillColor: 'rgba(220,220,220,0.2)',
+                        strokeColor: 'rgba(220,220,220,1)',
+                        pointColor: 'rgba(220,220,220,1)',
+                        pointStrokeColor: '#fff',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data: [65, 59, 80, 81, 56, 55, 40, 45, 46, 69, 34, 19],
+                    },
+                ]
+            };
+
+            // This will get the first returned node in the jQuery collection
+            new Chart(ctx).Line(data);
+        })(window, window.jQuery, window.App);
     </script>
 
     <!--START: Templates-->
