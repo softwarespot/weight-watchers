@@ -75,7 +75,7 @@ public class ApiController {
 		// HttpStatus.NOT_FOUND);
 		// }
 
-		// Add to the database. Note: There is not error checking done
+		// Add to the database. Note: There is no error checking done
 		// beforehand
 		getDao().saveWeight(weight);
 
