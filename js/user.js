@@ -38,7 +38,7 @@ App.user = (function userModule(window, document, $, core, undefined) {
     var _templateUserList = null;
 
     // Generic session handler
-    var _sessionHandler = new core.session(GUID + '_users,app');
+    var _sessionHandler = new core.session(GUID + '_users.app');
 
     // Events object
     var _events = {

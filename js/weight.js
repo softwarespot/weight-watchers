@@ -155,9 +155,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
             })
 
             // Done, the ajax request was successful
-            .then(function thenFetch(weight) {
-                id = core.isDebug() ? id : weight.id;
-
+            .then(function thenFetch() {
                 // Remove the weight value object from the weights list
                 _remove(id);
 
@@ -177,6 +175,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
 
         // When the user selection is changed
         selectFn: function selectFn(username) {
+            username = core.isUndefined(username) ? _username : username;
             if (core.isEmpty(username)) {
                 return;
             }
@@ -229,8 +228,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
             .catch(function catchFetch() {
                 // On error
 
-                // Render the weights list
-                _render(_get());
+                _events.resetFn();
             });
         },
 
@@ -274,17 +272,21 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
             })
 
             // Done, the ajax request was successful
-            .then(function thenFetch(weight) {
-                // Generate a weight value object
-                weight = core.isDebug() ? _generate(weightValue) : weight;
+            .then(function thenFetch() {
+                if (core.isDebug()) {
+                    // Generate a weight value object
+                    var weight = _generate(weightValue);
 
-                // Add the weight value object
-                if (_add(weight)) {
-                    // Save the current state of the weights list
-                    _session.set(_get());
+                    // Add the weight value object
+                    if (_add(weight)) {
+                        // Save the current state of the weights list
+                        _session.set(_get());
 
-                    // Render the weights list
-                    _render(_get());
+                        // Render the weights list
+                        _render(_get());
+                    }
+                } else {
+                    _events.selectFn();
                 }
             })
 
@@ -328,7 +330,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
                 return;
             }
 
-            _sessionHandler.set(array);
+            _sessionHandler.set(window.JSON.stringify(array));
         },
     };
 
@@ -415,13 +417,13 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
 
         _$content = $html.find(dom.weightList);
 
-        _$displayAll =  $html.find(dom.displayAll);
+        _$displayAll = $html.find(dom.displayAll);
 
-        _$weightForm =  $html.find(dom.forms.weight);
+        _$weightForm = $html.find(dom.forms.weight);
         _$weightFormInput = _$weightForm.find('input[type="text"]');
         _$weightFormReset = _$weightForm.find('[type="reset"]');
         _$weightFormSubmit = _$weightForm.find('input[type="submit"]');
-        _$weightFormError =  $html.find(dom.weightListError);
+        _$weightFormError = $html.find(dom.weightListError);
 
         _$document = $(document);
     }
