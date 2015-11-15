@@ -34,6 +34,7 @@ App.core = (function coreModule(window, document, $, undefined) {
         FUNCTION: '[object Function]',
         GENERATOR: '[object GeneratorFunction]',
         NUMBER: '[object Number]',
+        OBJECT: '[object Object]',
         STRING: '[object String]',
     };
 
@@ -49,10 +50,10 @@ App.core = (function coreModule(window, document, $, undefined) {
     // Regular expressions
     var _regExp = {
         // Float values
-        FLOAT: /(?:^(?!-?0+)-?\d+\.\d+$)/,
+        FLOAT: /(?:^-?(?!0+)\d+\.\d+$)/,
 
         // Integer values
-        INTEGER: /(?:^(?!-?0+)-?\d+$)/,
+        INTEGER: /(?:^-?(?!0+)\d+$)/,
 
         // Parse item between {} that are an integer
         STRING_FORMAT: /(?:{(\d+)})/g,
@@ -295,7 +296,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @return {boolean} True, the value is not null; otherwise, false
      */
     function isNotNull(value) {
-        return value !== null;
+        return !isNull(value);
     }
 
     /**
@@ -535,7 +536,9 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is an object; otherwise, false
      */
     function _isObjectLike(value) {
-        return !!value && typeof value === 'object';
+        return _objectToString.call(value) === _objectStrings.OBJECT;
+
+        // return !!value && typeof value === 'object';
     }
 
     // Invoked when the DOM has loaded
