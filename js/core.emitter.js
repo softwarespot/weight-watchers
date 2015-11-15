@@ -140,7 +140,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         }
 
         // Iterate through the callbacks array and apply the arguments to the function call
-        callbacks.forEach(function forEachCallbacks(callback) {
+        callbacks.forEach(function forEachCallback(callback) {
             // callback.apply(this, args); // Synchronous
             // Queue the callback function, as setTimeout is asynchronous
             window.setTimeout(function emitTimeout() {
