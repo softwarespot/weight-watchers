@@ -35,6 +35,10 @@ public class Weight {
 		this.time = time;
 		this.username = username;
 	}
+	
+	/*
+	 * Getters
+	 */
 
 	public int getId() {
 		return id;
@@ -51,6 +55,10 @@ public class Weight {
 	public float getValue() {
 		return value;
 	}
+	
+	/*
+	 * Setters
+	 */
 
 	public void setId(int id) {
 		this.id = id;

@@ -77,6 +77,14 @@
     <!--Scripts-->
     <script src="<c:url value="/resources/js/vendor.min.js"/>"></script>
     <script src="<c:url value="/resources/js/scripts.min.js"/>"></script>
+    <!--<script src="<c:url value="/resources/js/core.js"/>"></script>
+    <script src="<c:url value="/resources/js/core.api.js"/>"></script>
+    <script src="<c:url value="/resources/js/core.emitter.js"/>"></script>
+    <script src="<c:url value="/resources/js/core.events.js"/>"></script>
+    <script src="<c:url value="/resources/js/core.session.js"/>"></script>
+    <script src="<c:url value="/resources/js/navigation.js"/>"></script>
+    <script src="<c:url value="/resources/js/user.js"/>"></script>
+    <script src="<c:url value="/resources/js/weight.js"/>"></script>-->
     <script>
         /* global App */
         App.core.setIsDebug(false);
