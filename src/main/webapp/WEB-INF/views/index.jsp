@@ -55,10 +55,11 @@
             <input type="submit" value="Create" class="button-primary"/>
             <input type="reset" value="Reset"/>
         </form>
+        <input type="checkbox" name="display-all" value="display-all"/>&nbsp;Display all the weight values<br/>
+
+        <canvas id="weight-chart" width="600" height="400"></canvas>
 
         <div id="weight-list-error" class="error-box hide">Please enter a valid number e.g. 3 or 3.1</div>
-
-        <input type="checkbox" name="display-all" value="display-all"/>&nbsp;Display all the weight values
 
         <div id="weight-list">
         </div>
@@ -86,8 +87,9 @@
     <script src="<c:url value="/resources/js/user.js"/>"></script>
     <script src="<c:url value="/resources/js/weight.js"/>"></script>-->
     <script>
-        /* global App */
-        App.core.setIsDebug(false);
+        (function (window, $, App) {
+            App.core.setIsDebug(true);
+        })(window, window.jQuery, window.App);
     </script>
 
     <!--START: Templates-->
