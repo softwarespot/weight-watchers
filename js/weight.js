@@ -66,6 +66,11 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
     var _$weightFormReset = null;
     var _$weightFormSubmit = null;
 
+    // Chart data selector objects
+    var _$weightChart = null;
+    var _chartData = null;
+    var _chartLineData = null;
+
     var _$weightFormError = null;
 
     // Store the data-* attribute id
@@ -139,8 +144,9 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
             // Clear the elements in the weights array
             core.arrayClear(_get());
 
-            // Render the template
+            // Render the template and chart
             _render(_get());
+            _renderChart(_get());
         },
 
         // When the remove event is invoked, call the following function
@@ -165,8 +171,9 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
                 // Save the current state of the weights list
                 _session.set(_get());
 
-                // Render the template
+                // Render the template and chart
                 _render(_get());
+                _renderChart(_get());
             })
 
             // Fail, an issue occurred with the request
@@ -219,12 +226,18 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
                     });
                 }
 
+                // Sort weight value objects
+                _sort();
+
                 // Save the current state of the weights list
                 _session.set(_get());
 
                 // Update the internal id (for testing only) and render the weights list
                 _weightInit();
+
+                // Render the template and chart
                 _render(_get());
+                _renderChart(_get());
             })
 
             // Fail, an issue occurred with the request
@@ -282,11 +295,15 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
 
                     // Add the weight value object
                     if (_add(weight)) {
+                        // Sort weight value objects
+                        _sort();
+
                         // Save the current state of the weights list
                         _session.set(_get());
 
-                        // Render the weights list
+                        // Render the template and chart
                         _render(_get());
+                        _renderChart(_get());
                     }
                 } else {
                     _events.selectFn();
@@ -372,6 +389,9 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
         // Set the API prefix
         core.api.setPrefix('api');
 
+        // Hide the chart by default
+        _renderChart();
+
         _isInitialised = true;
     }
 
@@ -388,11 +408,12 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
         _$displayAll = null;
 
         _$weightForm = null;
-        _$weightForm = null;
+        _$weightFormInput = null;
         _$weightFormReset = null;
         _$weightFormSubmit = null;
-
         _$weightFormError = null;
+
+        _$weightChart = null;
 
         // Clear the elements in the weights array
         core.arrayClear(_get());
@@ -427,6 +448,8 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
         _$weightFormReset = _$weightForm.find('[type="reset"]');
         _$weightFormSubmit = _$weightForm.find('input[type="submit"]');
         _$weightFormError = $html.find(dom.weightListError);
+
+        _$weightChart = $html.find(dom.weightChart);
 
         _$document = $(document);
     }
@@ -497,17 +520,22 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
             return false;
         }
 
+        var moment = window.moment(weight.time);
+
         // Check if the weight object value has not already been set by formatting the 'moment' date object
         // to YYYYMMDD and storing in a set collection
-        var date = window.moment(weight.time).format(DATE_FORMAT);
+        var date = moment.format(DATE_FORMAT);
         if (!_isDisplayAll && _weightsDate.has(date)) {
             return false;
         }
 
         // Add missing properties
 
+        // Create a 'moment' date object
+        weight.moment = moment;
+
         // Create an ISO-8601 format of the timestamp
-        weight.iso8601 = window.moment(weight.time).toISOString();
+        weight.iso8601 = weight.moment.toISOString();
 
         // Add the date to the internal set
         _weightsDate.add(date);
@@ -630,17 +658,91 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
     }
 
     /**
-     * Render the weights data
+     * Sort the weight values internal array by date
      *
-     * @param {boolean} isSuccess True renders the 'done' template; otherwise, false renders the 'fail' template
-     * @param {object} data Data to pass to the template
      * @return {undefined}
      */
-    function _render(data) {
-        _$content.handlebars('add', _templateWeightList, data, {
-            removeType: 'same',
-            validate: !core.isEmpty(data),
+    function _sort() {
+        if (!core.isArray(_weightsList) || _weightsList.length === 0) {
+            return;
+        }
+
+        _weightsList.sort(function sort(weight1, weight2) {
+            if (weight1.time < weight2.time) {
+                return -1;
+            }
+
+            if (weight1.time > weight2.time) {
+                return 1;
+            }
+
+            return 0;
         });
+    }
+
+    /**
+     * Render the weights data
+     *
+     * @param {object} weight Data to pass to the template
+     * @return {undefined}
+     */
+    function _render(weight) {
+        _$content.handlebars('add', _templateWeightList, weight, {
+            removeType: 'same',
+            validate: !core.isEmpty(weight),
+        });
+    }
+
+    /**
+     * Render the weights chart
+     *
+     * @param {object} weight Data to pass to the chart
+     * @return {undefined}
+     */
+    function _renderChart(weights) {
+        // Hide the chart if no weight data was available
+        if (!core.isArray(weights) || weights.length === 0) {
+            _$weightChart.hide();
+            return;
+        }
+
+        // Display the chart
+        _$weightChart.show();
+
+        if (core.isNull(_chartData)) {
+            _chartData = new window.Chart(_$weightChart.get(0).getContext('2d'));
+        } else {
+            _chartLineData.destroy();
+        }
+
+        var LABEL_DATE_FORMAT = 'YYYY/MM/DD';
+
+        var labels = new window.Set();
+        var values = [];
+
+        weights.forEach(function forEachWeights(weight) {
+            var yearMonth = window.moment(weight.moment).format(LABEL_DATE_FORMAT);
+            if (!labels.has(yearMonth)) {
+                labels.add(yearMonth);
+                values.push(weight.value);
+            }
+        });
+
+        var data = {
+            labels: window.Array.from(labels),
+            datasets: [{
+                label: 'Weight values',
+                fillColor: 'rgba(220,220,220,0.2)',
+                strokeColor: 'rgba(220,220,220,1)',
+                pointColor: 'rgba(220,220,220,1)',
+                pointStrokeColor: '#fff',
+                pointHighlightFill: '#fff',
+                pointHighlightStroke: 'rgba(220,220,220,1)',
+                data: values,
+            }, ],
+        };
+
+        _chartLineData = _chartData.Line(data);
     }
 
     /**
@@ -682,6 +784,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
                     weight: '#weight-post-form',
                 },
                 displayAll: '[name="display-all"]',
+                weightChart: '#weight-chart',
                 weightList: '#weight-list',
                 weightListError: '#weight-list-error',
             },

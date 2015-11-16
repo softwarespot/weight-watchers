@@ -176,6 +176,7 @@ gulp.task('vendor', function() {
             bowerComponents + 'Chart.js/Chart.js',
             bowerComponents + 'es6-collections/index.js',
             bowerComponents + 'es6-promise/promise.js',
+            bowerComponents + 'es6-shim/es6-shim.js',
             bowerComponents + 'fetch/fetch.js',
             bowerComponents + 'handlebars/handlebars.js',
             bowerComponents + 'momentjs/moment.js',
