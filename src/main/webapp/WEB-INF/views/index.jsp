@@ -88,7 +88,7 @@
     <script src="<c:url value="/resources/js/weight.js"/>"></script>-->
     <script>
         (function (window, $, App) {
-            App.core.setIsDebug(true);
+            App.core.setIsDebug(false);
         })(window, window.jQuery, window.App);
     </script>
 
