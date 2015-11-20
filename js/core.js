@@ -366,7 +366,7 @@ App.core = (function coreModule(window, document, $, undefined) {
     /**
      * Check if a variable is a string datatype
      *
-     * @param {mixed} value Value to check
+     * @param {string} value Value to check
      * @returns {boolean} True, the value is a string datatype; otherwise, false
      */
     function isString(value) {
@@ -376,7 +376,7 @@ App.core = (function coreModule(window, document, $, undefined) {
     /**
      * Check if a variable is a string and representing a float
      *
-     * @param {mixed} value Value to check
+     * @param {string} value Value to check
      * @returns {boolean} True, the value is representing a float; otherwise, false
      */
     function isStringFloat(value) {
@@ -386,7 +386,7 @@ App.core = (function coreModule(window, document, $, undefined) {
     /**
      * Check if a variable is a string and representing an integer
      *
-     * @param {mixed} value Value to check
+     * @param {string} value Value to check
      * @returns {boolean} True, the value is representing an integer; otherwise, false
      */
     function isStringInteger(value) {
@@ -396,7 +396,7 @@ App.core = (function coreModule(window, document, $, undefined) {
     /**
      * Check if a variable is a string and representing a number
      *
-     * @param {mixed} value Value to check
+     * @param {string} value Value to check
      * @returns {boolean} True, the value is representing a number; otherwise, false
      */
     function isStringNumber(value) {
