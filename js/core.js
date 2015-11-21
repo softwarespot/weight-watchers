@@ -4,7 +4,7 @@ var App = {};
 /**
  * Core module
  *
- * Modified: 2015/11/05
+ * Modified: 2015/11/21
  * @author softwarespot
  */
 App.core = (function coreModule(window, document, $, undefined) {
@@ -27,6 +27,13 @@ App.core = (function coreModule(window, document, $, undefined) {
     // Store if the module has been initialised
     var _isInitialised = false;
 
+    // Native functions
+    var _nativeArrayIsArray = window.Array.isArray;
+    var _nativeMathFloor = window.Math.floor;
+    var _nativeMathRandom = window.Math.random;
+    var _nativeStringIncludes = window.String.prototype.includes;
+    var _nativeStringTrim = window.String.prototype.trim;
+
     // Return strings of toString() found on the Object prototype
     // Based on the implementation by lodash inc. is* function as well
     var _objectStrings = {
@@ -48,19 +55,21 @@ App.core = (function coreModule(window, document, $, undefined) {
     var _objectToString = _objectPrototype.toString;
 
     // Regular expressions
-    var _regExp = {
-        // Float values
-        FLOAT: /(?:^-?(?!0+)\d+\.\d+$)/,
 
-        // Integer values
-        INTEGER: /(?:^-?(?!0+)\d+$)/,
+    // Float values
+    var _reFloat = /(?:^-?(?!0+)\d+\.\d+$)/;
 
-        // Parse item between {} that are an integer
-        STRING_FORMAT: /(?:{(\d+)})/g,
+    // Integer values
+    var _reInteger = /(?:^-?(?!0+)\d+$)/;
 
-        // Strip leading and trailing whitespace. Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-        TRIM: /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-    };
+    // Regular expression meta characters
+    var _reRegExpEscape = /([\].|*?+(){}^$\\:=[])/g;
+
+    // Parse item between {} that are of an integer value
+    var _reStringFormat = /(?:{(\d+)})/g;
+
+    // Strip leading and trailing whitespace. Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+    var _reTrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
     // Store when the application is in debugging mode
     var _isDebug = false;
@@ -169,21 +178,6 @@ App.core = (function coreModule(window, document, $, undefined) {
     }
 
     /**
-     * Escape RegExp characters with a prefixed backslash
-     *
-     * @param {string} value String value to escape
-     * @return {string} Escaped string; otherwise, an empty string
-     */
-    function escapeRegExChars(value) {
-        if (!isString(value) || value.length === 0) {
-            return STRING_EMPTY;
-        }
-
-        // Escape RegExp special characters only
-        return value.replace(_regExp.REGEXP_ESCAPE, '\\$1');
-    }
-
-    /**
      * Check if an object contains a key
      *
      * @param {object} object Object to check
@@ -211,7 +205,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @param {mixed} value Value to check
      * @returns {boolean} True, the value is an array datatype; otherwise, false
      */
-    var isArray = isFunction(window.Array.isArray) ? window.Array.isArray : function isArray(value) {
+    var isArray = isFunction(_nativeArrayIsArray) ? _nativeArrayIsArray : function isArray(value) {
         return _objectToString.call(value) === _objectStrings.ARRAY;
     };
 
@@ -256,7 +250,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a float; otherwise, false
      */
     function isFloat(value) {
-        return isNumber(value) && _regExp.FLOAT.test(toString(value));
+        return isNumber(value) && _reFloat.test(toString(value));
     }
 
     /**
@@ -266,7 +260,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is an integer; otherwise, false
      */
     function isInteger(value) {
-        return isNumber(value) && _regExp.INTEGER.test(toString(value));
+        return isNumber(value) && _reInteger.test(toString(value));
     }
 
     /**
@@ -380,7 +374,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is representing a float; otherwise, false
      */
     function isStringFloat(value) {
-        return isString(value) && _regExp.FLOAT.test(value);
+        return isString(value) && _reFloat.test(value);
     }
 
     /**
@@ -390,7 +384,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is representing an integer; otherwise, false
      */
     function isStringInteger(value) {
-        return isString(value) && _regExp.INTEGER.test(value);
+        return isString(value) && _reInteger.test(value);
     }
 
     /**
@@ -400,7 +394,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is representing a number; otherwise, false
      */
     function isStringNumber(value) {
-        return isString(value) && (_regExp.FLOAT.test(value) || _regExp.INTEGER.test(value));
+        return isString(value) && (_reFloat.test(value) || _reInteger.test(value));
     }
 
     /**
@@ -426,7 +420,23 @@ App.core = (function coreModule(window, document, $, undefined) {
         }
 
         // URL: http://www.w3schools.com/jsref/jsref_random.asp
-        return window.Math.floor((window.Math.random() * max) + min);
+        return _nativeMathFloor((_nativeMathRandom() * max) + min);
+    }
+
+    /**
+     * Escape RegExp characters with a prefixed backslash
+     *
+     * @param {string} value String value to escape
+     * @return {string} Escaped string; otherwise, an empty string
+     */
+    function regExpEscape(value) {
+        if (!isString(value) || value.length === 0) {
+            return STRING_EMPTY;
+        }
+
+        // Escape RegExp special characters only
+        // $& => Last match, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/lastMatch
+        return value.replace(_reRegExpEscape, '\\$&');
     }
 
     /**
@@ -439,8 +449,8 @@ App.core = (function coreModule(window, document, $, undefined) {
     function stringContains(value, searchFor) {
         value = toString(value);
 
-        return isFunction(window.String.prototype.includes) ?
-            window.String.prototype.includes.call(value, searchFor) :
+        return isFunction(_nativeStringIncludes) ?
+            _nativeStringIncludes.call(value, searchFor) :
             value.indexOf(searchFor) !== -1;
     }
 
@@ -465,7 +475,7 @@ App.core = (function coreModule(window, document, $, undefined) {
             args.push(arguments[i]);
         }
 
-        return value.replace(_regExp.STRING_FORMAT, function stringFormatKeys(fullMatch, index) {
+        return value.replace(_reStringFormat, function stringFormatKeys(fullMatch, index) {
             // Coerce as a number and get the value at the index position in the arguments array
             index = +index;
             var value = args[index];
@@ -485,9 +495,9 @@ App.core = (function coreModule(window, document, $, undefined) {
             return STRING_EMPTY;
         }
 
-        return isFunction(window.String.prototype.trim) ?
-            window.String.prototype.trim.call(value) :
-            value.replace(_regExp.TRIM, STRING_EMPTY);
+        return isFunction(_nativeStringTrim) ?
+            _nativeStringTrim.call(value) :
+            value.replace(_reTrim, STRING_EMPTY);
     }
 
     /**
@@ -524,7 +534,7 @@ App.core = (function coreModule(window, document, $, undefined) {
         }
 
         // Coerce as a string and escape the meta regular expression characters
-        characters = '[' + escapeRegExChars(toString(characters)) + ']';
+        characters = '[' + regExpEscape(toString(characters)) + ']';
 
         return value.replace(new window.RegExp('^' + characters + '+|' + characters + '+$', 'g'), STRING_EMPTY);
     }
@@ -556,7 +566,7 @@ App.core = (function coreModule(window, document, $, undefined) {
         setIsDebug: setIsDebug,
         arrayClear: arrayClear,
         arrayPeek: arrayPeek,
-        escapeRegExChars: escapeRegExChars,
+        regExpEscape: regExpEscape,
         has: has,
         isArray: isArray,
         isBoolean: isBoolean,

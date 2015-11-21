@@ -4,7 +4,7 @@
  * Emitter module
  * Note: This is the same as the mediator pattern or publish-subscribe pattern
  *
- * Modified:  2015/11/02
+ * Modified:  2015/11/21
  * @author softwarespot
  */
 App.core.emitter = (function emitterModule(window, document, $, core, undefined) {
@@ -179,7 +179,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
      */
     function _off(event, callback, events) {
         // Get the callbacks array for the event
-        var callbacks = event[event];
+        var callbacks = events[event];
 
         // Check if the event contains any registered callback functions
         if (!_isCallbacks(callbacks)) {
