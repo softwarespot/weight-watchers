@@ -65,11 +65,18 @@ App.core = (function coreModule(window, document, $, undefined) {
     // Regular expression meta characters
     var _reRegExpEscape = /([\].|*?+(){}^$\\:=[])/g;
 
-    // Parse item between {} that are of an integer value
+    // Parse items between {} that are of an integer value
     var _reStringFormat = /(?:{(\d+)})/g;
 
-    // Strip leading and trailing whitespace. Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-    var _reTrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+    // Strip leading whitespace
+    var _reTrimLeft = /^[\s\uFEFF\xA0]+/;
+
+    // Strip trailing whitespace
+    var _reTrimRight = /[\s\uFEFF\xA0]+$/;
+
+    // Strip leading and trailing whitespace
+    // Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+    var _reTrim = new window.RegExp(_reTrimLeft.source + '|' + _reTrimRight.source, 'g');
 
     // Store when the application is in debugging mode
     var _isDebug = false;
@@ -516,14 +523,18 @@ App.core = (function coreModule(window, document, $, undefined) {
     }
 
     /**
-     * Trim characters from the left-hand and right-hand side of a string. Idea by underscore.string, URL: https://github.com/epeli/underscore.string
+     * Trim characters from the left-hand and right-hand side of a string.
+     * Idea by underscore.string, URL: https://github.com/epeli/underscore.string
      *
      * @param {string} value String value to trim
-     * @param {string} characters Character set to trim. If null or undefined, then the native String.prototype.trim will be used
-     * @return {string} Trimmed string
+     * @param {string} characters Character set to trim. If null or undefined, then the native String.prototype.trim will be used instead
+     * @return {string} Trimmed string; otherwise, an empty string on error
      */
     function trim(value, characters) {
-        value = toString(value);
+        if (!isString(value)) {
+            return STRING_EMPTY;
+        }
+
         if (value.length === 0) {
             return value;
         }

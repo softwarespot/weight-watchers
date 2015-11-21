@@ -15,10 +15,10 @@ App.core.session = (function sessionModule(window, core) {
     // Unique global identifier. Internal usage only
     var GUID = '3943925F-EDCC-45E2-B451-8F0178F6BB24';
 
-    // Default storage object
-    var STORAGE = window.sessionStorage;
-
     // Fields
+
+    // Default storage object
+    var _storage = window.sessionStorage;
 
     // Methods
 
@@ -30,11 +30,17 @@ App.core.session = (function sessionModule(window, core) {
      */
     function Session(key, storage) {
         // Check if the key is valid; otherwise, default to the module GUID
-        this._key = !core.isString(key) || key.length === 0 ? GUID : GUID + key;
+        this._key = core.isString(key) && key.length === 0 ? GUID + key : GUID;
 
-        // Check if the injected storage object is a valid storage object; otherwise, default to sessionStorage (STORAGE)
-        this._has = _isStorage(storage);
-        this._storage = this._has ? storage : STORAGE;
+        // Set the private storage
+        this._storage = storage;
+
+        // Check if the injected storage object is a valid storage object; otherwise, default to sessionStorage (_storage)
+        this._has = _isStorage(this._storage);
+        if (!this._has) {
+            this._storage = _storage;
+            this._has = _isStorage(this._storage);
+        }
     }
 
     /**
