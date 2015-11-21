@@ -37,17 +37,18 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
     }
 
     /**
-     * Clear the registered events
+     * Clear the registered event string or all registered callback functions for an event string
      *
+     * @param {string|undefined} event If undefined all event strings will be clear; otherwise, the event string to clear
      * @return {undefined}
      */
-    function clear() {
-        _events = {};
-        _eventsOne = {};
+    function clear(event) {
+        _clear(event, _events);
+        _clear(event, _eventsOne);
     }
 
     /**
-     * Call all registered callbacks for the following event string
+     * Call all registered callback functions for the following event string
      *
      * @param {string} event Event string to invoke all registered callback functions of
      * @param {arguments} arg0...argN [optional] Arguments to pass to the callback function e.g. emit('EVENT_STRING', arg0, arg1, argN)
@@ -70,14 +71,14 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         _emit(event, args, _eventsOne);
 
         // Remove all registered one event callback functions
-        _eventsOne[event] = null;
+        _clear(event, _eventsOne);
     }
 
     /**
      * Unregister an event
      *
      * @param {string} event Event string to unregister a callback function
-     * @param {function} callback The previously associated callback function for the event
+     * @param {function} callback The previously associated callback function for the event string
      * @return {undefined}
      */
     function off(event, callback) {
@@ -120,6 +121,27 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         }
 
         _on(event, callback, _eventsOne);
+    }
+
+    /**
+     * Clear all registered events or callback functions for a single event
+     *
+     * @param {string|null} event Event string to clear all registered callback functions; otherwise, null to remove all registered event strings
+     * @param {object} events Events object to clear
+     * @return {undefined}
+     */
+    function _clear(event, events) {
+        // Clear the event string callback functions
+        if (_isEvent(event)) {
+            if (_isCallbacks(events[event])) {
+                events[event] = null;
+            }
+
+            return;
+        }
+
+        // Clear all event strings
+        events = {};
     }
 
     /**
