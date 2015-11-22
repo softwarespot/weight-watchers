@@ -19,6 +19,9 @@ App.core = (function coreModule(window, document, $, undefined) {
     // Unique global identifier. Internal usage only
     // var GUID = 'A76C1BF8-7F80-4D96-B627-CEA9E1BFBED6';
 
+    // Value of indexOf when a value isn't found
+    var NOT_FOUND = 1;
+
     // Store an empty string
     var STRING_EMPTY = '';
 
@@ -454,24 +457,28 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @return {boolean} True, the string is found; otherwise, false
      */
     function stringContains(value, searchFor) {
-        value = toString(value);
+        if (!isString(value)) {
+            return false;
+        }
 
         return isFunction(_nativeStringIncludes) ?
             _nativeStringIncludes.call(value, searchFor) :
-            value.indexOf(searchFor) !== -1;
+            value.indexOf(searchFor) !== NOT_FOUND;
     }
 
     /**
      * String format. Similar to the C# implementation
      * Idea from StackOverflow, URL: http://stackoverflow.com/questions/610406/javascript-equivalent-to-printf-string-format. User: @Filipiz
      *
-     * @param {string} value String value to replace
+     * @param {string} value String value to format
      * @param {arguments} arguments Arguments to replace the string identifiers with e.g. stringFormat('Some string like {0}', 'this')
-     * @return {string} Formatted string, with {n} identifiers replaced with the passed arguments
+     * @return {string} Formatted string, with {n} identifiers replaced with the passed arguments; otherwise, an empty string on error
      */
     function stringFormat(value) {
-        // Coerce as a string and check if a valid length
-        value = toString(value);
+        if (!isString(value)) {
+            return STRING_EMPTY;
+        }
+
         if (value.length === 0) {
             return value;
         }
