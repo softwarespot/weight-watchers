@@ -3,10 +3,10 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
+var htmlMin = require('gulp-htmlmin');
 var jshint = require('gulp-jshint');
 var php = require('gulp-connect-php');
 var prettify = require('gulp-jsbeautifier');
-var minifyHTML = require('gulp-minify-html');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var del = require('del');
@@ -14,6 +14,18 @@ var del = require('del');
 // See the cssmin documentation for more details
 var _cssMinSettings = {
     keepSpecialComments: 0,
+};
+
+// See the htmlmin documentation for more details
+var _htmlSettings = {
+    caseSensitive: true,
+    collapseBooleanAttributes: true,
+    collapseWhitespace: true,
+    quoteCharacter: '"',
+    removeComments: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true,
 };
 
 // See the uglify documentation for more details
@@ -135,7 +147,7 @@ gulp.task('htmlmin', function cssMinTask() {
     var dest = Assets.html.dest;
 
     return gulp.src(all)
-        .pipe(minifyHTML())
+        .pipe(htmlMin(_htmlSettings))
         .pipe(gulp.dest(dest));
 });
 
