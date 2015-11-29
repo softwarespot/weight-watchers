@@ -134,9 +134,6 @@ gulp.task('htmlmin', function cssMinTask() {
     // Store the destination directory
     var dest = Assets.html.dest;
 
-    // Store the source directory
-    var source = Assets.html.source;
-
     return gulp.src(all)
         .pipe(minifyHTML())
         .pipe(gulp.dest(dest));
@@ -249,7 +246,7 @@ gulp.task('vendor', function vendorTask() {
 
     // Concatenate and minify styles
     gulp.src([
-                        bowerComponents + 'font-awesome/css/font-awesome.css',
+            bowerComponents + 'font-awesome/css/font-awesome.css',
             bowerComponents + 'open-sans/css/open-sans.css',
             bowerComponents + 'normalize-css/normalize.css',
             bowerComponents + 'skeleton/css/skeleton.css',
