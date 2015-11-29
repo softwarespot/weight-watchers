@@ -17,7 +17,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
     // var GUID = 'DCCE65D7-978E-468B-8DB2-AC2B40553F27';
 
     // Value of indexOf when a value isn't found
-    var NOT_FOUND = -1;
+    var IS_NOT_FOUND = -1;
 
     // Fields
 
@@ -134,7 +134,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         // Clear the event string callback functions
         if (_isEvent(event)) {
             if (_isCallbacks(events[event])) {
-                events[event] = null;
+                events[event] = [];
             }
 
             return;
@@ -211,7 +211,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         // If the callback function exists in the callbacks array, then remove the callback
         // using the provided index value
         var index = callbacks.indexOf(callback);
-        if (index !== NOT_FOUND) {
+        if (index !== IS_NOT_FOUND) {
             // Only remove one value from the callbacks array
             callbacks.splice(index, 1);
         }
@@ -234,7 +234,7 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
         var callbacks = events[event];
 
         // Check the callback function isn't already registered for the event
-        if (callbacks.indexOf(callback) === NOT_FOUND) {
+        if (callbacks.indexOf(callback) === IS_NOT_FOUND) {
             // Push the callback function to the callbacks array
             callbacks.push(callback);
         }
