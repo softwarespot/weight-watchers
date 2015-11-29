@@ -163,13 +163,13 @@ App.core = (function coreModule(window, document, $, undefined) {
      */
     function arrayClear(array) {
         // If not an array then don't continue
-        if (!isArray(array) || array.length === 0) {
+        if (!isArray(array)) {
             return;
         }
 
-        // Pop all items on the array until empty
-        while (array.length > 0) {
-            array.pop();
+        var length = array.length;
+        if (length > 0) {
+            array.splice(0, length);
         }
     }
 
