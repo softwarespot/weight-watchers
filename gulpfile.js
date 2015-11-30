@@ -11,37 +11,6 @@ var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var del = require('del');
 
-// See the cssmin documentation for more details
-var _cssMinSettings = {
-    keepSpecialComments: 0,
-};
-
-// See the htmlmin documentation for more details
-var _htmlSettings = {
-    caseSensitive: true,
-    collapseBooleanAttributes: true,
-    collapseWhitespace: true,
-    quoteCharacter: '"',
-    removeComments: true,
-    removeScriptTypeAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    useShortDoctype: true,
-};
-
-// See the uglify documentation for more details
-var _uglifySettings = {
-    compress: {
-        comparisons: true,
-        conditionals: true,
-        /* jscs: disable */
-        dead_code: true,
-        drop_console: true,
-        /* jscs: enable */
-        unsafe: true,
-        unused: true,
-    },
-};
-
 // Assets for the project
 var Assets = {
     css: {
@@ -103,6 +72,37 @@ var Assets = {
             // main: 'vendor.js',
             minified: 'vendor.min.js',
         },
+    },
+};
+
+// See the cssmin documentation for more details
+var _cssMinSettings = {
+    keepSpecialComments: 0,
+};
+
+// See the htmlmin documentation for more details
+var _htmlSettings = {
+    caseSensitive: true,
+    collapseBooleanAttributes: true,
+    collapseWhitespace: true,
+    quoteCharacter: '"',
+    removeComments: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true,
+};
+
+// See the uglify documentation for more details
+var _uglifySettings = {
+    compress: {
+        comparisons: true,
+        conditionals: true,
+        /* jscs: disable */
+        dead_code: true,
+        drop_console: true,
+        /* jscs: enable */
+        unsafe: true,
+        unused: true,
     },
 };
 
