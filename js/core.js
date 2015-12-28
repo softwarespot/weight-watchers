@@ -60,7 +60,7 @@ App.core = (function coreModule(window, document, $, undefined) {
     // Regular expressions
 
     // Float values
-    var _reFloat = /(?:^-?(?!0+)\d+\.\d+$)/;
+    var _reFloat = /(?:^-?(?!0{2,})\d+\.\d+$)/;
 
     // Integer values
     var _reInteger = /(?:^-?(?!0+)\d+$)/;
