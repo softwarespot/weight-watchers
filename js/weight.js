@@ -3,7 +3,7 @@
 /**
  * Weight module
  *
- * Modified:  2015/11/21
+ * Modified: 2016/01/03
  * @author softwarespot
  */
 App.weight = (function weightModule(window, document, $, core, undefined) {
@@ -739,7 +739,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: 'rgba(220,220,220,1)',
                 data: values,
-            }, ],
+            },],
         };
 
         _chartLineData = _chartData.Line(data);

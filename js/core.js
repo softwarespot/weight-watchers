@@ -4,7 +4,7 @@ var App = {};
 /**
  * Core module
  *
- * Modified: 2015/11/21
+ * Modified: 2016/01/03
  * @author softwarespot
  */
 App.core = (function coreModule(window, document, $, undefined) {
@@ -20,7 +20,7 @@ App.core = (function coreModule(window, document, $, undefined) {
     // var GUID = 'A76C1BF8-7F80-4D96-B627-CEA9E1BFBED6';
 
     // Value of indexOf when a value isn't found
-    var NOT_FOUND = 1;
+    var IS_NOT_FOUND = 1;
 
     // Store an empty string
     var STRING_EMPTY = '';
@@ -38,15 +38,14 @@ App.core = (function coreModule(window, document, $, undefined) {
     var _nativeStringTrim = window.String.prototype.trim;
 
     // Return strings of toString() found on the Object prototype
-    // Based on the implementation by lodash inc. is* function as well
-    var _objectStrings = {
-        BOOLEAN: '[object Boolean]',
-        FUNCTION: '[object Function]',
-        GENERATOR: '[object GeneratorFunction]',
-        NUMBER: '[object Number]',
-        OBJECT: '[object Object]',
-        STRING: '[object String]',
-    };
+    // Based on the implementation by lodash including certain is* function as well
+    var _objectStringsArray = '[object Array]';
+    var _objectStringsBoolean = '[object Boolean]';
+    var _objectStringsFunction = '[object Function]';
+    var _objectStringsGenerator = '[object GeneratorFunction]';
+    var _objectStringsNumber = '[object Number]';
+    var _objectStringsObject = '[object Object]';
+    var _objectStringsString = '[object String]';
 
     // Store the object prototype
     var _objectPrototype = window.Object.prototype;
@@ -180,11 +179,14 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @return {mixed|undefined} The last item pushed onto the array; otherwise, undefined
      */
     function arrayPeek(array) {
-        if (!isArray(array) || array.length === 0) {
-            return undefined;
+        if (!isArray(array)) {
+            return;
         }
 
-        return array[array.length - 1];
+        var length = array.length;
+        if (length > 0) {
+            return array[length - 1];
+        }
     }
 
     /**
@@ -205,8 +207,8 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a function datatype; otherwise, false
      */
     function isFunction(value) {
-        var tag = isObject(value) ? _objectToString.call(value) : null;
-        return tag === _objectStrings.FUNCTION || tag === _objectStrings.GENERATOR;
+        var tag = _objectToString.call(value);
+        return tag === _objectStringsFunction || tag === _objectStringsGenerator;
     }
 
     /**
@@ -216,7 +218,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is an array datatype; otherwise, false
      */
     var isArray = isFunction(_nativeArrayIsArray) ? _nativeArrayIsArray : function isArray(value) {
-        return _objectToString.call(value) === _objectStrings.ARRAY;
+        return _objectToString.call(value) === _objectStringsArray;
     };
 
     /**
@@ -226,7 +228,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a boolean datatype; otherwise, false
      */
     function isBoolean(value) {
-        return value === true || value === false || _objectToString.call(value) === _objectStrings.BOOLEAN;
+        return value === false || value === true || _objectToString.call(value) === _objectStringsBoolean;
     }
 
     /**
@@ -236,7 +238,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is empty; otherwise, false
      */
     function isEmpty(value) {
-        if (isNullOrUndefined(value) || value === 0) {
+        if (isNil(value) || value === 0) {
             return true;
         }
 
@@ -319,7 +321,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @param {mixed} value Value to check
      * @returns {boolean} True, the value is null or undefined; otherwise, false
      */
-    function isNullOrUndefined(value) {
+    function isNil(value) {
         return isNull(value) || isUndefined(value);
     }
 
@@ -330,7 +332,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a number datatype; otherwise, false
      */
     function isNumber(value) {
-        return typeof value === 'number' || _objectToString.call(value) === _objectStrings.NUMBER;
+        return typeof value === 'number' || _objectToString.call(value) === _objectStringsNumber;
     }
 
     /**
@@ -360,11 +362,7 @@ App.core = (function coreModule(window, document, $, undefined) {
         }
 
         // Based on the idea by jQuery
-        if (value.constructor && !has(value.constructor.prototype, 'isPrototypeOf')) {
-            return false;
-        }
-
-        return true;
+        return value.constructor && has(value.constructor.prototype, 'isPrototypeOf');
     }
 
     /**
@@ -374,7 +372,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a string datatype; otherwise, false
      */
     function isString(value) {
-        return typeof value === 'string' || _objectToString.call(value) === _objectStrings.STRING;
+        return typeof value === 'string' || _objectToString.call(value) === _objectStringsString;
     }
 
     /**
@@ -463,7 +461,7 @@ App.core = (function coreModule(window, document, $, undefined) {
 
         return isFunction(_nativeStringIncludes) ?
             _nativeStringIncludes.call(value, searchFor) :
-            value.indexOf(searchFor) !== NOT_FOUND;
+            value.indexOf(searchFor) !== IS_NOT_FOUND;
     }
 
     /**
@@ -526,7 +524,7 @@ App.core = (function coreModule(window, document, $, undefined) {
             return value;
         }
 
-        return isNullOrUndefined(value) || isObjectLiteral(value) ? STRING_EMPTY : (STRING_EMPTY + value);
+        return isNil(value) || isObjectLiteral(value) ? STRING_EMPTY : (STRING_EMPTY + value);
     }
 
     /**
@@ -547,7 +545,7 @@ App.core = (function coreModule(window, document, $, undefined) {
         }
 
         // If null or undefined, then use the native trim
-        if (isNullOrUndefined(characters)) {
+        if (isNil(characters)) {
             return stringStripWS(value);
         }
 
@@ -564,7 +562,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is an object; otherwise, false
      */
     function _isObjectLike(value) {
-        return _objectToString.call(value) === _objectStrings.OBJECT;
+        return _objectToString.call(value) === _objectStringsObject;
 
         // return !!value && typeof value === 'object';
     }
@@ -594,9 +592,9 @@ App.core = (function coreModule(window, document, $, undefined) {
         isInteger: isInteger,
         isjQuery: isjQuery,
         isjQueryNotEmpty: isjQueryNotEmpty,
+        isNil: isNil,
         isNotNull: isNotNull,
         isNull: isNull,
-        isNullOrUndefined: isNullOrUndefined,
         isNumber: isNumber,
         isObject: isObject,
         isObjectLiteral: isObjectLiteral,

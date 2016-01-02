@@ -3,7 +3,7 @@
 /**
  * API module
  *
- * Modified:  2015/11/21
+ * Modified: 2016/01/03
  * @author softwarespot
  */
 App.core.api = (function apiModule(window, document, $, core, undefined) {
