@@ -31,9 +31,19 @@ App.core = (function coreModule(window, document, $, undefined) {
     var _isInitialised = false;
 
     // Native functions
+    var _nativeArray = window.Array;
     var _nativeArrayIsArray = window.Array.isArray;
+
+    var _nativeMathAbs = window.Math.abs;
     var _nativeMathFloor = window.Math.floor;
     var _nativeMathRandom = window.Math.random;
+
+    var _nativeNumber = window.Number;
+    var _nativeNumberIsFinite = window.Number.isFinite;
+    var _nativeNumberIsNaN = window.Number.isNaN;
+
+    var _nativeRegExp = window.RegExp;
+
     var _nativeStringIncludes = window.String.prototype.includes;
     var _nativeStringTrim = window.String.prototype.trim;
 
@@ -78,7 +88,7 @@ App.core = (function coreModule(window, document, $, undefined) {
 
     // Strip leading and trailing whitespace
     // Idea by MDN, URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
-    var _reTrim = new window.RegExp(_reTrimLeft.source + '|' + _reTrimRight.source, 'g');
+    var _reTrim = new _nativeRegExp(_reTrimLeft.source + '|' + _reTrimRight.source, 'g');
 
     // Store when the application is in debugging mode
     var _isDebug = false;
@@ -256,6 +266,16 @@ App.core = (function coreModule(window, document, $, undefined) {
     }
 
     /**
+     * Check if a variable is finite
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True, the value is finite; otherwise, false
+     */
+    var isFinite = isFunction(_nativeNumberIsFinite) ? _nativeNumberIsFinite : function isFinite(value) {
+        return isNumber(value) && window.isFinite(value);
+    };
+
+    /**
      * Check if a variable is a float datatype
      *
      * @param {mixed} value Value to check
@@ -294,6 +314,16 @@ App.core = (function coreModule(window, document, $, undefined) {
     function isjQueryNotEmpty($element) {
         return isjQuery($element) && $element.length > 0;
     }
+
+    /**
+     * Check if a variable is a NaN
+     *
+     * @param {mixed} value Value to check
+     * @returns {boolean} True, the value is NaN; otherwise, false
+     */
+    var isNaN = isFunction(_nativeNumberIsNaN) ? _nativeNumberIsNaN : function isNaN(value) {
+        return isNumber(value) && value !== value;
+    };
 
     /**
      * Check if a variable is not null
@@ -477,39 +507,45 @@ App.core = (function coreModule(window, document, $, undefined) {
             return STRING_EMPTY;
         }
 
-        if (value.length === 0) {
+        var INITIAL_VALUE = 1;
+        var length = arguments.length;
+        if (value.length === 0 || length <= INITIAL_VALUE) {
             return value;
         }
 
         // Create a temporary arguments array, skipping the first element, as this contains the string value
-        var args = [];
-        for (var i = 1, length = arguments.length; i < length; i++) {
-            args.push(arguments[i]);
+        var args = _nativeArray(length);
+        for (var i = INITIAL_VALUE, j = 0; i < length;) {
+            args[j++] = arguments[i++];
         }
 
         return value.replace(_reStringFormat, function stringFormatKeys(fullMatch, index) {
             // Coerce as a number and get the value at the index position in the arguments array
-            index = +index;
-            var value = args[index];
+            var value = args[toInteger(index)];
 
             return isUndefined(value) ? fullMatch : value;
         });
     }
 
     /**
-     * Strip leading and trailing whitespace
+     * Coerce a value to an integer
+     * Idea by MDN, URL: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/from
      *
-     * @param {string} value String value to strip
-     * @return {string} New string with stripped leading and trailing whitespace; otherwise, an empty string
+     * @param {mixed} value Value to convert
+     * @return {number} New integer value
      */
-    function stringStripWS(value) {
-        if (!isString(value)) {
-            return STRING_EMPTY;
+    function toInteger(value) {
+        // Convert to a number
+        value = _nativeNumber(value);
+        if (isNaN(value)) {
+            return 0;
         }
 
-        return isFunction(_nativeStringTrim) ?
-            _nativeStringTrim.call(value) :
-            value.replace(_reTrim, STRING_EMPTY);
+        if (value === 0 || !isFinite(value)) {
+            return value;
+        }
+
+        return (value > 0 ? 1 : -1) * _nativeMathFloor(_nativeMathAbs(value));
     }
 
     /**
@@ -536,23 +572,19 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @return {string} Trimmed string; otherwise, an empty string on error
      */
     function trim(value, characters) {
-        if (!isString(value)) {
+        if (!isString(value) || value.length === 0) {
             return STRING_EMPTY;
         }
 
-        if (value.length === 0) {
-            return value;
+        // If not a string, then use the native function
+        if (!isString(characters)) {
+            return _trim(value);
         }
 
-        // If null or undefined, then use the native trim
-        if (isNil(characters)) {
-            return stringStripWS(value);
-        }
+        // Escape the meta regular expression characters
+        characters = '[' + regExpEscape(characters) + ']';
 
-        // Coerce as a string and escape the meta regular expression characters
-        characters = '[' + regExpEscape(toString(characters)) + ']';
-
-        return value.replace(new window.RegExp('^' + characters + '+|' + characters + '+$', 'g'), STRING_EMPTY);
+        return value.replace(new _nativeRegExp('^' + characters + '+|' + characters + '+$', 'g'), STRING_EMPTY);
     }
 
     /**
@@ -565,6 +597,18 @@ App.core = (function coreModule(window, document, $, undefined) {
         return _objectToString.call(value) === _objectStringsObject;
 
         // return !!value && typeof value === 'object';
+    }
+
+    /**
+     * Trim call around the native function or wrapper
+     *
+     * @param {string} value String value to trim
+     * @return {string} Trimmed string
+     */
+    function _trim(value) {
+        return isFunction(_nativeStringTrim) ?
+            _nativeStringTrim.call(value) :
+            value.replace(_reTrim, STRING_EMPTY);
     }
 
     // Invoked when the DOM has loaded
@@ -587,11 +631,13 @@ App.core = (function coreModule(window, document, $, undefined) {
         isArray: isArray,
         isBoolean: isBoolean,
         isEmpty: isEmpty,
+        isFinite: isFinite,
         isFloat: isFloat,
         isFunction: isFunction,
         isInteger: isInteger,
         isjQuery: isjQuery,
         isjQueryNotEmpty: isjQueryNotEmpty,
+        isNaN: isNaN,
         isNil: isNil,
         isNotNull: isNotNull,
         isNull: isNull,
@@ -606,7 +652,7 @@ App.core = (function coreModule(window, document, $, undefined) {
         randomNumber: randomNumber,
         stringContains: stringContains,
         stringFormat: stringFormat,
-        stringStripWS: stringStripWS,
+        toInteger: toInteger,
         toString: toString,
         trim: trim,
     };
