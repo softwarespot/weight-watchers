@@ -7,7 +7,7 @@
  * Modified: 2016/01/03
  * @author softwarespot
  */
-App.core.emitter = (function emitterModule(window, document, $, core, undefined) {
+App.core.emitter = (function emitterModule(window, document, $, core) {
     // Constants
 
     // SemVer version number of the module
@@ -226,7 +226,6 @@ App.core.emitter = (function emitterModule(window, document, $, core, undefined)
      * @return {undefined}
      */
     function _on(event, callback, events) {
-
         // Ensure the event contains a valid array datatype
         events[event] = events[event] || [];
 

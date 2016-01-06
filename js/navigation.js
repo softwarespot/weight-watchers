@@ -83,7 +83,7 @@ App.navigation = (function navigationModule(window, document, $, core) {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    function init(/*config*/) {
+    function init(/* config */) {
         // Default config that can be overwritten by passing through the config variable
         // var defaultConfig = {};
 
