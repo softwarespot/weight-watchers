@@ -186,17 +186,19 @@ App.core = (function coreModule(window, document, $, undefined) {
      * Peek at the last item in the array
      *
      * @param {array} array The array to peek at
-     * @return {mixed|undefined} The last item pushed onto the array; otherwise, undefined
+     * @return {mixed|null} The last item pushed onto the array; otherwise, null
      */
     function arrayPeek(array) {
         if (!isArray(array)) {
-            return;
+            return null;
         }
 
         var length = array.length;
         if (length > 0) {
             return array[length - 1];
         }
+
+        return null;
     }
 
     /**

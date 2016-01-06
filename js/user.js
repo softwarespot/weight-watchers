@@ -6,7 +6,7 @@
  * Modified: 2016/01/03
  * @author softwarespot
  */
-App.user = (function userModule(window, document, $, core, undefined) {
+App.user = (function userModule(window, document, $, core) {
     // Constants
 
     // SemVer version number of the module
@@ -38,7 +38,7 @@ App.user = (function userModule(window, document, $, core, undefined) {
     var _templateUserList = null;
 
     // Generic session handler
-    var _sessionHandler = new core.session(GUID + '_users.app');
+    var _sessionHandler = core.session.create(GUID + '_users.app');
 
     // Events object
     var _events = {

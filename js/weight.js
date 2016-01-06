@@ -6,7 +6,7 @@
  * Modified: 2016/01/03
  * @author softwarespot
  */
-App.weight = (function weightModule(window, document, $, core, undefined) {
+App.weight = (function weightModule(window, document, $, core) {
     // Constants
 
     // SemVer version number of the module
@@ -319,7 +319,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
     };
 
     // Generic session handler
-    var _sessionHandler = new core.session(GUID + '_weight_list.app');
+    var _sessionHandler = core.session.create(GUID + '_weight_list.app');
 
     // Session handler for the weights list
     var _session = {
@@ -739,10 +739,10 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
                 pointHighlightFill: '#fff',
                 pointHighlightStroke: 'rgba(220,220,220,1)',
                 data: values,
-            },],
+            }],
         };
 
-        _chartLineData = _chartData.Line(data);
+        _chartLineData = _chartData.Line(data); // eslint-disable-line
     }
 
     /**
@@ -766,7 +766,7 @@ App.weight = (function weightModule(window, document, $, core, undefined) {
 
         // If items exist in the array, then get the last element object and the id
         var peek = core.arrayPeek(_weightsList);
-        if (!core.isUndefined(peek)) {
+        if (!core.isNil(peek)) {
             _internalId = peek.id;
         }
 

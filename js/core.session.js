@@ -3,7 +3,7 @@
 /**
  * Session module
  *
- * Modified: 2015/11/21
+ * Modified: 2016/01/06
  * @author softwarespot
  */
 App.core.session = (function sessionModule(window, core) {
@@ -23,10 +23,22 @@ App.core.session = (function sessionModule(window, core) {
     // Methods
 
     /**
+     * Create an new session instance
+     *
+     * @param {string} key Unique storage key
+     * @param {object} storage Valid storage object; otherwise, sessionStorage is used by default
+     * @return {object} A new session instance
+     */
+    function create(key, storage) {
+        return new Session(key, storage);
+    }
+
+    /**
      * Session interface
      *
      * @param {string} key Unique storage key
      * @param {object} storage Valid storage object; otherwise, sessionStorage is used by default
+     * @return {undefined}
      */
     function Session(key, storage) {
         // Check if the key is valid; otherwise, default to the module GUID
@@ -136,5 +148,7 @@ App.core.session = (function sessionModule(window, core) {
     }
 
     // Public API
-    return Session;
+    return {
+        create: create,
+    };
 })(window, window.App.core);

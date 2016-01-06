@@ -6,7 +6,7 @@
  * Modified: 2016/01/03
  * @author softwarespot
  */
-App.core.api = (function apiModule(window, document, $, core, undefined) {
+App.core.api = (function apiModule(window, document, $, core) {
     // Constants
 
     // SemVer version number of the module
@@ -235,11 +235,11 @@ App.core.api = (function apiModule(window, document, $, core, undefined) {
     function _fetchCheckStatus(response) {
         if (response.status >= httpStatus.OK && response.status < httpStatus.MULTIPLE_CHOICES) {
             return response;
-        } else {
-            var error = new window.Error(response.statusText);
-            error.response = response;
-            throw error;
         }
+
+        var error = new window.Error(response.statusText);
+        error.response = response;
+        throw error;
     }
 
     /**
@@ -497,7 +497,7 @@ App.core.api = (function apiModule(window, document, $, core, undefined) {
         Methods: methods,
         HTTPStatus: httpStatus,
         fetch: fetch,
-        delete: del,
+        'delete': del,
         get: get,
         put: put,
         post: post,
