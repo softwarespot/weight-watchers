@@ -194,11 +194,8 @@ App.core = (function coreModule(window, document, $, undefined) {
         }
 
         var length = array.length;
-        if (length > 0) {
-            return array[length - 1];
-        }
 
-        return null;
+        return length > 0 ? array[length - 1] : null;
     }
 
     /**
@@ -509,15 +506,17 @@ App.core = (function coreModule(window, document, $, undefined) {
             return STRING_EMPTY;
         }
 
-        var INITIAL_VALUE = 1;
+        var STARTING_VALUE = 1;
         var length = arguments.length;
-        if (value.length === 0 || length <= INITIAL_VALUE) {
+        if (value.length === 0 || length <= STARTING_VALUE) {
             return value;
         }
 
         // Create a temporary arguments array, skipping the first element, as this contains the string value
         var args = _nativeArray(length);
-        for (var i = INITIAL_VALUE, j = 0; i < length;) {
+        var i = STARTING_VALUE;
+        var j = 0;
+        while (i < length) {
             args[j++] = arguments[i++];
         }
 
