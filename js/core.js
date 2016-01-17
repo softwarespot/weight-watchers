@@ -32,20 +32,27 @@ App.core = (function coreModule(window, document, $, undefined) {
 
     // Native functions
     var _nativeArray = window.Array;
-    var _nativeArrayIsArray = window.Array.isArray;
+    var _nativeArrayIsArray = _nativeArray.isArray;
 
-    var _nativeMathAbs = window.Math.abs;
-    var _nativeMathFloor = window.Math.floor;
-    var _nativeMathRandom = window.Math.random;
+    var _nativeMath = window.Math;
+    var _nativeMathAbs = _nativeMath.abs;
+    var _nativeMathFloor = _nativeMath.floor;
+    var _nativeMathRandom = _nativeMath.random;
 
     var _nativeNumber = window.Number;
-    var _nativeNumberIsFinite = window.Number.isFinite;
-    var _nativeNumberIsNaN = window.Number.isNaN;
+    var _nativeNumberIsFinite = _nativeNumber.isFinite;
+    var _nativeNumberIsNaN = _nativeNumber.isNaN;
+
+    var _nativeObject = window.Object;
+    var _nativeObjectPrototype = _nativeObject.prototype;
+    var _nativeObjectHasOwnProperty = _nativeObjectPrototype.hasOwnProperty;
+    var _nativeObjectToString = _nativeObjectPrototype.toString;
 
     var _nativeRegExp = window.RegExp;
 
-    var _nativeStringIncludes = window.String.prototype.includes;
-    var _nativeStringTrim = window.String.prototype.trim;
+    var _nativeString = window.String;
+    var _nativeStringIncludes = _nativeString.prototype.includes;
+    var _nativeStringTrim = _nativeString.prototype.trim;
 
     // Return strings of toString() found on the Object prototype
     // Based on the implementation by lodash including certain is* function as well
@@ -56,15 +63,6 @@ App.core = (function coreModule(window, document, $, undefined) {
     var _objectStringsNumber = '[object Number]';
     var _objectStringsObject = '[object Object]';
     var _objectStringsString = '[object String]';
-
-    // Store the object prototype
-    var _objectPrototype = window.Object.prototype;
-
-    // Store the hasOwnProperty method
-    var _objectHasOwnProperty = _objectPrototype.hasOwnProperty;
-
-    // Store the toString method
-    var _objectToString = _objectPrototype.toString;
 
     // Regular expressions
 
@@ -206,7 +204,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @return {boolean} True, the property exists; otherwise, false
      */
     function has(object, property) {
-        return _objectHasOwnProperty.call(object, property);
+        return _nativeObjectHasOwnProperty.call(object, property);
     }
 
     /**
@@ -216,7 +214,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a function datatype; otherwise, false
      */
     function isFunction(value) {
-        var tag = _objectToString.call(value);
+        var tag = _nativeObjectToString.call(value);
         return tag === _objectStringsFunction || tag === _objectStringsGenerator;
     }
 
@@ -227,7 +225,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is an array datatype; otherwise, false
      */
     var isArray = isFunction(_nativeArrayIsArray) ? _nativeArrayIsArray : function isArray(value) {
-        return _objectToString.call(value) === _objectStringsArray;
+        return _nativeObjectToString.call(value) === _objectStringsArray;
     };
 
     /**
@@ -237,7 +235,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a boolean datatype; otherwise, false
      */
     function isBoolean(value) {
-        return value === false || value === true || _objectToString.call(value) === _objectStringsBoolean;
+        return value === false || value === true || _nativeObjectToString.call(value) === _objectStringsBoolean;
     }
 
     /**
@@ -361,7 +359,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a number datatype; otherwise, false
      */
     function isNumber(value) {
-        return typeof value === 'number' || _objectToString.call(value) === _objectStringsNumber;
+        return typeof value === 'number' || _nativeObjectToString.call(value) === _objectStringsNumber;
     }
 
     /**
@@ -401,7 +399,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is a string datatype; otherwise, false
      */
     function isString(value) {
-        return typeof value === 'string' || _objectToString.call(value) === _objectStringsString;
+        return typeof value === 'string' || _nativeObjectToString.call(value) === _objectStringsString;
     }
 
     /**
@@ -595,7 +593,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is an object; otherwise, false
      */
     function _isObjectLike(value) {
-        return _objectToString.call(value) === _objectStringsObject;
+        return _nativeObjectToString.call(value) === _objectStringsObject;
 
         // return !!value && typeof value === 'object';
     }
