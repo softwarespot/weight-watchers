@@ -19,6 +19,9 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
     // Value of indexOf when a value isn't found
     var IS_NOT_FOUND = -1;
 
+    // First item in the array
+    var ARRAY_FIRST_ITEM = 1;
+
     // Fields
 
     // Unique events object for both standard and one
@@ -213,7 +216,7 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
         var index = callbacks.indexOf(callback);
         if (index !== IS_NOT_FOUND) {
             // Only remove one value from the callbacks array
-            callbacks.splice(index, 1);
+            callbacks.splice(index, ARRAY_FIRST_ITEM);
         }
     }
 
