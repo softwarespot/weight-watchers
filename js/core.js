@@ -296,7 +296,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * Check if a variable is an instance of jQuery
      *
      * @param {mixed} $element Element to check
-     * @return {boolean} True is an instance of jQuery; otherwise, false
+     * @return {boolean} True, is an instance of jQuery; otherwise, false
      */
     function isjQuery($element) {
         return $element instanceof $;
@@ -306,7 +306,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * Check if a variable is an instance of jQuery and contains at least one element node
      *
      * @param {mixed} $element Element to check
-     * @return {boolean} True is an instance of jQuery and contains at least one element node; otherwise, false
+     * @return {boolean} True, is an instance of jQuery and contains at least one element node; otherwise, false
      */
     function isjQueryNotEmpty($element) {
         return isjQuery($element) && $element.length > 0;
