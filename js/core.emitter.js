@@ -251,4 +251,4 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
         on: on,
         one: one,
     };
-})(window, window.document, window.jQuery, window.App.core);
+}(window, window.document, window.jQuery, window.App.core));

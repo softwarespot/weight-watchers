@@ -7,7 +7,7 @@ var App = {};
  * Modified: 2016/01/03
  * @author softwarespot
  */
-App.core = (function coreModule(window, document, $, undefined) {
+App.core = (function coreModule(window, document, $) {
     // Constants
 
     // SemVer version number of the module
@@ -657,4 +657,4 @@ App.core = (function coreModule(window, document, $, undefined) {
         toString: toString,
         trim: trim,
     };
-})(window, window.document, window.jQuery);
+}(window, window.document, window.jQuery));

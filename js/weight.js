@@ -801,4 +801,4 @@ App.weight = (function weightModule(window, document, $, core) {
         getVersion: getVersion,
         isValidWeight: isValidWeight,
     };
-})(window, window.document, window.jQuery, window.App.core);
+}(window, window.document, window.jQuery, window.App.core));

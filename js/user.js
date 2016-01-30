@@ -247,4 +247,4 @@ App.user = (function userModule(window, document, $, core) {
         destroy: destroy,
         getVersion: getVersion,
     };
-})(window, window.document, window.jQuery, window.App.core);
+}(window, window.document, window.jQuery, window.App.core));

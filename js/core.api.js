@@ -157,7 +157,7 @@ App.core.api = (function apiModule(window, document, $, core) {
      * @param {object} config Options to configure the module
      * @return {undefined}
      */
-    function init(/*config*/) {
+    function init(/* config */) {
         if (_isInitialised) {
             return;
         }
@@ -497,7 +497,7 @@ App.core.api = (function apiModule(window, document, $, core) {
         Methods: methods,
         HTTPStatus: httpStatus,
         fetch: fetch,
-        'delete': del,
+        delete: del,
         get: get,
         put: put,
         post: post,
@@ -506,4 +506,4 @@ App.core.api = (function apiModule(window, document, $, core) {
         setPrefix: setPrefix,
         trimSlashes: trimSlashes,
     };
-})(window, window.document, window.jQuery, window.App.core);
+}(window, window.document, window.jQuery, window.App.core));

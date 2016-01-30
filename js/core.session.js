@@ -151,4 +151,4 @@ App.core.session = (function sessionModule(window, core) {
     return {
         create: create,
     };
-})(window, window.App.core);
+}(window, window.App.core));
