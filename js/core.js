@@ -34,6 +34,8 @@ App.core = (function coreModule(window, document, $, undefined) {
     var _nativeArray = window.Array;
     var _nativeArrayIsArray = _nativeArray.isArray;
 
+    var _nativeGlobalIsFinite = window.isFinite;
+
     var _nativeMath = window.Math;
     var _nativeMathAbs = _nativeMath.abs;
     var _nativeMathFloor = _nativeMath.floor;
@@ -269,7 +271,7 @@ App.core = (function coreModule(window, document, $, undefined) {
      * @returns {boolean} True, the value is finite; otherwise, false
      */
     var isFinite = isFunction(_nativeNumberIsFinite) ? _nativeNumberIsFinite : function isFinite(value) {
-        return isNumber(value) && window.isFinite(value);
+        return isNumber(value) && _nativeGlobalIsFinite(value);
     };
 
     /**
