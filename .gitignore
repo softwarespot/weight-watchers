@@ -20,4 +20,4 @@ bower_components
 node_modules
 
 # DB Connections
-db_connection.properties
+# db_connection.properties
