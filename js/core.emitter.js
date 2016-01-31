@@ -25,8 +25,8 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
     // Fields
 
     // Unique events object for both standard and one
-    var _events = {};
-    var _eventsOne = {};
+    var _events = _create();
+    var _eventsOne = _create();
 
     // Methods
 
@@ -144,7 +144,16 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
         }
 
         // Clear all event strings
-        events = {};
+        events = _create();
+    }
+
+    /**
+     * Create an empty object that doesn't inherit from Object.prototype
+     *
+     * @return {object} An empty object that hasn't inherited properties from Object.prototype
+     */
+    function _create() {
+        return window.Object.create(null);
     }
 
     /**
