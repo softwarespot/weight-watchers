@@ -322,7 +322,7 @@ App.core = (function coreModule(window, document, $) {
      * @returns {boolean} True, the value is NaN; otherwise, false
      */
     var isNaN = isFunction(_nativeNumberIsNaN) ? _nativeNumberIsNaN : function isNaN(value) {
-        return isNumber(value) && value !== value;
+        return isNumber(value) && value !== value; // eslint-disable-line no-self-compare
     };
 
     /**
