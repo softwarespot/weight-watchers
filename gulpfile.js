@@ -3,9 +3,9 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
+var eslint = require('gulp-eslint');
+var gulpIf = require('gulp-if');
 var htmlMin = require('gulp-htmlmin');
-var jshint = require('gulp-jshint');
-var php = require('gulp-connect-php');
 var prettify = require('gulp-jsbeautifier');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
@@ -138,6 +138,28 @@ gulp.task('cssmin', function cssMinTask() {
         .pipe(gulp.dest(dest));
 });
 
+// Check the main js file meets the following standards outlined in .eslintrc
+gulp.task('eslint', function esLintTask() {
+    // Has ESLint fixed the file contents?
+    function isFixed(file) {
+        return file.eslint !== undefined && file.eslint !== null && file.eslint.fixed;
+    }
+
+    // All js file(s)
+    var all = Assets.js.custom.all;
+
+    // Store the source directory
+    var source = Assets.js.source;
+
+    return gulp.src(all)
+        .pipe(eslint({
+            fix: true,
+            useEslintrc: '.eslintrc',
+        }))
+        .pipe(eslint.format())
+        .pipe(gulpIf(isFixed, gulp.dest(source)));
+});
+
 // Minify the main html file(s)
 gulp.task('htmlmin', function cssMinTask() {
     // All html file(s)
@@ -162,30 +184,6 @@ gulp.task('images', function imagesTask() {
     // Copy images to the destination directory
     return gulp.src(source)
         .pipe(gulp.dest(dest));
-});
-
-// Check the code meets the following standards outlined in .jshintrc
-gulp.task('jshint', function jsHintTask() {
-    // All js file(s)
-    var all = Assets.js.custom.all;
-
-    return gulp.src(all)
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'));
-});
-
-// Initialise the PHP server 'php -S localhost:8000'
-gulp.task('php-server', function phpSeverTask() {
-    php.server({
-        hostname: 'localhost',
-        port: 8000,
-        base: '.',
-        keepalive: true,
-        open: true,
-
-        // bin: '',
-        // ini: '',
-    });
 });
 
 // Prettify the main js file(s)
@@ -219,7 +217,6 @@ gulp.task('uglify', function uglifyTask() {
     del([dest + '/' + minified]);
 
     return gulp.src([
-
             // Core library
             source + '/core.js',
             source + '/core.api.js',
@@ -258,11 +255,17 @@ gulp.task('vendor', function vendorTask() {
 
     // Concatenate and minify styles
     gulp.src([
-            bowerComponents + 'font-awesome/css/font-awesome.css',
-            bowerComponents + 'open-sans/css/open-sans.css',
-            bowerComponents + 'normalize-css/normalize.css',
-            bowerComponents + 'skeleton/css/skeleton.css',
-            bowerComponents + 'nprogress/nprogress.css',
+            bowerComponents + 'jquery/dist/jquery.js',
+            bowerComponents + 'Chart.js/Chart.js',
+            bowerComponents + 'es6-collections/index.js',
+            bowerComponents + 'es6-promise/promise.js',
+            bowerComponents + 'es6-shim/es6-shim.js',
+            bowerComponents + 'fetch/fetch.js',
+            bowerComponents + 'handlebars/handlebars.js',
+            bowerComponents + 'momentjs/moment.js',
+            bowerComponents + 'nprogress/nprogress.js',
+            bowerComponents + 'jquery-handlebars/jquery-handlebars.js',
+            bowerComponents + 'jquery.serializeJSON/jquery.serializejson.js',
         ])
         .pipe(concat(cssMinified))
         .pipe(cssmin(_cssMinSettings))
@@ -277,16 +280,10 @@ gulp.task('vendor', function vendorTask() {
     // Concatenate and uglify scripts
     gulp.src([
             bowerComponents + 'jquery/dist/jquery.js',
-            bowerComponents + 'Chart.js/Chart.js',
-            bowerComponents + 'es6-collections/index.js',
-            bowerComponents + 'es6-promise/promise.js',
-            bowerComponents + 'es6-shim/es6-shim.js',
-            bowerComponents + 'fetch/fetch.js',
             bowerComponents + 'handlebars/handlebars.js',
             bowerComponents + 'momentjs/moment.js',
-            bowerComponents + 'nprogress/nprogress.js',
             bowerComponents + 'jquery-handlebars/jquery-handlebars.js',
-            bowerComponents + 'jquery.serializeJSON/jquery.serializejson.js',
+            bowerComponents + 'nprogress/nprogress.js',
         ])
         .pipe(concat(jsMinified))
         .pipe(uglify(_uglifySettings))
@@ -300,7 +297,7 @@ gulp.task('build', ['cssmin', 'htmlmin', 'uglify']);
 gulp.task('watch', function watchTask() {
     gulp.watch(Assets.css.custom.all, ['cssmin']);
     gulp.watch(Assets.html.custom.all, ['htmlmin']);
-    gulp.watch(Assets.js.custom.all, ['jshint', 'uglify']);
+    gulp.watch(Assets.js.custom.all, ['eslint', 'uglify']);
 });
 
 // Register the default task which is essentially 'build' and 'vendor' included
@@ -308,10 +305,9 @@ gulp.task('default', ['clean', 'build', 'images', 'vendor']);
 
 // 'gulp build' to build the main css and js file(s)
 // 'gulp cssmin' to minify the main css file(s)
+// 'gulp eslint' to check the syntax of the main js file(s)
 // 'gulp htmlmin' to minify the main html file(s)
 // 'gulp images' to copy images files to the destination directory
-// 'gulp jshint' to check the syntax of the main js file(s)
-// 'gulp php-server' to connect to the local PHP server
 // 'gulp prettify-js' to prettify the main js file(s)
 // 'gulp uglify' to uglify the main js file(s)
 // 'gulp vendor' to build the vendor file(s)
