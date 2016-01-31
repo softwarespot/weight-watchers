@@ -255,17 +255,11 @@ gulp.task('vendor', function vendorTask() {
 
     // Concatenate and minify styles
     gulp.src([
-            bowerComponents + 'jquery/dist/jquery.js',
-            bowerComponents + 'Chart.js/Chart.js',
-            bowerComponents + 'es6-collections/index.js',
-            bowerComponents + 'es6-promise/promise.js',
-            bowerComponents + 'es6-shim/es6-shim.js',
-            bowerComponents + 'fetch/fetch.js',
-            bowerComponents + 'handlebars/handlebars.js',
-            bowerComponents + 'momentjs/moment.js',
-            bowerComponents + 'nprogress/nprogress.js',
-            bowerComponents + 'jquery-handlebars/jquery-handlebars.js',
-            bowerComponents + 'jquery.serializeJSON/jquery.serializejson.js',
+            bowerComponents + 'font-awesome/css/font-awesome.css',
+            bowerComponents + 'open-sans/css/open-sans.css',
+            bowerComponents + 'normalize-css/normalize.css',
+            bowerComponents + 'skeleton/css/skeleton.css',
+            bowerComponents + 'nprogress/nprogress.css',
         ])
         .pipe(concat(cssMinified))
         .pipe(cssmin(_cssMinSettings))
@@ -280,10 +274,16 @@ gulp.task('vendor', function vendorTask() {
     // Concatenate and uglify scripts
     gulp.src([
             bowerComponents + 'jquery/dist/jquery.js',
+            bowerComponents + 'Chart.js/Chart.js',
+            bowerComponents + 'es6-collections/index.js',
+            bowerComponents + 'es6-promise/promise.js',
+            bowerComponents + 'es6-shim/es6-shim.js',
+            bowerComponents + 'fetch/fetch.js',
             bowerComponents + 'handlebars/handlebars.js',
             bowerComponents + 'momentjs/moment.js',
-            bowerComponents + 'jquery-handlebars/jquery-handlebars.js',
             bowerComponents + 'nprogress/nprogress.js',
+            bowerComponents + 'jquery-handlebars/jquery-handlebars.js',
+            bowerComponents + 'jquery.serializeJSON/jquery.serializejson.js',
         ])
         .pipe(concat(jsMinified))
         .pipe(uglify(_uglifySettings))
