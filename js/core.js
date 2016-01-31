@@ -46,6 +46,7 @@ App.core = (function coreModule(window, document, $) {
     var _nativeNumberIsNaN = _nativeNumber.isNaN;
 
     var _nativeObject = window.Object;
+    var _nativeObjectCreate = _nativeObject.create;
     var _nativeObjectPrototype = _nativeObject.prototype;
     var _nativeObjectHasOwnProperty = _nativeObjectPrototype.hasOwnProperty;
     var _nativeObjectToString = _nativeObjectPrototype.toString;
@@ -445,6 +446,15 @@ App.core = (function coreModule(window, document, $) {
     }
 
     /**
+     * Create an empty object that doesn't inherit from Object.prototype
+     *
+     * @return {object} An empty object that hasn't inherited properties from Object.prototype
+     */
+    function objectEmpty() {
+        return isFunction(_nativeObjectCreate) ? _nativeObjectCreate(null) : {};
+    }
+
+    /**
      * Generate a random number
      *
      * @param {number} min Minimum value
@@ -650,6 +660,7 @@ App.core = (function coreModule(window, document, $) {
         isStringInteger: isStringInteger,
         isStringNumber: isStringNumber,
         isUndefined: isUndefined,
+        objectEmpty: objectEmpty,
         randomNumber: randomNumber,
         stringContains: stringContains,
         stringFormat: stringFormat,
