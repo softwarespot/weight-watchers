@@ -54,8 +54,9 @@ App.core = (function coreModule(window, document, $) {
     var _nativeRegExp = window.RegExp;
 
     var _nativeString = window.String;
-    var _nativeStringIncludes = _nativeString.prototype.includes;
-    var _nativeStringTrim = _nativeString.prototype.trim;
+    var _nativeStringPrototype = _nativeString.prototype;
+    var _nativeStringIncludes = _nativeStringPrototype.includes;
+    var _nativeStringTrim = _nativeStringPrototype.trim;
 
     // Return strings of toString() found on the Object prototype
     // Based on the implementation by lodash including certain is* function as well
