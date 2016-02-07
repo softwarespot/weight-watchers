@@ -1,18 +1,18 @@
-/**
+/*
  * Custom CSS
  *
- * Modified: 2015/11/11
+ * Modified: 2016/02/07
  * @author softwarespot
  */
 
- /*Body styling*/
- body {
+/* Body styling */
+body {
     background: #fafafa;
     font-family: 'Open Sans', sans-serif, Arial;
     color: #222;
 }
 
-/*Style a links as well as increasing the clickable area*/
+/* Style a links as well as increasing the clickable area */
 a {
     background: transparent;
     color: #2980b9;
@@ -36,14 +36,15 @@ a img:hover {
     transform: scale(1.3, 1.3);
 }
 
-/*Navigation*/
+/* Navigation */
 nav {
-    /*display: block;*/
-    /*padding: 5px;*/
+    /* display: block; */
+
+    /* padding: 5px; */
 }
 
 nav a {
-    /*float: right;*/
+    /* float: right; */
     background: #ecf0f1;
     display: inline-block;
     padding: 15px;
@@ -79,29 +80,34 @@ nav a {
     display: block;
 }
 
-/*Mobile first queries*/
+/* Mobile first queries */
 
-/*Larger than mobile*/
-@media (min-width: 400px) {
-}
+/* Larger than mobile */
 
-/*Larger than phablet*/
-@media (min-width: 550px) {
-}
+/* @media (min-width: 400px) {
+} */
 
-/*Larger than tablet*/
-@media (min-width: 750px) {
-}
+/* Larger than phablet */
 
-/*Larger than desktop*/
-@media (min-width: 1000px) {
-}
+/* @media (min-width: 550px) {
+} */
 
-/*Larger than Desktop HD*/
-@media (min-width: 1200px) {
-}
+/* Larger than tablet */
 
-/*Skeleten CSS override*/
+/* @media (min-width: 750px) {
+} */
+
+/* Larger than desktop */
+
+/* @media (min-width: 1000px) {
+} */
+
+/* Larger than Desktop HD */
+
+/* @media (min-width: 1200px) {
+} */
+
+/* Skeleten CSS override */
 .button-primary {
     background: #3498db;
 }
