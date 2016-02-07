@@ -1,10 +1,10 @@
 // Create an 'App' namespace
-var App = {};
+var App = App || (window.Object.create ? window.Object.create(null) : {});
 
 /**
  * Core module
  *
- * Modified: 2016/01/03
+ * Modified: 2016/02/07
  * @author softwarespot
  */
 App.core = (function coreModule(window, document, $) {

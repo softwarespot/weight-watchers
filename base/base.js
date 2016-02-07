@@ -6,7 +6,7 @@
  * Modified: YYYY/MM/DD
  * @author author
  */
-App.base = (function baseModule(window, document, $, core, undefined) {
+App.base = (function baseModule(window, document, $, core) {
     // Constants
 
     // SemVer version number of the module
@@ -37,7 +37,7 @@ App.base = (function baseModule(window, document, $, core, undefined) {
         }
 
         // Default config that can be overwritten by passing through the config variable
-        var defaultConfig = {};
+        var defaultConfig = core.objectEmpty();
 
         // Combine the passed config
         $.extend(defaultConfig, config);
@@ -110,4 +110,4 @@ App.base = (function baseModule(window, document, $, core, undefined) {
         destroy: destroy,
         getVersion: getVersion,
     };
-})(window, window.document, window.jQuery, window.App.core);
+}(window, window.document, window.jQuery, window.App.core));

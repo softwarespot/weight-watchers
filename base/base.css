@@ -1,18 +1,18 @@
-/**
+/*
  * Base CSS
  *
  * Modified: YYYY/MM/DD
  * @author author
- */
+*/
 
- /*Body styling*/
- body {
+/* Body styling */
+body {
     background: #fafafa;
     font-family: 'Open Sans', sans-serif, Arial;
     color: #222;
 }
 
-/*Style a links as well as increasing the clickable area*/
+/* Style a links as well as increasing the clickable area */
 a {
     background: transparent;
     color: #2980b9;
@@ -28,24 +28,24 @@ a:hover {
     color: #3498db;
 }
 
-/*Mobile first queries*/
+/* Mobile first queries */
 
-/*Larger than mobile*/
+/* Larger than mobile */
 @media (min-width: 400px) {
 }
 
-/*Larger than phablet*/
+/* Larger than phablet */
 @media (min-width: 550px) {
 }
 
-/*Larger than tablet*/
+/* Larger than tablet */
 @media (min-width: 750px) {
 }
 
-/*Larger than desktop*/
+/* Larger than desktop */
 @media (min-width: 1000px) {
 }
 
-/*Larger than Desktop HD*/
+/* Larger than Desktop HD */
 @media (min-width: 1200px) {
 }

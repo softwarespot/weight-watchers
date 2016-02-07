@@ -3,7 +3,7 @@
 /**
  * Navigation module
  *
- * Modified: 2016/01/03
+ * Modified: 2016/02/07
  * @author softwarespot
  */
 App.navigation = (function navigationModule(window, document, $, core) {
@@ -85,7 +85,7 @@ App.navigation = (function navigationModule(window, document, $, core) {
      */
     function init(/* config */) {
         // Default config that can be overwritten by passing through the config variable
-        // var defaultConfig = {};
+        // var defaultConfig = core.emptyObject();
 
         // Combine the passed config
         // $.extend(defaultConfig, config);

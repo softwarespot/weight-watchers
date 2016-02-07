@@ -3,7 +3,7 @@
 /**
  * Session module
  *
- * Modified: 2016/01/06
+ * Modified: 2016/02/07
  * @author softwarespot
  */
 App.core.session = (function sessionModule(window, core) {

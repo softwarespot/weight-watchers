@@ -4,7 +4,7 @@
  * Emitter module
  * Note: This is the same as the mediator pattern or publish-subscribe pattern
  *
- * Modified: 2016/01/03
+ * Modified: 2016/02/07
  * @author softwarespot
  */
 App.core.emitter = (function emitterModule(window, document, $, core) {

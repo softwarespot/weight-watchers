@@ -3,7 +3,7 @@
 /**
  * API module
  *
- * Modified: 2016/01/03
+ * Modified: 2016/02/07
  * @author softwarespot
  */
 App.core.api = (function apiModule(window, document, $, core) {
@@ -163,7 +163,7 @@ App.core.api = (function apiModule(window, document, $, core) {
         }
 
         // Default config that can be overwritten by passing through the config variable
-        // var defaultConfig = {};
+        // var defaultConfig = core.emptyObject();
 
         // Combine the passed config
         // $.extend(defaultConfig, config);

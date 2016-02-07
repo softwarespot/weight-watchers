@@ -1,4 +1,4 @@
-/* global App */
+/* global App, $ */
 
 /**
  * Base module
@@ -30,7 +30,7 @@ App.base = {
      */
     init: function init(config) {
         // Default config that can be overwritten by passing through the config variable
-        var defaultConfig = {};
+        var defaultConfig = App.core.emptyObject();
 
         // Combine the passed config
         $.extend(defaultConfig, config);
