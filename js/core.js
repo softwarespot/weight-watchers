@@ -377,7 +377,7 @@ App.core = (function coreModule(window, document, $) {
         var type = typeof value;
 
         // !!value is basically checking if value is not 'truthy' e.g. null or zero and then inverts that boolean value
-        // So, !'Some test' is false and then inverting false is true. There if value contains 'something', continue
+        // So, !'Some test' is false and then inverting false is true. Thus if value contains 'something', continue
         return !!value && (type === 'object' || type === 'function');
     }
 
