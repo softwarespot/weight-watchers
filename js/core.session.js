@@ -56,80 +56,74 @@ App.core.session = (function sessionModule(window, core) {
     }
 
     /**
-     * Append functions to the Session prototype
-     * @type {object}
+     * Clear the storage data
+     *
+     * @return {undefined}
      */
-    Session.prototype = {
-        /**
-         * Clear the storage data
-         *
-         * @return {undefined}
-         */
-        clear: function clear() {
-            // There is an issue with IE when running from the local file system
-            try {
-                this._storage.removeItem(this._key);
-            } catch (ex) {
-                window.console.log('An error occurred with Session.clear()', ex);
+    Session.prototype.clear = function clear() {
+        // There is an issue with IE when running from the local file system
+        try {
+            this._storage.removeItem(this._key);
+        } catch (ex) {
+            window.console.log('An error occurred with Session.clear()', ex);
+        }
+    };
+
+    /**
+     * Get the storage data
+     *
+     * @return {mixed|null} Storage data; otherwise, null
+     */
+    Session.prototype.get = function get() {
+        var items = null;
+
+        // There is an issue with IE when running from the local file system
+        try {
+            items = this._storage.getItem(this._key);
+        } catch (ex) {
+            window.console.log('An error occurred with Session.get()', ex);
+        }
+
+        return items;
+    };
+
+    /**
+     * Check if the storage is supported
+     *
+     * @return {boolean} True, it's supported; otherwise, false
+     */
+    Session.prototype.has = function has() {
+        return this._has;
+    };
+
+    /**
+     * See documentation above for clear()
+     */
+    Session.prototype.remove = Session.prototype.clear;
+
+    /**
+     * Set the storage data
+     *
+     * @param {mixed} data Data to add to the storage
+     */
+    Session.prototype.set = function set(data) {
+        // There is an issue with IE when running from the local file system
+        try {
+            if (!core.isEmpty(data)) {
+                this._storage.setItem(this._key, data);
             }
-        },
+        } catch (ex) {
+            window.console.log('An error occurred with Session.set()', ex);
+        }
+    };
 
-        /**
-         * Get the storage data
-         *
-         * @return {mixed|null} Storage data; otherwise, null
-         */
-        get: function get() {
-            var items = null;
-
-            // There is an issue with IE when running from the local file system
-            try {
-                items = this._storage.getItem(this._key);
-            } catch (ex) {
-                window.console.log('An error occurred with Session.get()', ex);
-            }
-
-            return items;
-        },
-
-        /**
-         * Check if the storage is supported
-         *
-         * @return {boolean} True, it's supported; otherwise, false
-         */
-        has: function has() {
-            return this._has;
-        },
-
-        /**
-         * See documentation above for clear()
-         */
-        remove: this.clear,
-
-        /**
-         * Set the storage data
-         *
-         * @param {mixed} data Data to add to the storage
-         */
-        set: function set(data) {
-            // There is an issue with IE when running from the local file system
-            try {
-                if (!core.isEmpty(data)) {
-                    this._storage.setItem(this._key, data);
-                }
-            } catch (ex) {
-                window.console.log('An error occurred with Session.set()', ex);
-            }
-        },
-
-        /**
-         * Get the SemVer version number of the module
-         *
-         * @return {number} SemVer version module
-         */
-        getVersion: function getVersion() {
-            return VERSION;
-        },
+    /**
+     * Get the SemVer version number of the module
+     *
+     * @return {number} SemVer version module
+     */
+    Session.prototype.getVersion = function getVersion() {
+        return VERSION;
     };
 
     /**
