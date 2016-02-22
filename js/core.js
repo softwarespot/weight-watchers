@@ -196,8 +196,13 @@ App.core = (function coreModule(window, document, $) {
         }
 
         var length = array.length;
+        if (length === 0) {
+            return null;
+        }
 
-        return length > 0 ? array[length - 1] : null;
+        var value = array[length - 1];
+
+        return !isNil(value) ? value : null;
     }
 
     /**
