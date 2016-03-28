@@ -123,7 +123,7 @@ App.user = (function userModule(window, document, $, core) {
         }
 
         // Default config that can be overwritten by passing through the config variable
-        var defaultConfig = core.emptyObject();
+        var defaultConfig = core.objectEmpty();
 
         // Combine the passed config
         $.extend(defaultConfig, config);
