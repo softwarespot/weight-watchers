@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb/legacy",
+  "extends": "airbnb-base/legacy",
   "rules": {
     // Override Airbnb's style guide defaults for ES5
     "camelcase": [2, {"properties": "always"}],
