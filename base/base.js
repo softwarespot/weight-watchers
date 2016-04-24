@@ -99,7 +99,7 @@ App.base = (function baseModule(window, document, $, core) {
         _isEventsBound = false;
     }
 
-    // Invoked when the DOM has loaded
+    // Initialise the module
     $(function baseReady() {
         // init({});
     });

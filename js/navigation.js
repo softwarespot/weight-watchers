@@ -75,6 +75,18 @@ App.navigation = (function navigationModule(window, document, $, core) {
         },
     };
 
+    // Initialise the module
+    $(function navigationReady() {
+        init();
+    });
+
+    // Public API
+    return {
+        init: init,
+        destroy: destroy,
+        getVersion: getVersion,
+    };
+
     // Methods
 
     /**
@@ -177,16 +189,4 @@ App.navigation = (function navigationModule(window, document, $, core) {
             scrollTop: $element.offset().top,
         }, speed);
     }
-
-    // Initialise the module
-    $(function navigationReady() {
-        init();
-    });
-
-    // Public API
-    return {
-        init: init,
-        destroy: destroy,
-        getVersion: getVersion,
-    };
 }(window, window.document, window.jQuery, window.App.core));

@@ -149,6 +149,29 @@ App.core.api = (function apiModule(window, document, $, core) {
     // API prefix e.g. api/
     var _prefix = '';
 
+    // Initialise the module
+    $(function apiReady() {
+        init({});
+    });
+
+    // Public API
+    return {
+        init: init,
+        destroy: destroy,
+        getVersion: getVersion,
+        Methods: methods,
+        HTTPStatus: httpStatus,
+        fetch: fetch,
+        delete: del,
+        get: get,
+        put: put,
+        post: post,
+        parseUrl: parseUrl,
+        getPrefix: getPrefix,
+        setPrefix: setPrefix,
+        trimSlashes: trimSlashes,
+    };
+
     // Methods
 
     /**
@@ -483,27 +506,4 @@ App.core.api = (function apiModule(window, document, $, core) {
 
         return core.trim(value, '/');
     }
-
-    // Invoked when the DOM has loaded
-    $(function apiReady() {
-        init({});
-    });
-
-    // Public API
-    return {
-        init: init,
-        destroy: destroy,
-        getVersion: getVersion,
-        Methods: methods,
-        HTTPStatus: httpStatus,
-        fetch: fetch,
-        delete: del,
-        get: get,
-        put: put,
-        post: post,
-        parseUrl: parseUrl,
-        getPrefix: getPrefix,
-        setPrefix: setPrefix,
-        trimSlashes: trimSlashes,
-    };
 }(window, window.document, window.jQuery, window.App.core));

@@ -95,6 +95,53 @@ App.core = (function coreModule(window, document, $) {
     // Store when the application is in debugging mode
     var _isDebug = false;
 
+    // Initialise the module
+    $(function coreReady() {
+        init();
+    });
+
+    // Public API
+    return {
+        init: init,
+        destroy: destroy,
+        getAppName: getAppName,
+        getVersion: getVersion,
+        isDebug: isDebug,
+        setIsDebug: setIsDebug,
+        arrayClear: arrayClear,
+        arrayPeek: arrayPeek,
+        regExpEscape: regExpEscape,
+        has: has,
+        isArray: isArray,
+        isBoolean: isBoolean,
+        isEmpty: isEmpty,
+        isFinite: isFinite,
+        isFloat: isFloat,
+        isFunction: isFunction,
+        isInteger: isInteger,
+        isjQuery: isjQuery,
+        isjQueryNotEmpty: isjQueryNotEmpty,
+        isNaN: isNaN,
+        isNil: isNil,
+        isNotNull: isNotNull,
+        isNull: isNull,
+        isNumber: isNumber,
+        isObject: isObject,
+        isObjectLiteral: isObjectLiteral,
+        isString: isString,
+        isStringFloat: isStringFloat,
+        isStringInteger: isStringInteger,
+        isStringNumber: isStringNumber,
+        isUndefined: isUndefined,
+        objectEmpty: objectEmpty,
+        randomNumber: randomNumber,
+        stringContains: stringContains,
+        stringFormat: stringFormat,
+        toInteger: toInteger,
+        toString: toString,
+        trim: trim,
+    };
+
     // Methods
 
     /**
@@ -627,51 +674,4 @@ App.core = (function coreModule(window, document, $) {
             _nativeStringTrim.call(value) :
             value.replace(_reTrim, STRING_EMPTY);
     }
-
-    // Invoked when the DOM has loaded
-    $(function coreReady() {
-        init();
-    });
-
-    // Public API
-    return {
-        init: init,
-        destroy: destroy,
-        getAppName: getAppName,
-        getVersion: getVersion,
-        isDebug: isDebug,
-        setIsDebug: setIsDebug,
-        arrayClear: arrayClear,
-        arrayPeek: arrayPeek,
-        regExpEscape: regExpEscape,
-        has: has,
-        isArray: isArray,
-        isBoolean: isBoolean,
-        isEmpty: isEmpty,
-        isFinite: isFinite,
-        isFloat: isFloat,
-        isFunction: isFunction,
-        isInteger: isInteger,
-        isjQuery: isjQuery,
-        isjQueryNotEmpty: isjQueryNotEmpty,
-        isNaN: isNaN,
-        isNil: isNil,
-        isNotNull: isNotNull,
-        isNull: isNull,
-        isNumber: isNumber,
-        isObject: isObject,
-        isObjectLiteral: isObjectLiteral,
-        isString: isString,
-        isStringFloat: isStringFloat,
-        isStringInteger: isStringInteger,
-        isStringNumber: isStringNumber,
-        isUndefined: isUndefined,
-        objectEmpty: objectEmpty,
-        randomNumber: randomNumber,
-        stringContains: stringContains,
-        stringFormat: stringFormat,
-        toInteger: toInteger,
-        toString: toString,
-        trim: trim,
-    };
 }(window, window.document, window.jQuery));

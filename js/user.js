@@ -109,6 +109,27 @@ App.user = (function userModule(window, document, $, core) {
         },
     };
 
+    // Initialise the module
+    $(function userReady() {
+        init({
+            dom: {
+                // Required property
+                html: '#weight-post-form',
+                userList: 'select[name="username"]',
+            },
+            templates: {
+                userList: '#template-user-list',
+            },
+        });
+    });
+
+    // Public API
+    return {
+        init: init,
+        destroy: destroy,
+        getVersion: getVersion,
+    };
+
     // Methods
 
     /**
@@ -226,25 +247,4 @@ App.user = (function userModule(window, document, $, core) {
         // Append to the user list
         _$userList.append(html);
     }
-
-    // Invoked when the DOM has loaded
-    $(function userReady() {
-        init({
-            dom: {
-                // Required property
-                html: '#weight-post-form',
-                userList: 'select[name="username"]',
-            },
-            templates: {
-                userList: '#template-user-list',
-            },
-        });
-    });
-
-    // Public API
-    return {
-        init: init,
-        destroy: destroy,
-        getVersion: getVersion,
-    };
 }(window, window.document, window.jQuery, window.App.core));

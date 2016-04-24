@@ -28,6 +28,16 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
     var _events = core.objectEmpty();
     var _eventsOne = core.objectEmpty();
 
+    // Public API
+    return {
+        getVersion: getVersion,
+        clear: clear,
+        emit: emit,
+        off: off,
+        on: on,
+        one: one,
+    };
+
     // Methods
 
     /**
@@ -241,14 +251,4 @@ App.core.emitter = (function emitterModule(window, document, $, core) {
             callbacks.push(callback);
         }
     }
-
-    // Public API
-    return {
-        getVersion: getVersion,
-        clear: clear,
-        emit: emit,
-        off: off,
-        on: on,
-        one: one,
-    };
 }(window, window.document, window.jQuery, window.App.core));

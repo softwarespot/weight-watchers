@@ -354,6 +354,35 @@ App.weight = (function weightModule(window, document, $, core) {
         },
     };
 
+    // Initialise the module
+    $(function weightReady() {
+        init({
+            dataId: 'data-weight-id',
+            dom: {
+                // Required property
+                html: '#weight-section',
+                forms: {
+                    weight: '#weight-post-form',
+                },
+                displayAll: '[name="display-all"]',
+                weightChart: '#weight-chart',
+                weightList: '#weight-list',
+                weightListError: '#weight-list-error',
+            },
+            templates: {
+                weightList: '#template-weight-list',
+            },
+        });
+    });
+
+    // Public API
+    return {
+        init: init,
+        destroy: destroy,
+        getVersion: getVersion,
+        isValidWeight: isValidWeight,
+    };
+
     // Methods
 
     /**
@@ -772,33 +801,4 @@ App.weight = (function weightModule(window, document, $, core) {
 
         _internalId++;
     }
-
-    // Invoked when the DOM has loaded
-    $(function weightReady() {
-        init({
-            dataId: 'data-weight-id',
-            dom: {
-                // Required property
-                html: '#weight-section',
-                forms: {
-                    weight: '#weight-post-form',
-                },
-                displayAll: '[name="display-all"]',
-                weightChart: '#weight-chart',
-                weightList: '#weight-list',
-                weightListError: '#weight-list-error',
-            },
-            templates: {
-                weightList: '#template-weight-list',
-            },
-        });
-    });
-
-    // Public API
-    return {
-        init: init,
-        destroy: destroy,
-        getVersion: getVersion,
-        isValidWeight: isValidWeight,
-    };
 }(window, window.document, window.jQuery, window.App.core));

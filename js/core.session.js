@@ -20,6 +20,11 @@ App.core.session = (function sessionModule(window, core) {
     // Default storage object
     var _storage = window.sessionStorage;
 
+    // Public API
+    return {
+        create: create,
+    };
+
     // Methods
 
     /**
@@ -140,9 +145,4 @@ App.core.session = (function sessionModule(window, core) {
             'removeItem' in storage &&
             'clear' in storage;
     }
-
-    // Public API
-    return {
-        create: create,
-    };
 }(window, window.App.core));
